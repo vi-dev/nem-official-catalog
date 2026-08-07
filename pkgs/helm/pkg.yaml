@@ -1,0 +1,22 @@
+schema: 2
+name: helm
+description: The Kubernetes package manager
+homepage: https://helm.sh
+license: Apache-2.0
+
+artifact:
+  url: "https://get.helm.sh/helm-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "helm", dst: "bin/helm", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 4.2.3
+    sha256:
+      darwin/arm64: "048ecf5ad3160f83d918f9fe945238d2132b079640f7b106175331c25f242c64"
+      darwin/amd64: "ff3ac86755a45f3422473bc1200776aac0fe04c5766abe6ca66699f7b564b23b"
+      linux/arm64: "21abd9354d39b2cd79a8d76be6912cd137a983cbf997193503fb8a6a6e2f2785"
+      linux/amd64: "e9b88b4ee95b18c706839c28d3a0220e5bc470e9cd9262410c90793c45ff8b7c"
