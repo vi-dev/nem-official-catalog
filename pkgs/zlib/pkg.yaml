@@ -1,0 +1,28 @@
+schema: 2
+
+name: zlib
+description: The zlib general-purpose compression library
+homepage: https://zlib.net
+license: Zlib
+
+libs: [lib]
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: v1.3.1
+    sourceSha256: "9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23"
+
+build:
+  source:
+    url: 'https://github.com/madler/zlib/releases/download/{{.Version}}/zlib-{{trimPrefix .Version "v"}}.tar.gz'
+  output: out
+  steps:
+    - run: ./configure --prefix=/ && make && make install DESTDIR="$NEM_OUTPUT"
+    # macOS: rewrite the dylib id to @rpath so consumers link it by soname, then
+    # re-sign. Linux emits the libz.so.1 soname directly.
+    - run: 'case "$NEM_OS" in darwin) install_name_tool -id @rpath/libz.1.dylib "$NEM_OUTPUT/lib/libz.1.3.1.dylib" && codesign -f -s - "$NEM_OUTPUT/lib/libz.1.3.1.dylib" ;; esac'
