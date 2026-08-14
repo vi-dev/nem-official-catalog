@@ -1,0 +1,36 @@
+schema: 2
+
+name: pigz
+description: A parallel implementation of gzip
+homepage: https://zlib.net/pigz/
+license: Zlib
+
+# compat "1" floats within zlib 1.x, all sharing the libz.1 soname.
+deps:
+  - name: zlib
+    kind: link
+    compat: "1"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: v2.8
+    sourceSha256: "2f7f6a6986996d21cb8658535fff95f1c7107ddce22b5324f4b41890e2904706"
+
+build:
+  deps:
+    - name: zlib
+      kind: link
+      compat: "1"
+  source:
+    url: 'https://github.com/madler/pigz/archive/refs/tags/{{.Version}}.tar.gz'
+  output: out
+  steps:
+    # pigz's Makefile hardcodes LDFLAGS empty, so pass the runner's $LDFLAGS on
+    # the command line to inject -L<zlib>/lib and the rpath; $CPPFLAGS reaches
+    # pigz.o via make's implicit rule.
+    - run: make LDFLAGS="$LDFLAGS" && mkdir -p "$NEM_OUTPUT/bin" && cp pigz "$NEM_OUTPUT/bin/pigz"
