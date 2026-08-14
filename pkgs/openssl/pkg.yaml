@@ -1,0 +1,44 @@
+schema: 2
+
+name: openssl
+description: Cryptography and TLS toolkit — libcrypto/libssl plus the openssl CLI
+homepage: https://www.openssl.org
+license: Apache-2.0
+
+bins: [bin]
+libs: [lib]
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: v3.4.1
+    sourceSha256: "002a2d6b30b58bf4bea46c43bdd96365aaf8daa6c428782aa4feee06da197df3"
+
+build:
+  source:
+    url: 'https://github.com/openssl/openssl/releases/download/openssl-{{trimPrefix .Version "v"}}/openssl-{{trimPrefix .Version "v"}}.tar.gz'
+  output: out
+  steps:
+    - run: ./Configure --prefix=/ --libdir=lib --openssldir=/etc/ssl shared no-docs && make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)" && make install_sw DESTDIR="$NEM_OUTPUT"
+    # macOS bakes absolute /lib/libX.3.dylib install names; rewrite every
+    # crypto/ssl reference to @rpath and re-sign. Linux emits sonames directly.
+    - run: |
+        case "$NEM_OS" in
+        darwin)
+          cd "$NEM_OUTPUT"
+          install_name_tool -id @rpath/libcrypto.3.dylib lib/libcrypto.3.dylib
+          install_name_tool -id @rpath/libssl.3.dylib lib/libssl.3.dylib
+          for f in lib/libssl.3.dylib bin/openssl lib/engines-3/*.dylib lib/ossl-modules/*.dylib; do
+            [ -e "$f" ] || continue
+            install_name_tool \
+              -change /lib/libcrypto.3.dylib @rpath/libcrypto.3.dylib \
+              -change /lib/libssl.3.dylib @rpath/libssl.3.dylib "$f"
+            codesign -f -s - "$f"
+          done
+          codesign -f -s - lib/libcrypto.3.dylib lib/libssl.3.dylib
+          ;;
+        esac
