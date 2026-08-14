@@ -5,6 +5,8 @@ description: The zlib general-purpose compression library
 homepage: https://zlib.net
 license: Zlib
 
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
 libs: [lib]
 
 artifact:

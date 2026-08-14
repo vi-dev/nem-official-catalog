@@ -5,6 +5,8 @@ description: IPC library used by the GnuPG components to talk to their helpers
 homepage: https://www.gnupg.org/software/libassuan/
 license: LGPL-2.1-or-later
 
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
 # compat "1" floats within libgpg-error 1.x, all sharing the libgpg-error.0
 # soname (soname number is independent of the version).
 deps:

@@ -5,6 +5,8 @@ description: GnuPG Made Easy — high-level crypto API library over the GnuPG en
 homepage: https://www.gnupg.org/software/gpgme/
 license: LGPL-2.1-or-later
 
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
 # compat is the version-major float; each dep stays within one soname
 # (libassuan.9, libgpg-error.0). libgpg-error is listed directly, not only
 # transitively via libassuan, so the loader path is always complete.

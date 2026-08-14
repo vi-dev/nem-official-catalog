@@ -1,0 +1,39 @@
+name: Changed packages
+description: Classify pkg.yaml changes into source-built and prebuilt package lists
+inputs:
+  base:
+    description: Diff base sha (empty or all-zeros = no diff)
+    default: ""
+  head:
+    description: Diff head sha
+    default: ""
+  three-dot:
+    description: '"true" = merge-base diff (pull requests), else two-dot'
+    default: "false"
+  packages:
+    description: Space-separated package names overriding the diff
+    default: ""
+outputs:
+  source:
+    description: JSON array of changed source-built package names
+    value: ${{ steps.detect.outputs.source }}
+  prebuilt:
+    description: JSON array of changed prebuilt package names
+    value: ${{ steps.detect.outputs.prebuilt }}
+  all:
+    description: JSON array of all changed package names
+    value: ${{ steps.detect.outputs.all }}
+  any:
+    description: '"true" when at least one package changed'
+    value: ${{ steps.detect.outputs.any }}
+runs:
+  using: composite
+  steps:
+    - id: detect
+      shell: bash
+      env:
+        BASE: ${{ inputs.base }}
+        HEAD: ${{ inputs.head }}
+        THREE_DOT: ${{ inputs['three-dot'] }}
+        PACKAGES: ${{ inputs.packages }}
+      run: ${{ github.action_path }}/detect.sh

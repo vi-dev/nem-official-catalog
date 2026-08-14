@@ -1,0 +1,44 @@
+name: Setup nem
+description: Install nem (unstable channel); optionally write ghcr.io credentials and configure the catalog
+inputs:
+  catalog:
+    description: Catalog ref (OCI ref or dir path) configured as "official" (empty = nem defaults)
+    default: ""
+  ghcr-token:
+    description: Token written to ~/.docker/config.json for ghcr.io (empty = anonymous)
+    default: ""
+runs:
+  using: composite
+  steps:
+    - name: Install nem
+      shell: bash
+      run: |
+        curl -fsSL https://raw.githubusercontent.com/vi-dev/nem-cli/main/install.sh \
+          | NEM_VERSION=unstable bash
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+    - name: Write ghcr.io credentials
+      if: inputs['ghcr-token'] != ''
+      shell: bash
+      env:
+        GHCR_TOKEN: ${{ inputs['ghcr-token'] }}
+      run: |
+        # A credentials file instead of `docker login`: macOS runners have no
+        # docker CLI, and nem reads the standard config file via oras-go.
+        mkdir -p "$HOME/.docker"
+        auth=$(printf '%s:%s' "$GITHUB_ACTOR" "$GHCR_TOKEN" | base64 | tr -d '\n')
+        printf '{"auths":{"ghcr.io":{"auth":"%s"}}}\n' "$auth" > "$HOME/.docker/config.json"
+    - name: Configure catalog
+      if: inputs.catalog != ''
+      shell: bash
+      env:
+        CATALOG_REF: ${{ inputs.catalog }}
+      run: |
+        # nem's first run writes a default `official` entry; replace it so the
+        # job resolves against exactly the requested ref, and nothing else.
+        nem catalog remove official 2>/dev/null || true
+        nem catalog add official "$CATALOG_REF"
+        # Dir catalogs have no OCI mirror to sync.
+        case "$CATALOG_REF" in
+          /*|./*|../*|.) ;;
+          *) nem catalog update ;;
+        esac

@@ -5,6 +5,8 @@ description: Error codes and runtime support shared by the GnuPG components
 homepage: https://www.gnupg.org/software/libgpg-error/
 license: LGPL-2.1-or-later
 
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
 libs: [lib]
 
 artifact:

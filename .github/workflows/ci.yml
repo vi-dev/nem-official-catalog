@@ -1,0 +1,126 @@
+name: CI
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  packages: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup-nem
+      - run: nem catalog lint .
+
+  # Shows reviewers the publish plan a merge would produce.
+  dry-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup-nem
+      - name: Publish dry-run
+        shell: bash
+        run: |
+          # publish requires a tagged ref; the tag itself is inert (only the
+          # repository part is written to, --tag names the moved tags).
+          nem catalog publish ghcr.io/vi-dev/nem-official-catalog:v2 . --dry-run \
+            > /tmp/publish-plan.txt
+          {
+            echo "### Publish plan (dry-run)"
+            echo '```'
+            cat /tmp/publish-plan.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      source: ${{ steps.detect.outputs.source }}
+      prebuilt: ${{ steps.detect.outputs.prebuilt }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - id: detect
+        uses: ./.github/actions/changed-packages
+        with:
+          base: ${{ github.event.pull_request.base.sha }}
+          head: ${{ github.sha }}
+          three-dot: "true"
+
+  # Proves build recipes compile and pass output verification; nothing is
+  # pushed. build.deps resolve from the published catalog — a dir catalog
+  # cannot serve oci: artifacts — so a new source package whose build deps
+  # are also new must land in dependency order, one PR each.
+  build:
+    needs: changes
+    if: needs.changes.outputs.source != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.changes.outputs.source) }}
+        runner: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup-nem
+        with:
+          catalog: ghcr.io/vi-dev/nem-official-catalog:v2
+          ghcr-token: ${{ github.token }}
+      - name: Build without publishing
+        shell: bash
+        env:
+          PKG: ${{ matrix.package }}
+        run: nem catalog build "pkgs/$PKG/pkg.yaml"
+
+  # Proves prebuilt packages' URLs and sha256 maps are real: installs from
+  # the PR's working tree as a dir catalog.
+  install-check:
+    needs: changes
+    if: needs.changes.outputs.prebuilt != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(needs.changes.outputs.prebuilt) }}
+        runner: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup-nem
+        with:
+          catalog: .
+      - name: Install from the PR's dir catalog
+        shell: bash
+        env:
+          PKG: ${{ matrix.package }}
+        run: |
+          nem use -g "$PKG"
+          nem status -g
+
+  # Stable check name for branch protection; matrix check names vary per PR.
+  # build/install-check may legitimately be skipped when nothing matching
+  # changed, so only failure or cancellation fails the gate.
+  ci-ok:
+    needs: [lint, dry-run, changes, build, install-check]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check required jobs
+        shell: bash
+        env:
+          NEEDS_JSON: ${{ toJSON(needs) }}
+        run: |
+          jq -e 'all(.[]; .result == "success" or .result == "skipped")' <<<"$NEEDS_JSON" >/dev/null

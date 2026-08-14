@@ -5,6 +5,8 @@ description: Cryptography and TLS toolkit — libcrypto/libssl plus the openssl 
 homepage: https://www.openssl.org
 license: Apache-2.0
 
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
 bins: [bin]
 libs: [lib]
 

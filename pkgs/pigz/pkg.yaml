@@ -5,6 +5,8 @@ description: A parallel implementation of gzip
 homepage: https://zlib.net/pigz/
 license: Zlib
 
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
 # compat "1" floats within zlib 1.x, all sharing the libz.1 soname.
 deps:
   - name: zlib
