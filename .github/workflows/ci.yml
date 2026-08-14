@@ -30,9 +30,7 @@ jobs:
       - name: Publish dry-run
         shell: bash
         run: |
-          # publish requires a tagged ref; the tag itself is inert (only the
-          # repository part is written to, --tag names the moved tags).
-          nem catalog publish ghcr.io/vi-dev/nem-official-catalog:v2 . --dry-run \
+          nem catalog publish ghcr.io/vi-dev/nem-official-catalog . --dry-run \
             > /tmp/publish-plan.txt
           {
             echo "### Publish plan (dry-run)"

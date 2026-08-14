@@ -152,9 +152,7 @@ jobs:
             done
           done
           exit "$fail"
-      # publish requires a tagged ref; the tag itself is inert (only the
-      # repository part is written to, --tag names the moved tags).
-      - run: nem catalog publish ghcr.io/vi-dev/nem-official-catalog:v2-staging . --tag v2-staging
+      - run: nem catalog publish ghcr.io/vi-dev/nem-official-catalog . --tag v2-staging
 
   # The full consumer path for every changed package, from the staging tag.
   smoke:
