@@ -1,0 +1,31 @@
+schema: 2
+name: jdk
+description: Eclipse Temurin JDK (LTS)
+homepage: https://adoptium.net
+license: GPL-2.0-only WITH Classpath-exception-2.0
+
+artifact:
+  url: "https://api.adoptium.net/v3/binary/version/jdk-{{.Version}}/{{replace .OS \"darwin\" \"mac\"}}/{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x64\"}}/jdk/hotspot/normal/eclipse"
+
+install:
+  - extract: {strip: 1}
+
+# Temurin macOS archives nest the JDK under Contents/Home; Linux archives
+# don't. The entry absent on a platform contributes a dir that never exists.
+bins: ["bin", "Contents/Home/bin"]
+
+env:
+  - name: JAVA_HOME
+    value: "{{.InstallDir}}"
+    platforms: [linux]
+  - name: JAVA_HOME
+    value: "{{.InstallDir}}/Contents/Home"
+    platforms: [darwin]
+
+versions:
+  - version: "25.0.4+7"
+    sha256:
+      darwin/arm64: "5a101c54abf5a9f16c0f70d8c38ba99e6567c1ba213378f0bb04497284f051bd"
+      darwin/amd64: "a5ac9c46dad47ac06df35e36d096913195d8da1f3f71918828bcc2cfe33869b7"
+      linux/arm64: "621f7196f0b682fb557da58bec89bd7dfe5419811fe1c0ba75c9cc8432f084c7"
+      linux/amd64: "e58fcdcd637b25c03ca84cbbcefc70d11efb8f4b4cbd05decc9f661769d77f94"
