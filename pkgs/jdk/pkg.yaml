@@ -4,8 +4,11 @@ description: Eclipse Temurin JDK (LTS)
 homepage: https://adoptium.net
 license: GPL-2.0-only WITH Classpath-exception-2.0
 
+# Upstream releases are "25.0.4+7", but a version doubles as an OCI tag in
+# the catalog's archives repo, where "+" is invalid — it is spelled "_" here
+# and mapped back in the URL.
 artifact:
-  url: "https://api.adoptium.net/v3/binary/version/jdk-{{.Version}}/{{replace .OS \"darwin\" \"mac\"}}/{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x64\"}}/jdk/hotspot/normal/eclipse"
+  url: "https://api.adoptium.net/v3/binary/version/jdk-{{replace .Version \"_\" \"+\"}}/{{replace .OS \"darwin\" \"mac\"}}/{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x64\"}}/jdk/hotspot/normal/eclipse"
 
 install:
   - extract: {strip: 1}
@@ -23,7 +26,7 @@ env:
     platforms: [darwin]
 
 versions:
-  - version: "25.0.4+7"
+  - version: 25.0.4_7
     sha256:
       darwin/arm64: "5a101c54abf5a9f16c0f70d8c38ba99e6567c1ba213378f0bb04497284f051bd"
       darwin/amd64: "a5ac9c46dad47ac06df35e36d096913195d8da1f3f71918828bcc2cfe33869b7"
