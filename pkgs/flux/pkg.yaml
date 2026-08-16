@@ -1,0 +1,22 @@
+schema: 2
+name: flux
+description: Flux CD GitOps command-line tool
+homepage: https://fluxcd.io
+license: Apache-2.0
+
+artifact:
+  url: "https://github.com/fluxcd/flux2/releases/download/v{{.Version}}/flux_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "flux", dst: "bin/flux", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.9.4
+    sha256:
+      darwin/arm64: "5350675411f1c8c20fb7fd827450933e939f7ab82a2cd92f8fa2abe497761911"
+      darwin/amd64: "162e11dd0fd44d1d87f3b8308b74e8ef8fedd0a550b8501f0365f329efc476f8"
+      linux/arm64: "dcab945f8d8658662fa1db93e150a602ba1f91da367a82e099bd65595fc7c62c"
+      linux/amd64: "c2c397a52930f52d2005c01d276116b059d062de379386d58e98115380a766a2"
