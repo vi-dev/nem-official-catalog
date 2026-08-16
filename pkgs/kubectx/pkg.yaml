@@ -1,0 +1,22 @@
+schema: 2
+name: kubectx
+description: Fast kubectl context switcher
+homepage: https://github.com/ahmetb/kubectx
+license: Apache-2.0
+
+artifact:
+  url: "https://github.com/ahmetb/kubectx/releases/download/v{{.Version}}/kubectx_v{{.Version}}_{{.OS}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubectx", dst: "bin/kubectx", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.11.0
+    sha256:
+      darwin/arm64: "b8c9b5150ca6d902474a115cf7e535831081b9ae10cbe561ea36c82bb3823d02"
+      darwin/amd64: "80097893b478c55be51ffe826c172f0fd5095d23cca02adbcbcabc412700a689"
+      linux/arm64: "1dac2072216689e773325cb7587b858ea7415706ebcf04e23bf80e7e70555340"
+      linux/amd64: "08e031c54fbffb3f100e904e4eae94bba2730fedf4869921fda79e4d7a8f5d4c"
