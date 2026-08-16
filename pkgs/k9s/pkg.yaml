@@ -1,0 +1,22 @@
+schema: 2
+name: k9s
+description: Kubernetes cluster terminal UI
+homepage: https://k9scli.io
+license: Apache-2.0
+
+artifact:
+  url: "https://github.com/derailed/k9s/releases/download/v{{.Version}}/k9s_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "k9s", dst: "bin/k9s", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.51.0
+    sha256:
+      darwin/arm64: "9b8c0e8f461e5d33aeee43a67f5ef4aff646a008a786887b8266cbb153c610cc"
+      darwin/amd64: "7e8802c57c45a0cd389e8fc38472243fe4cf48d8ad5957e189ce370e19e5eda0"
+      linux/arm64: "3ee05c82e5f9198928a4e86133608ba6a2c10a2244d6a7789e820f78319d640c"
+      linux/amd64: "c3752ad51a5a4015a113819c4eeb6e55a4d0e4b8e652494797532f6fc8161dd7"
