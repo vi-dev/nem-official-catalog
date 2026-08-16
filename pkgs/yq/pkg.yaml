@@ -1,0 +1,21 @@
+schema: 2
+name: yq
+description: Command-line YAML, JSON and XML processor
+homepage: https://github.com/mikefarah/yq
+license: MIT
+
+artifact:
+  url: "https://github.com/mikefarah/yq/releases/download/v{{.Version}}/yq_{{.OS}}_{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/yq", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 4.53.3
+    sha256:
+      darwin/arm64: "877de31753a4dd2401aa048937aa9a7fc4d5f6ce858cf31508c5802954297213"
+      darwin/amd64: "b4ba1ecce3c47f00803f4f964de38394326c7a32eb6540616e04fb2935a0f08d"
+      linux/arm64: "578648e463a11c1b6db6010cbf41eafed6bee79466fcffa1bb446672cf7945ea"
+      linux/amd64: "fa52a4e758c63d38299163fbdd1edfb4c4963247918bf9c1c5d31d84789eded4"
