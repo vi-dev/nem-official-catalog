@@ -1,0 +1,22 @@
+schema: 2
+name: k6
+description: Modern load testing tool
+homepage: https://k6.io
+license: AGPL-3.0-only
+
+artifact:
+  url: "https://github.com/grafana/k6/releases/download/v{{.Version}}/k6-v{{.Version}}-{{replace .OS \"darwin\" \"macos\"}}-{{.Arch}}.{{if eq .OS \"darwin\"}}zip{{else}}tar.gz{{end}}"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "k6", dst: "bin/k6", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.2.0
+    sha256:
+      darwin/arm64: "37a028506bf13578de66c906296803775df28cc2504b1a8c5d786b2803e757c7"
+      darwin/amd64: "45a08590511c8a6a9c6331645e60c41624924e848e29472e87c60ac956d50372"
+      linux/arm64: "4ecd64cadcc792402d16293836115480419c4447c032858f564852d98f1bf54c"
+      linux/amd64: "b5a8003c86f35f5cd5ceef1490312c48e587696c94d998cefc6d7b3b4cb1597d"
