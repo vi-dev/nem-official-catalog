@@ -1,0 +1,23 @@
+schema: 2
+name: uv
+description: Fast Python package and project manager
+homepage: https://docs.astral.sh/uv
+license: MIT OR Apache-2.0
+
+artifact:
+  url: "https://github.com/astral-sh/uv/releases/download/{{.Version}}/uv-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "uv", dst: "bin/uv", mode: 0o755}
+  - copy: {src: "uvx", dst: "bin/uvx", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.12.5
+    sha256:
+      darwin/arm64: "5bb0e5fe008a773c3dbcb97ff79cd89e1241464fe9d2f986d52ad8f1b037bd62"
+      darwin/amd64: "b3b2137477cf96c9686ebfb71524614cec780c673fd73e59bce099aef02e70e8"
+      linux/arm64: "9bf43b4d1a07665bf64d4c4e710930b382321a785e0eb10aac07f46471f86a31"
+      linux/amd64: "68a509da24b06b4223a1c0175fb5eb5bc79342b76cbeff0cfe51ac3f5b17b6b2"
