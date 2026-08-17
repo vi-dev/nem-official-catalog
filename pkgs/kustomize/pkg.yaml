@@ -1,0 +1,23 @@
+schema: 2
+name: kustomize
+description: Kubernetes native configuration management
+homepage: https://kustomize.io
+license: Apache-2.0
+
+artifact:
+  # Release tag is "kustomize/v<version>"; %2F encodes the slash in the tag.
+  url: "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv{{.Version}}/kustomize_v{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kustomize", dst: "bin/kustomize", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 5.8.1
+    sha256:
+      darwin/arm64: "8886f8a78474e608cc81234f729fda188a9767da23e28925802f00ece2bab288"
+      darwin/amd64: "ee7cf0c1e3592aa7bb66ba82b359933a95e7f2e0b36e5f53ed0a4535b017f2f8"
+      linux/arm64: "0953ea3e476f66d6ddfcd911d750f5167b9365aa9491b2326398e289fef2c142"
+      linux/amd64: "029a7f0f4e1932c52a0476cf02a0fd855c0bb85694b82c338fc648dcb53a819d"
