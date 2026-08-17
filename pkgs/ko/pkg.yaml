@@ -1,0 +1,22 @@
+schema: 2
+name: ko
+description: Container image builder for Go applications
+homepage: https://ko.build
+license: Apache-2.0
+
+artifact:
+  url: "https://github.com/ko-build/ko/releases/download/v{{.Version}}/ko_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "ko", dst: "bin/ko", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.19.1
+    sha256:
+      darwin/arm64: "a1338c4140c8c94e789733e21b161a3de177b467cd3c388b634fe1a869574509"
+      darwin/amd64: "1b4ed52a5e506a55b085c7f106eb743ee756c776cc90fa232a539a47ad665310"
+      linux/arm64: "4099b2d1170d3b8a70e049237462efc2dd14d5fa30e9d2e5e108fb4f778cdd3f"
+      linux/amd64: "635ac6ea3fd376c935fee597fbb29ab2c2449f49ef1655085fe3aa9c25fed7a5"
