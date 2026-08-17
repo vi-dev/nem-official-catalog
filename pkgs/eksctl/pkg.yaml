@@ -1,0 +1,22 @@
+schema: 2
+name: eksctl
+description: CLI for creating and managing Amazon EKS clusters
+homepage: https://eksctl.io
+license: Apache-2.0
+
+artifact:
+  url: "https://github.com/eksctl-io/eksctl/releases/download/v{{.Version}}/eksctl_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "eksctl", dst: "bin/eksctl", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.230.0
+    sha256:
+      darwin/arm64: "1412b7ea32efab8141c4c7ccdf96690814d659accefdf72e4e6277ea5c87470c"
+      darwin/amd64: "9c169be56572dae079dc1e5e2a6efff83c4cc6fc8507e54d0a6e8f4ef14df312"
+      linux/arm64: "21afe8a1e38f0e8153a1f27ff7af6b90e309a0411a1438139463dac2f866674d"
+      linux/amd64: "a2060956f117c3065abafda5c1f681679b9c3716675d70ce4ffff46033b02c35"
