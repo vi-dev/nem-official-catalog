@@ -1,0 +1,22 @@
+schema: 2
+name: tflint
+description: Pluggable Terraform linter
+homepage: https://github.com/terraform-linters/tflint
+license: MPL-2.0
+
+artifact:
+  url: "https://github.com/terraform-linters/tflint/releases/download/v{{.Version}}/tflint_{{.OS}}_{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "tflint", dst: "bin/tflint", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.64.0
+    sha256:
+      darwin/arm64: "2496e9cb3d24992d553b45e7c87a0fdc9449ca975233876247a9bfeda857e6c0"
+      darwin/amd64: "0f3a9fd17526014646a2dfc3f9122f7b4161abe3d6b0f0f03f9014483ddf4d19"
+      linux/arm64: "560da89aacf59389d4eb029730dd5b109b7288096c32f2726a0d9e783a5ea8eb"
+      linux/amd64: "cca9d13e2e1d7a2c627af60ff899a3c9b74212899416aeb96ec764d2ef954537"
