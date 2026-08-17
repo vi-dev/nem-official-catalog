@@ -1,0 +1,22 @@
+schema: 2
+name: stern
+description: Multi-pod and container log tailing for Kubernetes
+homepage: https://github.com/stern/stern
+license: Apache-2.0
+
+artifact:
+  url: "https://github.com/stern/stern/releases/download/v{{.Version}}/stern_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "stern", dst: "bin/stern", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.34.0
+    sha256:
+      darwin/arm64: "4014d84096e1e603ee115864e03a1e15fb9bae9876647bf7bb8031eee278dcd3"
+      darwin/amd64: "153355317f21e565ea10bc710d4c2e3d98fd06f83cae5eb927e7031cc724a7a6"
+      linux/arm64: "e215cfc5e42d71e93b77d3fac8f0df7d736271f44b2d92a5b417eaa588edff3a"
+      linux/amd64: "7754adfa653939240f7d20fff4ada9b69cda40c9e70732301f67bb8045f1ef3e"
