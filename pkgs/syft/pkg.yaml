@@ -1,0 +1,22 @@
+schema: 2
+name: syft
+description: SBOM generator for container images and filesystems
+homepage: https://github.com/anchore/syft
+license: Apache-2.0
+
+artifact:
+  url: "https://github.com/anchore/syft/releases/download/v{{.Version}}/syft_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "syft", dst: "bin/syft", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.51.0
+    sha256:
+      darwin/arm64: "4f37f4c7fefce0a68e4cf71ba3f5f9829a99e65d89b29f7ee41b8c2c10ea8c59"
+      darwin/amd64: "cddf9a044145caf0a1a3194d00d1dd51a1666f4814f2919cdb4768a0c062ad95"
+      linux/arm64: "6c0466811541ea03add5213a60a1562f0851e4c0b0ecfdee1a694a9455285900"
+      linux/amd64: "2a2e837a2c8d59ec9af5472ee22d3b04ee463c4e44476ecf993fd1e5ab6ebc7f"
