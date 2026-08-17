@@ -1,0 +1,22 @@
+schema: 2
+name: opentofu
+description: Open source infrastructure as code tool
+homepage: https://opentofu.org
+license: MPL-2.0
+
+artifact:
+  url: "https://github.com/opentofu/opentofu/releases/download/v{{.Version}}/tofu_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "tofu", dst: "bin/tofu", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.12.5
+    sha256:
+      darwin/arm64: "2ae38150a667f5c0bd57b318d18ad8091d08f93fcca40345f3d88998661de5a9"
+      darwin/amd64: "1012d8f3d4567bcbcd1f2c7d766feca39a30bced32fb8be47e1887fbbee2456d"
+      linux/arm64: "e67e9da2b1ddf5050ebee62a584cb826eafe1dfd3827d7ec20899ac62791ed1a"
+      linux/amd64: "a6894d45ae7a17ce83189cce8fe04b5a65f68cefceb62455b5a6a89fa53ab38f"
