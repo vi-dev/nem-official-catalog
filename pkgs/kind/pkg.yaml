@@ -1,0 +1,21 @@
+schema: 2
+name: kind
+description: Run local Kubernetes clusters in Docker containers
+homepage: https://kind.sigs.k8s.io
+license: Apache-2.0
+
+artifact:
+  url: "https://github.com/kubernetes-sigs/kind/releases/download/v{{.Version}}/kind-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/kind", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.32.0
+    sha256:
+      darwin/arm64: "dca67911095a110c2b5c36e26df6cac860c602033e456c0db47be498cdef1ebb"
+      darwin/amd64: "295ac6d0d634c9819c9907df45e3017d1f13166bd13c3404c45e79f7faa47498"
+      linux/arm64: "b92cd615e97585de8ddade28ed5cd7feb4248d717c233eea5b03c37298900f5d"
+      linux/amd64: "50030de23cf40a18505f20426f6a8506bedf13c6e509244bd1fa9463721b0f54"
