@@ -4,6 +4,12 @@ description: Simple terminal UI for git commands
 homepage: https://github.com/jesseduffield/lazygit
 license: MIT
 
+versionDiscovery:
+  github:
+    repo: jesseduffield/lazygit
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/jesseduffield/lazygit/releases/download/v{{.Version}}/lazygit_{{.Version}}_{{.OS}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
 

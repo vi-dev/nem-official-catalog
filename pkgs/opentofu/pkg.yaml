@@ -4,6 +4,12 @@ description: Open source infrastructure as code tool
 homepage: https://opentofu.org
 license: MPL-2.0
 
+versionDiscovery:
+  github:
+    repo: opentofu/opentofu
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/opentofu/opentofu/releases/download/v{{.Version}}/tofu_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
 

@@ -4,6 +4,12 @@ description: Secret scanner for git repositories, files, and directories
 homepage: https://gitleaks.io
 license: MIT
 
+versionDiscovery:
+  github:
+    repo: gitleaks/gitleaks
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/gitleaks/gitleaks/releases/download/v{{.Version}}/gitleaks_{{.Version}}_{{.OS}}_{{replace .Arch \"amd64\" \"x64\"}}.tar.gz"
 

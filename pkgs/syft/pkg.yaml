@@ -4,6 +4,12 @@ description: SBOM generator for container images and filesystems
 homepage: https://github.com/anchore/syft
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: anchore/syft
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/anchore/syft/releases/download/v{{.Version}}/syft_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
 

@@ -4,6 +4,12 @@ description: Load and unload environment variables per directory
 homepage: https://direnv.net
 license: MIT
 
+versionDiscovery:
+  github:
+    repo: direnv/direnv
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/direnv/direnv/releases/download/v{{.Version}}/direnv.{{.OS}}-{{.Arch}}"
 

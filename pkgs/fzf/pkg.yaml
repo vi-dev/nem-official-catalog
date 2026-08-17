@@ -4,6 +4,12 @@ description: Command-line fuzzy finder
 homepage: https://github.com/junegunn/fzf
 license: MIT
 
+versionDiscovery:
+  github:
+    repo: junegunn/fzf
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/junegunn/fzf/releases/download/v{{.Version}}/fzf-{{.Version}}-{{.OS}}_{{.Arch}}.tar.gz"
 

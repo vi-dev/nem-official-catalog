@@ -7,6 +7,12 @@ license: GPL-3.0-only
 deps:
   - go
 
+versionDiscovery:
+  github:
+    repo: golangci/golangci-lint
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/golangci/golangci-lint/releases/download/v{{.Version}}/golangci-lint-{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
 

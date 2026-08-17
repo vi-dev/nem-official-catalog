@@ -4,6 +4,12 @@ description: Secrets management and data protection tool
 homepage: https://developer.hashicorp.com/vault
 license: BUSL-1.1
 
+versionDiscovery:
+  github:
+    repo: hashicorp/vault
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://releases.hashicorp.com/vault/{{.Version}}/vault_{{.Version}}_{{.OS}}_{{.Arch}}.zip"
 

@@ -7,6 +7,12 @@ license: MIT OR Apache-2.0
 # Upstream stopped shipping x86_64-apple-darwin binaries after 10.3.0.
 platforms: [darwin/arm64, linux/arm64, linux/amd64]
 
+versionDiscovery:
+  github:
+    repo: sharkdp/fd
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/sharkdp/fd/releases/download/v{{.Version}}/fd-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
 

@@ -6,6 +6,11 @@ license: Apache-2.0
 
 platforms: [darwin/arm64, linux/arm64, linux/amd64]
 
+versionDiscovery:
+  github:
+    repo: aws/aws-cli
+    filter: '^\d+\.\d+\.\d+$'
+
 artifact:
   oci: ":{{.Version}}"
 

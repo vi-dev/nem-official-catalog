@@ -4,6 +4,11 @@ description: A command runner for project-specific tasks
 homepage: https://just.systems
 license: CC0-1.0
 
+versionDiscovery:
+  github:
+    repo: casey/just
+    filter: '^\d+\.\d+\.\d+$'
+
 artifact:
   url: "https://github.com/casey/just/releases/download/{{.Version}}/just-{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
 

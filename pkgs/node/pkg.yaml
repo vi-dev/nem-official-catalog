@@ -4,6 +4,12 @@ description: Node.js JavaScript runtime (LTS)
 homepage: https://nodejs.org
 license: MIT
 
+versionDiscovery:
+  github:
+    repo: nodejs/node
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://nodejs.org/dist/v{{.Version}}/node-v{{.Version}}-{{.OS}}-{{replace .Arch \"amd64\" \"x64\"}}.tar.gz"
 

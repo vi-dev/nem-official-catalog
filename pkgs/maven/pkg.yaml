@@ -4,6 +4,12 @@ description: Apache Maven build tool for Java
 homepage: https://maven.apache.org
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: apache/maven
+    filter: '^maven-\d+\.\d+\.\d+$'
+    prefix: "maven-"
+
 deps:
   - jdk
 

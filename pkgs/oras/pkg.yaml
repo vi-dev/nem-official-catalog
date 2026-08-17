@@ -4,6 +4,12 @@ description: OCI registry client for managing artifacts
 homepage: https://oras.land
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: oras-project/oras
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/oras-project/oras/releases/download/v{{.Version}}/oras_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
 

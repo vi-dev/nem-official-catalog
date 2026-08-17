@@ -4,6 +4,13 @@ description: Kubernetes native configuration management
 homepage: https://kustomize.io
 license: Apache-2.0
 
+# Tags are namespaced "kustomize/v<version>" (the CLI module in a multi-module repo).
+versionDiscovery:
+  github:
+    repo: kubernetes-sigs/kustomize
+    filter: '^kustomize/v\d+\.\d+\.\d+$'
+    prefix: "kustomize/v"
+
 artifact:
   # Release tag is "kustomize/v<version>"; %2F encodes the slash in the tag.
   url: "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv{{.Version}}/kustomize_v{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"

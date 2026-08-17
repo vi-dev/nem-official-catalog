@@ -4,6 +4,12 @@ description: Pluggable Terraform linter
 homepage: https://github.com/terraform-linters/tflint
 license: MPL-2.0
 
+versionDiscovery:
+  github:
+    repo: terraform-linters/tflint
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/terraform-linters/tflint/releases/download/v{{.Version}}/tflint_{{.OS}}_{{.Arch}}.zip"
 

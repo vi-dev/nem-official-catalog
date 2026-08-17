@@ -4,6 +4,12 @@ description: Infrastructure as code provisioning tool
 homepage: https://developer.hashicorp.com/terraform
 license: BUSL-1.1
 
+versionDiscovery:
+  github:
+    repo: hashicorp/terraform
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://releases.hashicorp.com/terraform/{{.Version}}/terraform_{{.Version}}_{{.OS}}_{{.Arch}}.zip"
 

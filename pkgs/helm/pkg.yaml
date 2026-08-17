@@ -4,6 +4,12 @@ description: The Kubernetes package manager
 homepage: https://helm.sh
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: helm/helm
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://get.helm.sh/helm-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
 

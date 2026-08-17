@@ -13,6 +13,12 @@ deps:
     kind: link
     compat: "1"
 
+versionDiscovery:
+  github:
+    repo: madler/pigz
+    filter: '^v\d+\.\d+(\.\d+)?$'
+    prefix: "v"
+
 artifact:
   oci: ":{{.Version}}"
 

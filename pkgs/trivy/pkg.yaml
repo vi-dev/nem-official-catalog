@@ -4,6 +4,12 @@ description: Vulnerability and misconfiguration scanner for containers and other
 homepage: https://trivy.dev
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: aquasecurity/trivy
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/aquasecurity/trivy/releases/download/v{{.Version}}/trivy_{{.Version}}_{{replace (replace .OS \"darwin\" \"macOS\") \"linux\" \"Linux\"}}-{{replace (replace .Arch \"arm64\" \"ARM64\") \"amd64\" \"64bit\"}}.tar.gz"
 

@@ -4,6 +4,12 @@ description: Declarative GitOps continuous delivery CLI for Kubernetes
 homepage: https://argo-cd.readthedocs.io
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: argoproj/argo-cd
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/argoproj/argo-cd/releases/download/v{{.Version}}/argocd-{{.OS}}-{{.Arch}}"
 

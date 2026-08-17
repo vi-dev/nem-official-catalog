@@ -4,6 +4,12 @@ description: Static analysis tool for shell scripts
 homepage: https://www.shellcheck.net
 license: GPL-3.0-or-later
 
+versionDiscovery:
+  github:
+    repo: koalaman/shellcheck
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/koalaman/shellcheck/releases/download/v{{.Version}}/shellcheck-v{{.Version}}.{{.OS}}.{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}.tar.xz"
 

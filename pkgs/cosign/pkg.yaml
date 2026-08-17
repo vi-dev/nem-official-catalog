@@ -4,6 +4,12 @@ description: Container signing, verification, and storage in an OCI registry
 homepage: https://www.sigstore.dev
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: sigstore/cosign
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/sigstore/cosign/releases/download/v{{.Version}}/cosign-{{.OS}}-{{.Arch}}"
 

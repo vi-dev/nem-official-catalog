@@ -7,6 +7,12 @@ license: MIT
 deps:
   - go
 
+versionDiscovery:
+  github:
+    repo: goreleaser/goreleaser
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/goreleaser/goreleaser/releases/download/v{{.Version}}/goreleaser_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
 

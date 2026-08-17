@@ -4,6 +4,12 @@ description: Modern load testing tool
 homepage: https://k6.io
 license: AGPL-3.0-only
 
+versionDiscovery:
+  github:
+    repo: grafana/k6
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/grafana/k6/releases/download/v{{.Version}}/k6-v{{.Version}}-{{replace .OS \"darwin\" \"macos\"}}-{{.Arch}}.{{if eq .OS \"darwin\"}}zip{{else}}tar.gz{{end}}"
 

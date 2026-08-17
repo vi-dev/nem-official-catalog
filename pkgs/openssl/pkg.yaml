@@ -10,6 +10,12 @@ platforms: [darwin/arm64, linux/arm64, linux/amd64]
 bins: [bin]
 libs: [lib]
 
+versionDiscovery:
+  github:
+    repo: openssl/openssl
+    filter: '^openssl-\d+\.\d+\.\d+$'
+    prefix: "openssl-"
+
 artifact:
   oci: ":{{.Version}}"
 

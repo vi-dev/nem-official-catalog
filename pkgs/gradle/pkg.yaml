@@ -7,6 +7,12 @@ license: Apache-2.0
 deps:
   - jdk
 
+versionDiscovery:
+  github:
+    repo: gradle/gradle
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://services.gradle.org/distributions/gradle-{{.Version}}-bin.zip"
 

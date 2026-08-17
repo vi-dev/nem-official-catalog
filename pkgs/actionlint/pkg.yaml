@@ -4,6 +4,12 @@ description: Static checker for GitHub Actions workflow files
 homepage: https://rhysd.github.io/actionlint/
 license: MIT
 
+versionDiscovery:
+  github:
+    repo: rhysd/actionlint
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/rhysd/actionlint/releases/download/v{{.Version}}/actionlint_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
 

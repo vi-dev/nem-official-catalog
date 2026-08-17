@@ -4,6 +4,12 @@ description: CLI for encrypting Kubernetes secrets into SealedSecrets
 homepage: https://sealed-secrets.netlify.app
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: bitnami/sealed-secrets
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 # Checksums are published as sealed-secrets_<ver>_checksums.txt in the same release.
 artifact:
   url: "https://github.com/bitnami/sealed-secrets/releases/download/v{{.Version}}/kubeseal-{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"

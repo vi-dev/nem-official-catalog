@@ -4,6 +4,12 @@ description: Run GitHub Actions locally
 homepage: https://nektosact.com
 license: MIT
 
+versionDiscovery:
+  github:
+    repo: nektos/act
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/nektos/act/releases/download/v{{.Version}}/act_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
 

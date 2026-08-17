@@ -4,6 +4,12 @@ description: CLI for working with Protocol Buffers
 homepage: https://buf.build
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: bufbuild/buf
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/bufbuild/buf/releases/download/v{{.Version}}/buf-{{if eq .OS \"darwin\"}}Darwin-{{replace .Arch \"amd64\" \"x86_64\"}}{{else}}Linux-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}{{end}}.tar.gz"
 

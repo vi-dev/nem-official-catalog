@@ -6,6 +6,12 @@ license: Apache-2.0
 
 platforms: [darwin/arm64, linux/arm64, linux/amd64]
 
+versionDiscovery:
+  github:
+    repo: gohugoio/hugo
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   oci: ":{{.Version}}"
 

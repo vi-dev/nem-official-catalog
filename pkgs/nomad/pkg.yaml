@@ -4,6 +4,12 @@ description: Workload orchestration and scheduling tool
 homepage: https://developer.hashicorp.com/nomad
 license: BUSL-1.1
 
+versionDiscovery:
+  github:
+    repo: hashicorp/nomad
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://releases.hashicorp.com/nomad/{{.Version}}/nomad_{{.Version}}_{{.OS}}_{{.Arch}}.zip"
 

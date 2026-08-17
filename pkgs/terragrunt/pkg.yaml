@@ -4,6 +4,12 @@ description: Orchestration tool for Terraform and OpenTofu
 homepage: https://terragrunt.gruntwork.io
 license: MIT
 
+versionDiscovery:
+  github:
+    repo: gruntwork-io/terragrunt
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/gruntwork-io/terragrunt/releases/download/v{{.Version}}/terragrunt_{{.OS}}_{{.Arch}}"
 

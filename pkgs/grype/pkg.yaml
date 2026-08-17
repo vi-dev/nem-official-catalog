@@ -4,6 +4,12 @@ description: Vulnerability scanner for container images and filesystems
 homepage: https://github.com/anchore/grype
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: anchore/grype
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/anchore/grype/releases/download/v{{.Version}}/grype_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
 

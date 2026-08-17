@@ -4,6 +4,12 @@ description: Command-line YAML, JSON and XML processor
 homepage: https://github.com/mikefarah/yq
 license: MIT
 
+versionDiscovery:
+  github:
+    repo: mikefarah/yq
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/mikefarah/yq/releases/download/v{{.Version}}/yq_{{.OS}}_{{.Arch}}"
 

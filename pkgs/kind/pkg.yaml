@@ -4,6 +4,12 @@ description: Run local Kubernetes clusters in Docker containers
 homepage: https://kind.sigs.k8s.io
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: kubernetes-sigs/kind
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/kubernetes-sigs/kind/releases/download/v{{.Version}}/kind-{{.OS}}-{{.Arch}}"
 

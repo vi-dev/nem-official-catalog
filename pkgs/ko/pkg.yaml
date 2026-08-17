@@ -4,6 +4,12 @@ description: Container image builder for Go applications
 homepage: https://ko.build
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: ko-build/ko
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/ko-build/ko/releases/download/v{{.Version}}/ko_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
 

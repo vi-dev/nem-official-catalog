@@ -4,6 +4,12 @@ description: Flux CD GitOps command-line tool
 homepage: https://fluxcd.io
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: fluxcd/flux2
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/fluxcd/flux2/releases/download/v{{.Version}}/flux_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
 

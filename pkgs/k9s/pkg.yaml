@@ -4,6 +4,12 @@ description: Kubernetes cluster terminal UI
 homepage: https://k9scli.io
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: derailed/k9s
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/derailed/k9s/releases/download/v{{.Version}}/k9s_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{.Arch}}.tar.gz"
 

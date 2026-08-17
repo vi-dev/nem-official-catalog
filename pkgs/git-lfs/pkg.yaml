@@ -4,6 +4,12 @@ description: Git extension for versioning large files
 homepage: https://git-lfs.com
 license: MIT
 
+versionDiscovery:
+  github:
+    repo: git-lfs/git-lfs
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/git-lfs/git-lfs/releases/download/v{{.Version}}/git-lfs-{{.OS}}-{{.Arch}}-v{{.Version}}.{{if eq .OS \"darwin\"}}zip{{else}}tar.gz{{end}}"
 

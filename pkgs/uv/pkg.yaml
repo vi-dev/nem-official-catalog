@@ -4,6 +4,11 @@ description: Fast Python package and project manager
 homepage: https://docs.astral.sh/uv
 license: MIT OR Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: astral-sh/uv
+    filter: '^\d+\.\d+\.\d+$'
+
 artifact:
   url: "https://github.com/astral-sh/uv/releases/download/{{.Version}}/uv-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
 

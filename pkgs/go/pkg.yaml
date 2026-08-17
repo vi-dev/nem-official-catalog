@@ -4,6 +4,12 @@ description: The Go programming language
 homepage: https://go.dev
 license: BSD-3-Clause
 
+versionDiscovery:
+  github:
+    repo: golang/go
+    filter: '^go\d+\.\d+\.\d+$'
+    prefix: "go"
+
 artifact:
   url: "https://go.dev/dl/go{{.Version}}.{{.OS}}-{{.Arch}}.tar.gz"
 

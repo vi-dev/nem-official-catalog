@@ -4,6 +4,12 @@ description: CLI for creating and managing Amazon EKS clusters
 homepage: https://eksctl.io
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: eksctl-io/eksctl
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/eksctl-io/eksctl/releases/download/v{{.Version}}/eksctl_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{.Arch}}.tar.gz"
 

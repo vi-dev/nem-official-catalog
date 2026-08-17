@@ -4,6 +4,12 @@ description: Bash automated testing system
 homepage: https://github.com/bats-core/bats-core
 license: MIT
 
+versionDiscovery:
+  github:
+    repo: bats-core/bats-core
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/bats-core/bats-core/archive/refs/tags/v{{.Version}}.tar.gz"
 

@@ -4,6 +4,12 @@ description: Multi-pod and container log tailing for Kubernetes
 homepage: https://github.com/stern/stern
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: stern/stern
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/stern/stern/releases/download/v{{.Version}}/stern_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
 

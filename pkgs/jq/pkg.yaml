@@ -4,6 +4,12 @@ description: Command-line JSON processor
 homepage: https://jqlang.org
 license: MIT
 
+versionDiscovery:
+  github:
+    repo: jqlang/jq
+    filter: '^jq-\d+\.\d+(\.\d+)?$'
+    prefix: "jq-"
+
 artifact:
   url: "https://github.com/jqlang/jq/releases/download/jq-{{.Version}}/jq-{{replace .OS \"darwin\" \"macos\"}}-{{.Arch}}"
 

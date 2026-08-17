@@ -4,6 +4,12 @@ description: Service networking and service discovery tool
 homepage: https://developer.hashicorp.com/consul
 license: BUSL-1.1
 
+versionDiscovery:
+  github:
+    repo: hashicorp/consul
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://releases.hashicorp.com/consul/{{.Version}}/consul_{{.Version}}_{{.OS}}_{{.Arch}}.zip"
 

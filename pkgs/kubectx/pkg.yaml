@@ -4,6 +4,12 @@ description: Fast kubectl context switcher
 homepage: https://github.com/ahmetb/kubectx
 license: Apache-2.0
 
+versionDiscovery:
+  github:
+    repo: ahmetb/kubectx
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://github.com/ahmetb/kubectx/releases/download/v{{.Version}}/kubectx_v{{.Version}}_{{.OS}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
 

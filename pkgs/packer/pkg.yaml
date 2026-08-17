@@ -4,6 +4,12 @@ description: Automated machine image builder
 homepage: https://developer.hashicorp.com/packer
 license: BUSL-1.1
 
+versionDiscovery:
+  github:
+    repo: hashicorp/packer
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
 artifact:
   url: "https://releases.hashicorp.com/packer/{{.Version}}/packer_{{.Version}}_{{.OS}}_{{.Arch}}.zip"
 
