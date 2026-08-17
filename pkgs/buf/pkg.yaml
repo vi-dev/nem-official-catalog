@@ -1,0 +1,21 @@
+schema: 2
+name: buf
+description: CLI for working with Protocol Buffers
+homepage: https://buf.build
+license: Apache-2.0
+
+artifact:
+  url: "https://github.com/bufbuild/buf/releases/download/v{{.Version}}/buf-{{if eq .OS \"darwin\"}}Darwin-{{replace .Arch \"amd64\" \"x86_64\"}}{{else}}Linux-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}{{end}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.72.0
+    sha256:
+      darwin/arm64: "be040ae0ca381103dfda68a36738695c4db3e48de8e91412acdc3d991f39b91e"
+      darwin/amd64: "8b87e66786b46b20e7f7e328c9e15f64f636041acfdbf93374873d9014a62d30"
+      linux/arm64: "7641bd7e06a37a54cbb8c789f53465899def96196ab5c08057432f781a15d517"
+      linux/amd64: "a9c6186cf6fcf062b247345e1b7b12c26f580c1b2a4bbf4d3fe080abf85ceee8"
