@@ -1,0 +1,22 @@
+schema: 2
+name: consul
+description: Service networking and service discovery tool
+homepage: https://developer.hashicorp.com/consul
+license: BUSL-1.1
+
+artifact:
+  url: "https://releases.hashicorp.com/consul/{{.Version}}/consul_{{.Version}}_{{.OS}}_{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "consul", dst: "bin/consul", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.0.3
+    sha256:
+      darwin/arm64: "fed05e8e2a296989c1a5c86e3b38d5f4dbdc7d83e0c0acf4c5fe7e302e8f4fde"
+      darwin/amd64: "9a8ced39610be73c4b6c918e64c1589a3fe9747f3a2188b8da55d0a35ddca4e0"
+      linux/arm64: "7551d8f07cbfb633d260fe27a9f7144ce08f1cb964e31e15788309dfb6c2fda5"
+      linux/amd64: "3020eea3fdfd939eb021ecaca105a1513af52b22e76f2ee97ea85acc6ff2f832"
