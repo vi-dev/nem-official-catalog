@@ -1,0 +1,22 @@
+schema: 2
+name: bat
+description: Cat clone with syntax highlighting and Git integration
+homepage: https://github.com/sharkdp/bat
+license: MIT OR Apache-2.0
+
+artifact:
+  url: "https://github.com/sharkdp/bat/releases/download/v{{.Version}}/bat-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "bat", dst: "bin/bat", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.26.1
+    sha256:
+      darwin/arm64: "e30beff26779c9bf60bb541e1d79046250cb74378f2757f8eb250afddb19e114"
+      darwin/amd64: "830d63b0bba1fa040542ec569e3cf77f60d3356b9de75116a344b061e0894245"
+      linux/arm64: "6369242c584065f195fb20cb36fbd7cb63ae690605bbe89868a7596b596c2c23"
+      linux/amd64: "0dcd8ac79732c0d5b136f11f4ee00e581440e16a44eab5b3105b611bbf2cf191"
