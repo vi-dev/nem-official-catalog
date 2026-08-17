@@ -1,0 +1,22 @@
+schema: 2
+name: grype
+description: Vulnerability scanner for container images and filesystems
+homepage: https://github.com/anchore/grype
+license: Apache-2.0
+
+artifact:
+  url: "https://github.com/anchore/grype/releases/download/v{{.Version}}/grype_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "grype", dst: "bin/grype", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.117.0
+    sha256:
+      darwin/arm64: "bfcefa3f3b1690d9c77d847841b32ebd6106ab0e0e32f810924707e704d53584"
+      darwin/amd64: "312ed375dcda6d8893b4ca5d517371fef1a50062ebb0b0dbe6bdb4ac2fb57c57"
+      linux/arm64: "935f628bdf9331ffdd946931ea5fdb50045d3970ba52670cbeb44a88f127291b"
+      linux/amd64: "38525dab1e06f162ebaa02f94d82d1f807076b011a44180cf2777edf1a7b9c26"
