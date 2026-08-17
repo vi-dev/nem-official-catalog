@@ -1,0 +1,22 @@
+schema: 2
+name: ripgrep
+description: Recursively search directories with a regex, respecting gitignore
+homepage: https://github.com/BurntSushi/ripgrep
+license: Unlicense OR MIT
+
+artifact:
+  url: "https://github.com/BurntSushi/ripgrep/releases/download/{{.Version}}/ripgrep-{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "rg", dst: "bin/rg", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 15.2.0
+    sha256:
+      darwin/arm64: "3750b2e93f37e0c692657da574d7019a101c0084da05a790c83fd335bad973e4"
+      darwin/amd64: "af7825fcc69a2afc7a7aea55fc9af90e26421d8f20fe59df32e233c0b8a231c1"
+      linux/arm64: "800b1e7206afe799dfb5a6901f23147cfaabe0e52210538100f61e86e1740915"
+      linux/amd64: "33e15bcf1624b25cdd2a55813a47a2f95dbe126268203e76aa6a585d1e7b149c"
