@@ -1,0 +1,21 @@
+schema: 2
+name: shfmt
+description: Shell script formatter
+homepage: https://github.com/mvdan/sh
+license: BSD-3-Clause
+
+artifact:
+  url: "https://github.com/mvdan/sh/releases/download/v{{.Version}}/shfmt_v{{.Version}}_{{.OS}}_{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/shfmt", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.13.1
+    sha256:
+      darwin/arm64: "9680526be4a66ea1ffe988ed08af58e1400fe1e4f4aef5bd88b20bb9b3da33f8"
+      darwin/amd64: "6feedafc72915794163114f512348e2437d080d0047ef8b8fa2ec63b575f12af"
+      linux/arm64: "32d92acaa5cd8abb29fc49dac123dc412442d5713967819d8af2c29f1b3857c7"
+      linux/amd64: "fb096c5d1ac6beabbdbaa2874d025badb03ee07929f0c9ff67563ce8c75398b1"
