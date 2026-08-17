@@ -1,0 +1,23 @@
+schema: 2
+name: kubeseal
+description: CLI for encrypting Kubernetes secrets into SealedSecrets
+homepage: https://sealed-secrets.netlify.app
+license: Apache-2.0
+
+# Checksums are published as sealed-secrets_<ver>_checksums.txt in the same release.
+artifact:
+  url: "https://github.com/bitnami/sealed-secrets/releases/download/v{{.Version}}/kubeseal-{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubeseal", dst: "bin/kubeseal", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.38.4
+    sha256:
+      darwin/arm64: "4fe9f8fbb6ec7ef27bf0f4014f2846f8b363ae787a31fc6ba9cbb00fd40fb66d"
+      darwin/amd64: "209cb21da63f546f785499d04199dd5d39e8ef4934626207d8445c7ec3664f20"
+      linux/arm64: "bcc40ac15e29a21c270e2be8c62af29d4b01b9111ae667723e4b6d8e4009228b"
+      linux/amd64: "ab5ae808b0efcb167a825b6cf7f3a7c0034bd99a6301d78db2012da651a8c0b9"
