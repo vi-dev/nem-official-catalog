@@ -1,0 +1,33 @@
+schema: 2
+name: awscli
+description: Official Amazon AWS command-line interface
+homepage: https://aws.amazon.com/cli/
+license: Apache-2.0
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+bins: [bin]
+
+versions:
+  - version: 2.36.24
+    sourceSha256: "7db9e51ef9e40bebb958e0ab248d08322b350a215aa64d565a5ab00caf8aec51"
+
+build:
+  deps:
+    - python
+  source:
+    url: 'https://github.com/aws/aws-cli/archive/refs/tags/{{.Version}}.tar.gz'
+  output: out
+  steps:
+    # portable-exe is the frozen, relocatable install type; the default
+    # system-sandbox type is a venv wired to build-time absolute paths.
+    - run: ./configure --prefix=/ --with-download-deps --with-install-type=portable-exe && make && make install DESTDIR="$NEM_OUTPUT"
+    # The installed bin/ symlinks point at absolute prefix paths, which
+    # archive extraction rejects — rewrite them relative.
+    - run: cd "$NEM_OUTPUT/bin" && ln -sf ../lib/aws-cli/aws aws && ln -sf ../lib/aws-cli/aws_completer aws_completer
