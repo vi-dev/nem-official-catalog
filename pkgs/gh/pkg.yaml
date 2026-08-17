@@ -1,0 +1,21 @@
+schema: 2
+name: gh
+description: GitHub command-line tool
+homepage: https://cli.github.com
+license: MIT
+
+artifact:
+  url: "https://github.com/cli/cli/releases/download/v{{.Version}}/gh_{{.Version}}_{{replace .OS \"darwin\" \"macOS\"}}_{{.Arch}}.{{if eq .OS \"darwin\"}}zip{{else}}tar.gz{{end}}"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.97.0
+    sha256:
+      darwin/arm64: "a58b8fd77b417a38f47a0b54d1370c59b0fcdb324ccc9ca002b0998f7c4c999e"
+      darwin/amd64: "63298c998cc2a924c9e254c6af6a1caad6ece281122687a91f079bc0a462700e"
+      linux/arm64: "73ea440ecad9c9e284429997ee6f93577bc6f7bc6fba357ef62c53ad8fb641a5"
+      linux/amd64: "a2c9b8497e1f85b1ad0dfcb78b5a622e098801b8e461e459e88e1ee12f018112"
