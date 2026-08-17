@@ -1,0 +1,22 @@
+schema: 2
+name: bats
+description: Bash automated testing system
+homepage: https://github.com/bats-core/bats-core
+license: MIT
+
+artifact:
+  url: "https://github.com/bats-core/bats-core/archive/refs/tags/v{{.Version}}.tar.gz"
+
+install:
+  # bats resolves lib/ and libexec/ relative to bin/bats, so keep the full tree.
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.14.0
+    sha256:
+      darwin/arm64: "bb537b70b15b732f6d8827dd6578e3d8ce166636ce1f18ea9a074184fcce9177"
+      darwin/amd64: "bb537b70b15b732f6d8827dd6578e3d8ce166636ce1f18ea9a074184fcce9177"
+      linux/arm64: "bb537b70b15b732f6d8827dd6578e3d8ce166636ce1f18ea9a074184fcce9177"
+      linux/amd64: "bb537b70b15b732f6d8827dd6578e3d8ce166636ce1f18ea9a074184fcce9177"
