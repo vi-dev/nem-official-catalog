@@ -1,0 +1,24 @@
+schema: 2
+name: fd
+description: Simple, fast and user-friendly alternative to find
+homepage: https://github.com/sharkdp/fd
+license: MIT OR Apache-2.0
+
+# Upstream stopped shipping x86_64-apple-darwin binaries after 10.3.0.
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+artifact:
+  url: "https://github.com/sharkdp/fd/releases/download/v{{.Version}}/fd-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "fd", dst: "bin/fd", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 10.4.2
+    sha256:
+      darwin/arm64: "623dc0afc81b92e4d4606b380d7bc91916ba7b97814263e554d50923a39e480a"
+      linux/arm64: "f32d3657473fba74e2600babc8db0b93420d51169223b7e8143b2ed55d8fd9e8"
+      linux/amd64: "e3257d48e29a6be965187dbd24ce9af564e0fe67b3e73c9bdcd180f4ec11bdde"
