@@ -1,0 +1,21 @@
+schema: 2
+name: argocd
+description: Declarative GitOps continuous delivery CLI for Kubernetes
+homepage: https://argo-cd.readthedocs.io
+license: Apache-2.0
+
+artifact:
+  url: "https://github.com/argoproj/argo-cd/releases/download/v{{.Version}}/argocd-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/argocd", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.5.1
+    sha256:
+      darwin/arm64: "3607c5891028bf0c7505284afb54df350f0c67585f32d688ad03e3856ba58b1f"
+      darwin/amd64: "b23cf247e8e56db825f8ab7ed5b36333e5f193ebcffcc95f4e5dba1fbf025bfa"
+      linux/arm64: "7d5e175b2299924459d8d6c9a766da0875449d00d687a06a17b8210117c0a431"
+      linux/amd64: "0a66b7150608e3f8ae07c521d56c9f34244033cf88a83e0953f7337a3799035e"
