@@ -23,7 +23,7 @@ install:
   - extract: {strip: 0}
 
 versions:
-  - version: v3.0.1
+  - version: 3.0.1
     sourceSha256: "c8f0f42e6103dea4b1a6a483cb556654e97302c7465308f58363778f95f194b1"
 
 build:
@@ -32,7 +32,7 @@ build:
       kind: link
       compat: "1"
   source:
-    url: 'https://gnupg.org/ftp/gcrypt/libassuan/libassuan-{{trimPrefix .Version "v"}}.tar.bz2'
+    url: 'https://gnupg.org/ftp/gcrypt/libassuan/libassuan-{{.Version}}.tar.bz2'
   output: out
   steps:
     # configure finds libgpg-error via its gpgrt-config, which a link dep's bin/

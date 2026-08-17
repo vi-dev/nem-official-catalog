@@ -26,7 +26,7 @@ install:
   - extract: {strip: 0}
 
 versions:
-  - version: v2.8
+  - version: "2.8"
     sourceSha256: "2f7f6a6986996d21cb8658535fff95f1c7107ddce22b5324f4b41890e2904706"
 
 build:
@@ -35,7 +35,7 @@ build:
       kind: link
       compat: "1"
   source:
-    url: 'https://github.com/madler/pigz/archive/refs/tags/{{.Version}}.tar.gz'
+    url: 'https://github.com/madler/pigz/archive/refs/tags/v{{.Version}}.tar.gz'
   output: out
   steps:
     # pigz's Makefile hardcodes LDFLAGS empty, so pass the runner's $LDFLAGS on

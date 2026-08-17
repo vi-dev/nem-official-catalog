@@ -28,7 +28,7 @@ install:
   - extract: {strip: 0}
 
 versions:
-  - version: v1.24.2
+  - version: 1.24.2
     sourceSha256: "e11b1a0e361777e9e55f48a03d89096e2abf08c63d84b7017cfe1dce06639581"
 
 build:
@@ -40,7 +40,7 @@ build:
       kind: link
       compat: "1"
   source:
-    url: 'https://gnupg.org/ftp/gcrypt/gpgme/gpgme-{{trimPrefix .Version "v"}}.tar.bz2'
+    url: 'https://gnupg.org/ftp/gcrypt/gpgme/gpgme-{{.Version}}.tar.bz2'
   output: out
   steps:
     # Derive each dep prefix from the injected -I flags and add their bin/ dirs

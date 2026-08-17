@@ -23,12 +23,12 @@ install:
   - extract: {strip: 0}
 
 versions:
-  - version: v3.4.1
+  - version: 3.4.1
     sourceSha256: "002a2d6b30b58bf4bea46c43bdd96365aaf8daa6c428782aa4feee06da197df3"
 
 build:
   source:
-    url: 'https://github.com/openssl/openssl/releases/download/openssl-{{trimPrefix .Version "v"}}/openssl-{{trimPrefix .Version "v"}}.tar.gz'
+    url: 'https://github.com/openssl/openssl/releases/download/openssl-{{.Version}}/openssl-{{.Version}}.tar.gz'
   output: out
   steps:
     - run: ./Configure --prefix=/ --libdir=lib --openssldir=/etc/ssl shared no-docs && make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)" && make install_sw DESTDIR="$NEM_OUTPUT"
