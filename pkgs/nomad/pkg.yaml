@@ -1,0 +1,22 @@
+schema: 2
+name: nomad
+description: Workload orchestration and scheduling tool
+homepage: https://developer.hashicorp.com/nomad
+license: BUSL-1.1
+
+artifact:
+  url: "https://releases.hashicorp.com/nomad/{{.Version}}/nomad_{{.Version}}_{{.OS}}_{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "nomad", dst: "bin/nomad", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.0.5
+    sha256:
+      darwin/arm64: "6074494a4d6d46933c7ee9c380b15f1e7c602e42c8148d15420ed32eb16c8cd4"
+      darwin/amd64: "17475f2e3c6411ee68355e95845872fe2c30f336e6f31f3cb16c88990b98a13a"
+      linux/arm64: "63186442061f3f86ec7d10615a91435779a84ed2bf6111bfcba3c0acf71dabb7"
+      linux/amd64: "6425e43967bb0b2b4979b0d06da9b06772848b658dae372f1256d51ddcfe53c3"
