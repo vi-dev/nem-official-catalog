@@ -1,0 +1,22 @@
+schema: 2
+name: oras
+description: OCI registry client for managing artifacts
+homepage: https://oras.land
+license: Apache-2.0
+
+artifact:
+  url: "https://github.com/oras-project/oras/releases/download/v{{.Version}}/oras_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "oras", dst: "bin/oras", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.3.3
+    sha256:
+      darwin/arm64: "f33fc12753c54172b0d0d19eaa0318d3f90fe9b094d96e8b259c881713c92e1c"
+      darwin/amd64: "aeb684d8c24c18dce28fd1f7326636e4782b573108e244a93d4b1c4a5ec50f48"
+      linux/arm64: "ac7156f93a21e903f7ad606c792f3560f17e0cd0e36365634701b1e7cc4e4eca"
+      linux/amd64: "9ce999f8d2de03fc03968b29d743077a58783e545e5eaa53917ca177352d0e59"
