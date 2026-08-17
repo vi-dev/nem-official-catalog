@@ -1,0 +1,23 @@
+schema: 2
+name: git-lfs
+description: Git extension for versioning large files
+homepage: https://git-lfs.com
+license: MIT
+
+artifact:
+  url: "https://github.com/git-lfs/git-lfs/releases/download/v{{.Version}}/git-lfs-{{.OS}}-{{.Arch}}-v{{.Version}}.{{if eq .OS \"darwin\"}}zip{{else}}tar.gz{{end}}"
+
+install:
+  # both zip and tar.gz wrap contents in git-lfs-<version>/
+  - extract: {strip: 1}
+  - copy: {src: "git-lfs", dst: "bin/git-lfs", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.7.1
+    sha256:
+      darwin/arm64: "76260fb34f4ee622ff0a66b857e5954aa49c7e343a92e57a1ec4a760618c94b2"
+      darwin/amd64: "b5b1b641c0648c83661fa9eda991cd3eff945264dabc2cdf411a80dfe7ec0970"
+      linux/arm64: "73a9c90eeb4312133a63c3eaee0c38c019ea7bfa0953d174809d25b18588dd8d"
+      linux/amd64: "1c0b6ee5200ca708c5cebebb18fdeb0e1c98f1af5c1a9cba205a4c0ab5a5ec08"
