@@ -1,0 +1,22 @@
+schema: 2
+name: protoc
+description: Protocol Buffers compiler
+homepage: https://protobuf.dev
+license: BSD-3-Clause
+
+artifact:
+  url: "https://github.com/protocolbuffers/protobuf/releases/download/v{{.Version}}/protoc-{{.Version}}-{{replace .OS \"darwin\" \"osx\"}}-{{replace (replace .Arch \"arm64\" \"aarch_64\") \"amd64\" \"x86_64\"}}.zip"
+
+install:
+  # keep include/ next to bin/: protoc resolves well-known-type imports from it
+  - extract: {strip: 0}
+
+bins: ["bin"]
+
+versions:
+  - version: "35.1"
+    sha256:
+      darwin/arm64: "193289af0470c6a1aada357d4fba0bbf8d78bfaac8b5e42ca30af2ef75583de2"
+      darwin/amd64: "537d73604a344ded6fc94e98e07e529d4fe3e4a0b09e59905353950fafc2a1f7"
+      linux/arm64: "01bf9d08808c7f96678b63f4bd8efa559bb4f83d5a7a270d5edaf507f9d5d9cf"
+      linux/amd64: "6930ebf62bd4ea607b98fff052596c6ee564b9835b4ce172c75a3f53ae9d91b7"
