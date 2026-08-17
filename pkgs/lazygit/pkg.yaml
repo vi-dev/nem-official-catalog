@@ -1,0 +1,22 @@
+schema: 2
+name: lazygit
+description: Simple terminal UI for git commands
+homepage: https://github.com/jesseduffield/lazygit
+license: MIT
+
+artifact:
+  url: "https://github.com/jesseduffield/lazygit/releases/download/v{{.Version}}/lazygit_{{.Version}}_{{.OS}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "lazygit", dst: "bin/lazygit", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.64.1
+    sha256:
+      darwin/arm64: "a106b4c1bf8ab7539c4afb40a01cbde263a96513cdcb8bf7630278f07e88cd99"
+      darwin/amd64: "f727fdf2efa46f78d102639eafe085cef437928da1e9ec79ec8e203b8a12f2a2"
+      linux/arm64: "8b7ca3b344e60340ad1f89f29b9868ee39bcaba5bb92ee818bbe65476bb8b6e7"
+      linux/amd64: "f8ea237c41f194cd799b48505518bfdaae4edf5a2ad6bd3d898e939785ee4532"
