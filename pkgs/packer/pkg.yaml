@@ -1,0 +1,22 @@
+schema: 2
+name: packer
+description: Automated machine image builder
+homepage: https://developer.hashicorp.com/packer
+license: BUSL-1.1
+
+artifact:
+  url: "https://releases.hashicorp.com/packer/{{.Version}}/packer_{{.Version}}_{{.OS}}_{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "packer", dst: "bin/packer", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.16.0
+    sha256:
+      darwin/arm64: "6530042cf8f8a1f96b6607cb22b5be298be53b400cd4a2c81ab8b946964fccda"
+      darwin/amd64: "64c4aa9a3176f89496360843bc8747238c9ad32ddc68bc5281207ae342d45be9"
+      linux/arm64: "cf18f03460d92265d49b56befff333e80641d845822799eab04357c39f75b5d7"
+      linux/amd64: "5edcd14ab59b535040c512dbecd6ec9ef976a000b073c19d93e4c431c948581e"
