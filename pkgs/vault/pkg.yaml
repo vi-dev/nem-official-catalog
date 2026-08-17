@@ -1,0 +1,22 @@
+schema: 2
+name: vault
+description: Secrets management and data protection tool
+homepage: https://developer.hashicorp.com/vault
+license: BUSL-1.1
+
+artifact:
+  url: "https://releases.hashicorp.com/vault/{{.Version}}/vault_{{.Version}}_{{.OS}}_{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "vault", dst: "bin/vault", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.0.4
+    sha256:
+      darwin/arm64: "73b36e75eedcf949262707d9169a793a3901a0990306329163f3ac94df31d5fa"
+      darwin/amd64: "79d29add23b2ca4144927b5d3d062ccd6f9345c5cdbf5b3624652ea9a5100261"
+      linux/arm64: "87bb68fdd04ca90cd4cf54f8cd783a037fbf860b73d85e6697f6129dac49c683"
+      linux/amd64: "7429e7d85f8ef29df063701c49420f7984a0ae2c8511c026cc75edfbbb2df387"
