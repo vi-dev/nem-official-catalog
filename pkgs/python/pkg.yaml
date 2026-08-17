@@ -1,0 +1,24 @@
+schema: 2
+name: python
+description: The Python programming language
+homepage: https://www.python.org
+license: Python-2.0
+
+# Relocatable CPython from python-build-standalone. The release date in the
+# URL pins the standalone build; bumping the version requires bumping the
+# date to a release that carries it.
+artifact:
+  url: "https://github.com/astral-sh/python-build-standalone/releases/download/20260814/cpython-{{.Version}}+20260814-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}-install_only.tar.gz"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.14.7
+    sha256:
+      darwin/arm64: "eded2b762929116a4e68ad1128e55f0728f502e93c90454e3b5f79da7a2cda40"
+      darwin/amd64: "92d07a249a6bba96f4281f137c8657109e31c0df92c5512e469cb2bde1a0ea14"
+      linux/arm64: "5bad659dc6d686b430f60104d53abfecb1cd93de37b8aaa112f10f0cea2cb655"
+      linux/amd64: "490953e4a7e97a6ed64d0f0bd04f2d4d9a7bb45368890d3fa32ba05d0ff5c48f"
