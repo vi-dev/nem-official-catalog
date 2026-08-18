@@ -5,7 +5,7 @@ homepage: https://gradle.org
 license: Apache-2.0
 
 deps:
-  - jdk
+  - jdk25
 
 versionDiscovery:
   github:

@@ -11,7 +11,7 @@ versionDiscovery:
     prefix: "maven-"
 
 deps:
-  - jdk
+  - jdk25
 
 artifact:
   url: "https://archive.apache.org/dist/maven/maven-3/{{.Version}}/binaries/apache-maven-{{.Version}}-bin.tar.gz"
