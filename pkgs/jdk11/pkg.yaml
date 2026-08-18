@@ -1,0 +1,40 @@
+schema: 2
+name: jdk11
+description: Eclipse Temurin JDK 11 (LTS)
+homepage: https://adoptium.net
+license: GPL-2.0-only WITH Classpath-exception-2.0
+
+versionDiscovery:
+  github:
+    repo: adoptium/temurin11-binaries
+    filter: '^jdk-11(\.\d+){1,3}\+\d+(\.\d+)?$'
+    prefix: "jdk-"
+
+# Upstream releases are "11.0.32+9", but a version doubles as an OCI tag in
+# the catalog's archives repo, where "+" is invalid — it is spelled "_" here
+# and mapped back in the URL.
+artifact:
+  url: "https://api.adoptium.net/v3/binary/version/jdk-{{replace .Version \"_\" \"+\"}}/{{replace .OS \"darwin\" \"mac\"}}/{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x64\"}}/jdk/hotspot/normal/eclipse"
+
+install:
+  - extract: {strip: 1}
+
+# Temurin macOS archives nest the JDK under Contents/Home; Linux archives
+# don't. The entry absent on a platform contributes a dir that never exists.
+bins: ["bin", "Contents/Home/bin"]
+
+env:
+  - name: JAVA_HOME
+    value: "{{.InstallDir}}"
+    platforms: [linux]
+  - name: JAVA_HOME
+    value: "{{.InstallDir}}/Contents/Home"
+    platforms: [darwin]
+
+versions:
+  - version: 11.0.32_9
+    sha256:
+      darwin/arm64: "3e3687488e472035b7a27732f0f6127d59903ba9fd0cb6c815f1a182f4160109"
+      darwin/amd64: "e4c30df263e3ebb4b2b5df52c736fbd0b16df5ae6b9a6789460a784620ba1319"
+      linux/arm64: "66a7d4af3572d920b0f1b01710ffa79888d4ddd1b784632e33a3d711aa7d1e63"
+      linux/amd64: "5906e0339e9322a688b2375eaf40666e00a16e008b0067b0a9f9e4b6c5033720"

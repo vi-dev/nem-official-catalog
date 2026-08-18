@@ -1,0 +1,36 @@
+schema: 2
+name: corretto11
+description: Amazon Corretto JDK 11 (LTS)
+homepage: https://aws.amazon.com/corretto/
+license: GPL-2.0-only WITH Classpath-exception-2.0
+
+versionDiscovery:
+  github:
+    repo: corretto/corretto-11
+    filter: '^11(\.\d+){4}$'
+
+artifact:
+  url: "https://corretto.aws/downloads/resources/{{.Version}}/amazon-corretto-{{.Version}}-{{replace .OS \"darwin\" \"macosx\"}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+
+# Corretto macOS archives nest the JDK under Contents/Home; Linux archives
+# don't. The entry absent on a platform contributes a dir that never exists.
+bins: ["bin", "Contents/Home/bin"]
+
+env:
+  - name: JAVA_HOME
+    value: "{{.InstallDir}}"
+    platforms: [linux]
+  - name: JAVA_HOME
+    value: "{{.InstallDir}}/Contents/Home"
+    platforms: [darwin]
+
+versions:
+  - version: 11.0.32.9.1
+    sha256:
+      darwin/arm64: "569ef802134a63d026b9a0215c2c61e49a077ce896462334b63668cdd644b1f6"
+      darwin/amd64: "399ff66c80c4f55024c8ba36bfdefbcd4ac180934d147a30b9f66d6970b055e7"
+      linux/arm64: "c922bdb3b9ee3eb2e5c6c15f39147d79f4698cd17e181423fea46319b3891504"
+      linux/amd64: "b09aac76316cef26dca770c89ca23ce55708bd0463e2640e86915ee528cb5bd0"

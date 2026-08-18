@@ -1,8 +1,14 @@
 schema: 2
-name: jdk
-description: Eclipse Temurin JDK (LTS)
+name: jdk25
+description: Eclipse Temurin JDK 25 (LTS)
 homepage: https://adoptium.net
 license: GPL-2.0-only WITH Classpath-exception-2.0
+
+versionDiscovery:
+  github:
+    repo: adoptium/temurin25-binaries
+    filter: '^jdk-25(\.\d+){1,3}\+\d+(\.\d+)?$'
+    prefix: "jdk-"
 
 # Upstream releases are "25.0.4+7", but a version doubles as an OCI tag in
 # the catalog's archives repo, where "+" is invalid — it is spelled "_" here

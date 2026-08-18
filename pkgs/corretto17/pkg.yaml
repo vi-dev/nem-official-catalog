@@ -1,8 +1,13 @@
 schema: 2
-name: corretto
-description: Amazon Corretto JDK (LTS)
+name: corretto17
+description: Amazon Corretto JDK 17 (LTS)
 homepage: https://aws.amazon.com/corretto/
 license: GPL-2.0-only WITH Classpath-exception-2.0
+
+versionDiscovery:
+  github:
+    repo: corretto/corretto-17
+    filter: '^17(\.\d+){4}$'
 
 artifact:
   url: "https://corretto.aws/downloads/resources/{{.Version}}/amazon-corretto-{{.Version}}-{{replace .OS \"darwin\" \"macosx\"}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x64\"}}.tar.gz"
@@ -23,9 +28,9 @@ env:
     platforms: [darwin]
 
 versions:
-  - version: 25.0.4.7.1
+  - version: 17.0.20.8.1
     sha256:
-      darwin/arm64: "41e185be6b230cff4e9c85d33f9b092274a32e42113087f26d3b2e4f7909ab78"
-      darwin/amd64: "840b857016f2ab1a60a2aa5a68584b1da55f4ab953c1e2a207bde0a5114f683d"
-      linux/arm64: "90a07c1c693ac9333a8a6ec79432f0d13c0564fec6617b0222d43f86858f65b8"
-      linux/amd64: "1d03a3bd5091728492d92f0ef341aca7d8885ece9a150119558f3e3d62b58745"
+      darwin/arm64: "786a9bbb94d2d077ca5618a80eec4c1a909595fbe24b617d57f50d360f96990e"
+      darwin/amd64: "36b2e4f270e8b70aafe8c1ec8c254cc323675fd911d1d3f49981e3f18f73e638"
+      linux/arm64: "7e3f37d58e39f5879e3c10412177b75ccbf85b54b267b1c06d7da19a28cf9cfc"
+      linux/amd64: "89b50d4ef5d27ce1f8e5cad616525e14f7665b7b4a1ffca85381b0e21401034f"
