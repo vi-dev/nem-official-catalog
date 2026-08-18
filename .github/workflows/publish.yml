@@ -24,8 +24,9 @@ jobs:
   # What this run must do, derived from registry state rather than git
   # history: the concurrency group keeps one pending run and cancels older
   # ones, so a per-push diff can lose work — a re-derived plan cannot.
-  # Builds come from archives the registry lacks; the smoke set and the
-  # any-gate come from manifests that differ from the live tag.
+  # Builds come from archives the registry lacks; the smoke set comes
+  # from manifests that differ from the live tag, plus every package a
+  # dispatch names.
   plan:
     permissions:
       contents: read
@@ -37,7 +38,6 @@ jobs:
       linux_arm64: ${{ steps.plan.outputs.linux_arm64 }}
       darwin_arm64: ${{ steps.plan.outputs.darwin_arm64 }}
       smoke: ${{ steps.plan.outputs.smoke }}
-      any: ${{ steps.plan.outputs.any }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-nem
@@ -58,7 +58,7 @@ jobs:
               f="pkgs/$p/pkg.yaml"
               [ -f "$f" ] || { echo "unknown package: $p" >&2; exit 1; }
               yq -e '.artifact | has("oci")' "$f" >/dev/null 2>&1 || continue
-              entries+="$p $(yq -r '.versions[0].version' "$f")"$'\n'
+              entries+="$p $(yq -r '.versions[0].version // .versions[0]' "$f")"$'\n'
             done
             plan=$(printf '%s' "$entries" | jq -R -s -c \
               'split("\n") | map(select(length > 0) | split(" ") | {package: .[0], version: .[1]})')
@@ -90,8 +90,16 @@ jobs:
           smoke=$(jq -c '[.[] | select(.status == "new" or .status == "updated") | . as $r
             | (if ($r.versionsAdded | length) > 0 then $r.versionsAdded[] else $r.local end)
             | "\($r.name)@\(.)"]' /tmp/diff.json)
+          if [ -n "$PACKAGES" ]; then
+            # A dispatch always smokes every package it names, prebuilt ones
+            # included: a rebuilt archive can change without its manifest
+            # differing from live, which the diff-based set cannot see.
+            forced=$(for p in "${pkgs[@]}"; do
+              printf '%s@%s\n' "$p" "$(yq -r '.versions[0].version // .versions[0]' "pkgs/$p/pkg.yaml")"
+            done | jq -R -s -c 'split("\n") | map(select(length > 0))')
+            smoke=$(jq -c -n --argjson base "$smoke" --argjson forced "$forced" '$base + $forced | unique')
+          fi
           echo "smoke=$smoke" >> "$GITHUB_OUTPUT"
-          echo "any=$(jq -r 'any(.[]; .status != "unchanged")' /tmp/diff.json)" >> "$GITHUB_OUTPUT"
           {
             echo "### Changed vs live catalog"
             echo '```json'
@@ -221,7 +229,7 @@ jobs:
   # from the staging tag before anything is promoted.
   smoke:
     needs: [plan, stage]
-    if: ${{ !failure() && !cancelled() && needs.plan.outputs.any == 'true' }}
+    if: ${{ !failure() && !cancelled() && needs.plan.outputs.smoke != '[]' }}
     permissions:
       contents: read
       packages: read
@@ -249,7 +257,7 @@ jobs:
           nem status -g
 
   # Digest-preserving retag; no re-publish, no second release tag. A skipped
-  # smoke (nothing changed vs live) must not block a bare republish.
+  # smoke (empty smoke set) must not block a bare republish.
   promote:
     needs: [stage, smoke]
     if: ${{ !cancelled() && needs.stage.result == 'success' && contains(fromJSON('["success","skipped"]'), needs.smoke.result) }}
