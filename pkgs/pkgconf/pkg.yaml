@@ -1,0 +1,48 @@
+schema: 2
+
+name: pkgconf
+description: pkg-config implementation resolving compiler and linker flags
+homepage: https://github.com/pkgconf/pkgconf
+license: ISC
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: pkgconf/pkgconf
+    filter: '^pkgconf-\d+\.\d+\.\d+$'
+    prefix: "pkgconf-"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+bins: [bin]
+
+versions:
+  - version: 3.0.5
+    sourceSha256: "3acd3a8a3cce65a8d620321855d92fb602e026cbe8e13ee36bdec58483b59ace"
+
+build:
+  deps:
+    - python
+  source:
+    url: 'https://distfiles.ariadne.space/pkgconf/pkgconf-{{.Version}}.tar.xz'
+  output: out
+  steps:
+    # The builders ship neither meson nor ninja (pkgconf 3.1 drops
+    # autotools), so both come pinned from PyPI. libpkgconf is linked
+    # statically so pruning lib/ cannot break bin/; `pkg-config` is the
+    # name cgo and build systems invoke.
+    - run: |
+        set -e
+        python3 -m venv .mesonenv
+        .mesonenv/bin/pip install --quiet meson==1.12.0 ninja==1.13.0
+        export PATH="$PWD/.mesonenv/bin:$PATH"
+        meson setup build --prefix=/ --libdir=lib --default-library=static --buildtype=release
+        meson compile -C build
+        meson install -C build --destdir "$NEM_OUTPUT"
+        rm -rf "$NEM_OUTPUT/lib" "$NEM_OUTPUT/include" "$NEM_OUTPUT/share"
+        ln -s pkgconf "$NEM_OUTPUT/bin/pkg-config"
