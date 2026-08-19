@@ -1,0 +1,36 @@
+schema: 2
+name: yarn1
+description: Yarn Classic (1.x) package manager for Node.js
+homepage: https://classic.yarnpkg.com
+license: BSD-2-Clause
+
+versionDiscovery:
+  github:
+    repo: yarnpkg/yarn
+    filter: '^v1\.\d+\.\d+$'
+    prefix: "v"
+
+deps:
+  - node
+
+artifact:
+  url: "https://github.com/yarnpkg/yarn/releases/download/v{{.Version}}/yarn-v{{.Version}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.22.22
+    sha256:
+      darwin/arm64: "88268464199d1611fcf73ce9c0a6c4d44c7d5363682720d8506f6508addf36a0"
+      darwin/amd64: "88268464199d1611fcf73ce9c0a6c4d44c7d5363682720d8506f6508addf36a0"
+      linux/arm64: "88268464199d1611fcf73ce9c0a6c4d44c7d5363682720d8506f6508addf36a0"
+      linux/amd64: "88268464199d1611fcf73ce9c0a6c4d44c7d5363682720d8506f6508addf36a0"
+  - version: 1.22.21
+    sha256:
+      darwin/arm64: "a55bb4e85405f5dfd6e7154a444e7e33ad305d7ca858bad8546e932a6688df08"
+      darwin/amd64: "a55bb4e85405f5dfd6e7154a444e7e33ad305d7ca858bad8546e932a6688df08"
+      linux/arm64: "a55bb4e85405f5dfd6e7154a444e7e33ad305d7ca858bad8546e932a6688df08"
+      linux/amd64: "a55bb4e85405f5dfd6e7154a444e7e33ad305d7ca858bad8546e932a6688df08"
