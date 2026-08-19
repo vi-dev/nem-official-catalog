@@ -1,0 +1,126 @@
+name: Bump
+
+on:
+  schedule:
+    - cron: "0 2 * * 1" # Mondays 02:00 UTC
+  workflow_dispatch:
+    inputs:
+      packages:
+        description: Space-separated package names to bump (empty = every outdated package)
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bump
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ secrets.BUMP_PAT }}
+    steps:
+      - name: Require BUMP_PAT
+        shell: bash
+        env:
+          HAVE_PAT: ${{ secrets.BUMP_PAT != '' }}
+        run: |
+          if [ "$HAVE_PAT" != "true" ]; then
+            echo "::error::BUMP_PAT secret is missing; bump PRs need a PAT so pull_request CI runs on them"
+            exit 1
+          fi
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: ${{ secrets.BUMP_PAT }}
+      - uses: ./.github/actions/setup-nem
+      - name: Open bump PRs
+        shell: bash
+        env:
+          PACKAGES: ${{ inputs.packages }}
+        run: |
+          warn() { echo "WARN: $*" >> "$GITHUB_STEP_SUMMARY"; }
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin 'refs/heads/bump/*:refs/remotes/origin/bump/*'
+
+          nem catalog outdated . --json > /tmp/outdated.json
+          {
+            echo "### Outdated and errored packages"
+            echo '```json'
+            jq '[.[] | select(.outdated or .error != null)]' /tmp/outdated.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          readarray -t names < <(jq -r --arg only "$PACKAGES" '
+            [.[] | select(.outdated)]
+            | (if $only == "" then . else
+                ($only | split(" ")) as $want
+                | [.[] | select(.name as $n | $want | index($n))]
+              end)
+            | .[].name' /tmp/outdated.json)
+
+          for name in "${names[@]}"; do
+            path="pkgs/$name/pkg.yaml"
+            git switch --quiet --force-create "bump/$name" origin/main
+            if ! nem catalog bump "$path"; then
+              warn "bump failed for $name; next scheduled run retries"
+              continue
+            fi
+            head=$(yq -r '.versions[0].version // .versions[0]' "$path")
+            current=$(jq -r --arg n "$name" '.[] | select(.name == $n) | .current' /tmp/outdated.json)
+            git add "$path"
+            if ! git commit --quiet -m "feat: bump $name to $head"; then
+              warn "commit failed for $name"
+              continue
+            fi
+
+            if git rev-parse --verify --quiet "origin/bump/$name" >/dev/null \
+              && git diff --quiet "origin/bump/$name" HEAD -- "$path"; then
+              echo "bump/$name already up to date; not re-pushing"
+            elif ! git push --force origin "bump/$name"; then
+              warn "push failed for $name; next scheduled run retries"
+              continue
+            fi
+
+            if ! open=$(gh pr list --head "bump/$name" --state open --json number --jq 'length'); then
+              warn "PR lookup failed for $name"
+              continue
+            fi
+            if [ "$open" = 0 ]; then
+              body="Bump \`$name\` $current → $head."
+              repo=$(yq -r '.versionDiscovery.github.repo // ""' "$path")
+              if [ -n "$repo" ]; then
+                body+=$'\n\n'"Upstream releases: https://github.com/$repo/releases"
+              fi
+              if ! gh pr create --head "bump/$name" --base main \
+                --title "feat: bump $name to $head" --body "$body"; then
+                warn "PR creation failed for $name"
+                continue
+              fi
+            fi
+          done
+
+          # An errored or missing row proves nothing; only "current" closes.
+          if ! gh pr list --state open --json headRefName --jq '.[].headRefName' > /tmp/open-prs.txt; then
+            warn "open-PR listing failed; skipping cleanup pass"
+            exit 0
+          fi
+          while read -r br; do
+            case "$br" in bump/*) ;; *) continue ;; esac
+            name=${br#bump/}
+            state=$(jq -r --arg n "$name" '
+              [.[] | select(.name == $n)]
+              | if length == 0 then "missing"
+                elif .[0].error != null then "error"
+                elif .[0].outdated then "outdated"
+                else "current" end' /tmp/outdated.json)
+            if [ "$state" = "current" ]; then
+              if ! gh pr close "$br" --comment "No longer outdated; closing." --delete-branch; then
+                warn "closing stale PR for $name failed"
+              fi
+            fi
+          done < /tmp/open-prs.txt

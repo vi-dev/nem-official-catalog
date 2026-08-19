@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/vi-dev/nem-official-catalog/actions/workflows/ci.yml"><img src="https://github.com/vi-dev/nem-official-catalog/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/vi-dev/nem-official-catalog/actions/workflows/publish.yml"><img src="https://github.com/vi-dev/nem-official-catalog/actions/workflows/publish.yml/badge.svg" alt="Publish"></a>
   <a href="pkgs/"><img src="https://img.shields.io/github/directory-file-count/vi-dev/nem-official-catalog/pkgs?type=dir&label=packages&color=d8843a" alt="Packages"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/vi-dev/nem-official-catalog?color=blue" alt="License: MIT"></a>
 </p>
@@ -96,12 +96,21 @@ index digest (listed under the package's versions on GHCR):
 
     oras tag ghcr.io/vi-dev/nem-official-catalog@sha256:<previous-digest> v2
 
-### Rebuild a package's archives / force a republish
+### Rebuild a package's archives
 
-    gh workflow run publish.yml -f packages="<name> [<name>...]"
+    gh workflow run build.yml -f package="<name>@<version>"
 
-An empty `packages` input republishes the catalog index without rebuilding
-any archives.
+Add `-f force=true` to overwrite archives whose rebuilt content is
+unchanged. Rebuilt archives go live immediately — archives are fetched by
+version and never pass the staging tag — so verify afterwards with
+`gh workflow run smoke.yml`.
+
+### Force a republish
+
+    gh workflow run publish.yml
+
+Republishes the catalog index idempotently; missing archives are built,
+nothing else is rebuilt.
 
 ### nem regression escape hatch
 

@@ -20,7 +20,6 @@ jobs:
       - uses: ./.github/actions/setup-nem
       - run: nem catalog lint .
 
-  # Shows reviewers the publish plan a merge would produce.
   dry-run:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -41,32 +40,25 @@ jobs:
 
   changes:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     outputs:
       source: ${{ steps.detect.outputs.source }}
       prebuilt: ${{ steps.detect.outputs.prebuilt }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup-nem
         with:
-          fetch-depth: 0
+          ghcr-token: ${{ github.token }}
       - id: detect
         uses: ./.github/actions/changed-packages
-        with:
-          base: ${{ github.event.pull_request.base.sha }}
-          head: ${{ github.sha }}
-          three-dot: "true"
 
-  # Proves build recipes compile and pass output verification; nothing is
-  # pushed. build.deps resolve from the published catalog — a dir catalog
-  # cannot serve oci: artifacts — so a new source package whose build deps
-  # are also new must land in dependency order, one PR each.
   build:
     needs: changes
     if: needs.changes.outputs.source != '[]'
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJSON(needs.changes.outputs.source) }}
+        entry: ${{ fromJSON(needs.changes.outputs.source) }}
         runner: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 60
@@ -79,18 +71,17 @@ jobs:
       - name: Build without publishing
         shell: bash
         env:
-          PKG: ${{ matrix.package }}
-        run: nem catalog build "pkgs/$PKG/pkg.yaml"
+          PKG: ${{ matrix.entry.package }}
+          VER: ${{ matrix.entry.version }}
+        run: nem catalog build "pkgs/$PKG/pkg.yaml" --version "$VER"
 
-  # Proves prebuilt packages' URLs and sha256 maps are real: installs from
-  # the PR's working tree as a dir catalog.
   install-check:
     needs: changes
     if: needs.changes.outputs.prebuilt != '[]'
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJSON(needs.changes.outputs.prebuilt) }}
+        entry: ${{ fromJSON(needs.changes.outputs.prebuilt) }}
         runner: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 15
@@ -102,14 +93,13 @@ jobs:
       - name: Install from the PR's dir catalog
         shell: bash
         env:
-          PKG: ${{ matrix.package }}
+          PKG: ${{ matrix.entry.package }}
+          VER: ${{ matrix.entry.version }}
         run: |
-          nem use -g "$PKG"
+          nem use -g "$PKG@$VER"
           nem status -g
 
-  # Stable check name for branch protection; matrix check names vary per PR.
-  # build/install-check may legitimately be skipped when nothing matching
-  # changed, so only failure or cancellation fails the gate.
+  # Stable check name for branch protection.
   ci-ok:
     needs: [lint, dry-run, changes, build, install-check]
     if: always()
