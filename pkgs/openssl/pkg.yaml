@@ -8,6 +8,8 @@ license: Apache-2.0
 platforms: [darwin/arm64, linux/arm64, linux/amd64]
 
 bins: [bin]
+# Link dependents must pin compat to the libcrypto/libssl major ("3" or
+# "4"): the dylib/soname tracks the major, and majors are not ABI-compatible.
 libs: [lib]
 
 versionDiscovery:
