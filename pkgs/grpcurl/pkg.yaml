@@ -1,0 +1,34 @@
+schema: 2
+name: grpcurl
+description: Command-line tool for interacting with gRPC servers
+homepage: https://github.com/fullstorydev/grpcurl
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: fullstorydev/grpcurl
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/fullstorydev/grpcurl/releases/download/v{{.Version}}/grpcurl_{{.Version}}_{{replace .OS \"darwin\" \"osx\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "grpcurl", dst: "bin/grpcurl", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.9.3
+    sha256:
+      darwin/arm64: "d8391485e99a728a3a4e82af3fd621f9fdea0c417a74e5122803ad20b207b623"
+      darwin/amd64: "246a6669e58c282dcaf0e9dcb06dd1c8681833d59df24eb83d3123ec64c2d2e5"
+      linux/arm64: "b20a00c1cb82ab81ec32696766d4076e99b4cb5ca0823a71767ba64dbea0f263"
+      linux/amd64: "a926b62a85787ccf73ef8736b3ae554f1242e39d92bb8767a79d6dd23b11d1d5"
+  - version: 1.9.2
+    sha256:
+      darwin/arm64: "cf2d9de34adf00730d3b30e2c85d9746069de4652c4a2f37688f4281cb9b6484"
+      darwin/amd64: "a8362532b4fda02e685d9769ba7442ce6891cc20aa69f74de4f83a7f7e8ead74"
+      linux/arm64: "ebff3d0d022ad1c2010a1749048a6dccd7a41edf87093e80c7f649fcbb8eb751"
+      linux/amd64: "1c7caf2628d8607d8a3bbee5ce7786bba4879abe566b075a4f129a97ccfa8465"

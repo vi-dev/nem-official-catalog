@@ -1,0 +1,34 @@
+schema: 2
+name: duckdb
+description: In-process analytical SQL database CLI
+homepage: https://duckdb.org
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: duckdb/duckdb
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/duckdb/duckdb/releases/download/v{{.Version}}/duckdb_cli-{{replace .OS \"darwin\" \"osx\"}}-{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "duckdb", dst: "bin/duckdb", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.5.5
+    sha256:
+      darwin/arm64: "da5177b8869c4ed8c65d514fb47a8ed0f6fa7427f103304932d5e83851e46abd"
+      darwin/amd64: "47cbda17c5d4643a58833617dfae649a6a8722d7e54435a08161b98ac1c4e832"
+      linux/arm64: "02163197027a42149147364d31fa67cac82108517a4be43304a1cc226eaef07a"
+      linux/amd64: "08c0ca117111fcede14239d0093792352befdc174218c344d232c13279643d05"
+  - version: 1.5.4
+    sha256:
+      darwin/arm64: "d6c35195683fd1378e5624b01ca390069d399f8341c38986b7e3dfa0b3470d10"
+      darwin/amd64: "36e35ae59f417fb0b7e6c5e0b962f887e2b73ad52efc694b76e71fc57bd35b0a"
+      linux/arm64: "377f03fb9f17ab5a78f28f829cbfcb5333da8ab3c2d0788f27694f81df77ed29"
+      linux/amd64: "1f2fa724fb054b3dbe1a9cbd13de5b76997d850e7087ec762ba88db04e0180cf"

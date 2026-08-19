@@ -1,0 +1,37 @@
+schema: 2
+name: helmfile
+description: Declarative spec for deploying Helm charts
+homepage: https://helmfile.readthedocs.io
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: helmfile/helmfile
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+deps:
+  - helm
+
+artifact:
+  url: "https://github.com/helmfile/helmfile/releases/download/v{{.Version}}/helmfile_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "helmfile", dst: "bin/helmfile", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.7.4
+    sha256:
+      darwin/arm64: "e1490d371fecc1f2d9aae914ef34058f3cb2363c9ee63350b37a85c3994d71d9"
+      darwin/amd64: "7a0951fcc5bb991d7ea3a0c80e35754eb3981dcadba19795edbec7cba2518ae2"
+      linux/arm64: "0292f57a4638a21e775b0ce8bde37ee3fdd65dbbdbe0e5b9a06718f1dd04c7fa"
+      linux/amd64: "f96ef0a015df06b29d7f38bf0ca08821018ae25eb96bf2c7abd3affa1b84e112"
+  - version: 1.7.3
+    sha256:
+      darwin/arm64: "b69933ab364b010c320d1c858265d1845735784d8b317211e046cf74e22c6e80"
+      darwin/amd64: "b1be552f6ff68c7c10f064dec657e4297bc581eecf1ed66ff433964e17d9eb36"
+      linux/arm64: "4a2346df40362f49f395e47d5d6a16a29322b5c6968720c1bde60d101ae97e3b"
+      linux/amd64: "23d7df593f704ab1709b3020c8c8083b1517c9e780b5010e756a7d36bd901552"

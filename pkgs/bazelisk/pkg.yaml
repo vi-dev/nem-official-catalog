@@ -1,0 +1,34 @@
+schema: 2
+name: bazelisk
+description: User-friendly launcher for the Bazel build system
+homepage: https://github.com/bazelbuild/bazelisk
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: bazelbuild/bazelisk
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/bazelbuild/bazelisk/releases/download/v{{.Version}}/bazelisk-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/bazelisk", mode: 0o755}
+  - copy: {src: "{{.Artifact}}", dst: "bin/bazel", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.29.0
+    sha256:
+      darwin/arm64: "cee851f726789227d5561004e9904a52be45c3efb56f8b38b6993d6adbaa0409"
+      darwin/amd64: "16c3d7aa15323a9fb69f56c7ec5733ed18bedb786680d0ba13bb12a3c8083007"
+      linux/arm64: "e20e8b0f4f240091b7a55bf17b9398bd4f40ee70ae0208dff95dd4c445fb4010"
+      linux/amd64: "5a408715e932c0250d28bd84555f12edbf70117de42f9181691c736eacc4a992"
+  - version: 1.28.1
+    sha256:
+      darwin/arm64: "dea3f3f5de2dbc5e269e0132cdd369d5efe738f7b973d5d4eb2b4f7055a97b39"
+      darwin/amd64: "023225736cea5dc88f2b0807d5b1af4eb0f69a4ed45e3994b2c18c263bc80e48"
+      linux/arm64: "8ded44b58a0d9425a4178af26cf17693feac3b87bdcfef0a2a0898fcd1afc9f2"
+      linux/amd64: "22e7d3a188699982f661cf4687137ee52d1f24fec1ec893d91a6c4d791a75de8"
