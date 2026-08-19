@@ -1,0 +1,35 @@
+schema: 2
+name: esbuild
+description: Extremely fast bundler and minifier for JavaScript and CSS
+homepage: https://esbuild.github.io
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: evanw/esbuild
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+# Upstream ships native binaries only through per-platform npm packages;
+# each tarball holds the executable at package/bin/esbuild.
+artifact:
+  url: "https://registry.npmjs.org/@esbuild/{{.OS}}-{{replace .Arch \"amd64\" \"x64\"}}/-/{{.OS}}-{{replace .Arch \"amd64\" \"x64\"}}-{{.Version}}.tgz"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.28.2
+    sha256:
+      darwin/arm64: "1980cde09749094452b20d36ff267585ccb3f72749c7bc97291cd9996ccf5a2a"
+      darwin/amd64: "abb6a7a895aaf2cc0df36fecc3bf0042479ffec51a643a056d54e9109f27db55"
+      linux/arm64: "a96dbfa41d3ef5dbd1ef22b1c10d5187be9267e86093a870f06402a7ec931596"
+      linux/amd64: "9573bb2233aab0f9ea7647d5cca9726113cc1768de61d66b17267f4db84488f6"
+  - version: 0.28.1
+    sha256:
+      darwin/arm64: "5d64cc9bc527d598450b5f8d47ff293eb9f3aea38dd9eff67fd55d228c5ccb43"
+      darwin/amd64: "4cc582287781c171f5ac2d216dc15ab1c40bc83bff59803211a68b66e0c762cb"
+      linux/arm64: "2145e9e686c95ee47c1181f83f272f0ff95820e52d7736fdcd9eeb106fd6456a"
+      linux/amd64: "9ed00ab5330c94386f3273eda99a1fb0e8f37cfd6cb5270e4ad2fe3527da3546"

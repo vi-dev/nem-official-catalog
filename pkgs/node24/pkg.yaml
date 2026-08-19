@@ -1,0 +1,33 @@
+schema: 2
+name: node24
+description: Node.js JavaScript runtime (24.x LTS)
+homepage: https://nodejs.org
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: nodejs/node
+    filter: '^v24\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://nodejs.org/dist/v{{.Version}}/node-v{{.Version}}-{{.OS}}-{{replace .Arch \"amd64\" \"x64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 24.19.0
+    sha256:
+      darwin/arm64: "8294b7aa9b03997481c06babf1e8b270c859358f27da57a11509afe537ac381d"
+      darwin/amd64: "d1b5e999db158c62fe8f7267a4476b035d8bd93b1a605bac24a3f0dd166e3316"
+      linux/arm64: "d28c8a5bf0a808f0ed434a1dce8c54ae98f0371c0bd86ac58abc613f73e6643f"
+      linux/amd64: "f625d97cd707df4ff96254916fbc5ff014f09c09effe5a1e0ca8f6d41a8789d4"
+  - version: 24.18.1
+    sha256:
+      darwin/arm64: "eb02f7fab96d3d67de40c5ec8566096fcb4c2026728787683ae5a97eb612b941"
+      darwin/amd64: "6fb20fceacbb157c2f95825b80df4a454a0f6d81cdcd7bb81eeae9147e0e76ec"
+      linux/arm64: "df224555a083b918e46260cc969838501b9f9a87140c1195e5b9597b56d5dae2"
+      linux/amd64: "9f5eb6ac21845a66c493c91a253b1da32fd684e89e9b7202d4936982336be4ca"

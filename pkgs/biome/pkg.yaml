@@ -1,0 +1,33 @@
+schema: 2
+name: biome
+description: Fast formatter and linter for JavaScript, TypeScript, and web languages
+homepage: https://biomejs.dev
+license: MIT OR Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: biomejs/biome
+    filter: '^@biomejs/biome@\d+\.\d+\.\d+$'
+    prefix: "@biomejs/biome@"
+
+artifact:
+  url: "https://github.com/biomejs/biome/releases/download/@biomejs/biome@{{.Version}}/biome-{{.OS}}-{{replace .Arch \"amd64\" \"x64\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/biome", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.5.9
+    sha256:
+      darwin/arm64: "7d8b51dec857ffa8aa35ce5eaa3a4476cd62bed013adc2896bf43cac0a67a79b"
+      darwin/amd64: "df2b50ee283634cdd6f7570b7da06bc3c9cd7ec0590ecbbaf986c7590bef3289"
+      linux/arm64: "bf593f7955e3a437fb8056b255142b50872baa3e81371cda2c3fce9239af1890"
+      linux/amd64: "013eb5158b9e53235dbbf31255cb3b776fb9338b32fa6ff4a44ee1ceed65ee63"
+  - version: 2.5.8
+    sha256:
+      darwin/arm64: "04c2d44e61242c8bf56e2d663e5312e78639334b4a2fef84b5f59ac8bc9579fb"
+      darwin/amd64: "6bfc751bfff3429888c527d2bb1fe632808769d2f5849579ed8cf71e5fe25c8b"
+      linux/arm64: "3f2be9f1f68dca8e0b96d2a9212b408f15dc2668203b2c42cfb78a2894cc966b"
+      linux/amd64: "17abac7ef72e7a1aaccd89892f7e2e62c9919d27473defe772be04ad78400ac2"

@@ -1,0 +1,34 @@
+schema: 2
+name: deno
+description: Secure JavaScript and TypeScript runtime
+homepage: https://deno.com
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: denoland/deno
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/denoland/deno/releases/download/v{{.Version}}/deno-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.zip"
+
+# The zip holds the bare deno binary at its root.
+install:
+  - extract: {strip: 0}
+
+bins: ["."]
+
+versions:
+  - version: 2.9.5
+    sha256:
+      darwin/arm64: "b796aadd131f6930560c1ee040cf0d6f53933fbb987464e9ff46bd7ea4830615"
+      darwin/amd64: "c1b8b89a81e91b2a8b3f96def3195d08cfe3a105651da7908d53061f7140510d"
+      linux/arm64: "6b7cae3a8fc4385a59dea3146fcb8bad7fea4230e0ad36a8c692afacbc254be0"
+      linux/amd64: "8b010a3b1a4a0188a67cdb8a7a27348b2a501af78aec7fc74f2ace167368d530"
+  - version: 2.9.4
+    sha256:
+      darwin/arm64: "6d17647fdbf9c587a581dba205054c4ccf732dae0a196cc1e9b44c07589db412"
+      darwin/amd64: "f757df6d3991e37601c69fad56c22b37c4ea77b5dcfad3636a642c2ba4c9b19f"
+      linux/arm64: "111da5c05c240cfdc4340f234a0e3539d39dbcb6755221f19dcd60bacc8be5aa"
+      linux/amd64: "c24f955d9fbfe0ea5ae2b501c8e71ae76e31e4c9782390a54a284b3364fda725"
