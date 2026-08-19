@@ -1,0 +1,50 @@
+schema: 2
+
+name: skopeo
+description: Command-line utility for working with container images and registries
+homepage: https://github.com/podman-container-tools/skopeo
+license: Apache-2.0
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: gpgme
+    kind: link
+    compat: "1"
+
+versionDiscovery:
+  github:
+    repo: podman-container-tools/skopeo
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+bins: [bin]
+
+versions:
+  - version: 1.24.0
+    sourceSha256: "1eea9364e344c4d6cb398fac53bc387663d19690552003b43c75819e8bb55527"
+
+build:
+  deps:
+    - go
+    - pkgconf
+    - name: gpgme
+      kind: link
+      compat: "1"
+    - name: libassuan
+      kind: link
+      compat: "3"
+    - name: libgpg-error
+      kind: link
+      compat: "1"
+  source:
+    url: 'https://github.com/podman-container-tools/skopeo/archive/refs/tags/v{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: CGO_ENABLED=1 go build -trimpath -tags containers_image_ostree_stub,exclude_graphdriver_btrfs -ldflags "-s -w -X main.gitCommit=" -o "$NEM_OUTPUT/bin/skopeo" ./cmd/skopeo
