@@ -1,0 +1,34 @@
+schema: 2
+name: velero
+description: Backup and restore Kubernetes cluster resources and volumes
+homepage: https://velero.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: vmware-tanzu/velero
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/vmware-tanzu/velero/releases/download/v{{.Version}}/velero-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "velero", dst: "bin/velero", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.18.2
+    sha256:
+      darwin/arm64: "87e67e35550b8514bc1830d2632c6746ecf98c83400ee7ebad0948b81835d409"
+      darwin/amd64: "c19ceb2d4b62ad6433e5f63d1bb6855c059c079eb109a081c1830443e36e33e9"
+      linux/arm64: "453053b79330f307e2eac492915125258292c67c5595acdb3eae87c2b0b86e48"
+      linux/amd64: "a4e273de70ea2d9555fee7568742ae175fc8746fdb464139edb428cc3abd9705"
+  - version: 1.18.1
+    sha256:
+      darwin/arm64: "e483722b5a38b60903c9f2bd77bd4e8fbbc5a04aefd5dbe2917808a338e2efae"
+      darwin/amd64: "3527350999bb90f56caa1b7ef82f8f8c0de8318ce8a27d787fc003139d2374fe"
+      linux/arm64: "d5ca8652502a58b270d73cbea4e3ac8be91733edddbd6d2c09a6ef0f3a3d1308"
+      linux/amd64: "f483cf07b0fa09f33d91f264528492f362e031afa85546b47cbfdf9f77662067"

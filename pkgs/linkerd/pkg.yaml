@@ -1,0 +1,35 @@
+schema: 2
+name: linkerd
+description: Linkerd service mesh CLI (edge release channel)
+homepage: https://linkerd.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: linkerd/linkerd2
+    filter: '^edge-\d+\.\d+\.\d+$'
+    prefix: "edge-"
+
+# Open-source linkerd releases only on the edge channel; the darwin/amd64
+# asset carries no arch suffix.
+artifact:
+  url: "https://github.com/linkerd/linkerd2/releases/download/edge-{{.Version}}/linkerd2-cli-edge-{{.Version}}-{{if and (eq .OS \"darwin\") (eq .Arch \"amd64\")}}darwin{{else}}{{.OS}}-{{.Arch}}{{end}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/linkerd", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 26.8.2
+    sha256:
+      darwin/arm64: "68b54588d518a26b048e721faa23c9c23f379a75172074c03372340f00f638b3"
+      darwin/amd64: "67599ab801a955b43516717c753f6d0d6a83776925d7278e71bef02671713cf0"
+      linux/arm64: "e0bd2249b37feff24035132bfc27c681fb201e95021d3ca26794492673e618e6"
+      linux/amd64: "190e81584bd46d342c1fd63659495b700a5b5254865820d3b8e120aeaa288b16"
+  - version: 26.8.1
+    sha256:
+      darwin/arm64: "549a59a3a1ae6505c0aac3004d282a04f86a7621cbb16e74c0a6bce36007a2b9"
+      darwin/amd64: "c1d5e26a99b41f29e4199ae657cced844a198682516b743eba6eb7d34d4464ca"
+      linux/arm64: "d4cb27f7e5d71310cdf368dc1eeb846d2135d6206e9e6f35773c43b90ddac1f2"
+      linux/amd64: "e3afa455ea1dab2fcde64edca8936b4b147f285b1667633646633a05e4098b23"

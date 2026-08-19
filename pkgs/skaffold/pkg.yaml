@@ -1,0 +1,33 @@
+schema: 2
+name: skaffold
+description: Continuous development workflow for Kubernetes applications
+homepage: https://skaffold.dev
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: GoogleContainerTools/skaffold
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/GoogleContainerTools/skaffold/releases/download/v{{.Version}}/skaffold-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/skaffold", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.24.0
+    sha256:
+      darwin/arm64: "b30ff1735839adf96f3116a0e5ca63ddad37e33a3d6123a5c209ad77ea389c8b"
+      darwin/amd64: "d1fdc22b3ca5d99590943d6c476c494bd7862147af002fee7ab1b0237f90d926"
+      linux/arm64: "a8331e599223ad9df489b4d956704505b888c24b0d89abf26a0fe61c58d10fc5"
+      linux/amd64: "702344081860a587c57937cd55dfa2e70f124c05d6fb845319832ee23fd144a8"
+  - version: 2.23.0
+    sha256:
+      darwin/arm64: "91723c608562b11cbbdd1df8596e8bb54ab4d7069184ba1e29497bba8d69047c"
+      darwin/amd64: "2a10d49399eaa87794af73a1f0687d6501d72a15ece60de2c3b712248fe583e4"
+      linux/arm64: "d7905e255319c250302cf52285abe68e59699a91534a5e2be06613186d1916dd"
+      linux/amd64: "c44fb83ec88a9ed2945f3326a6d6b78bb957354535f0efcf653413bcd0e9510d"

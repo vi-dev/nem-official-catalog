@@ -1,0 +1,34 @@
+schema: 2
+name: tilt
+description: Local Kubernetes development environment with live updates
+homepage: https://tilt.dev
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: tilt-dev/tilt
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/tilt-dev/tilt/releases/download/v{{.Version}}/tilt.{{.Version}}.{{replace .OS \"darwin\" \"mac\"}}.{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "tilt", dst: "bin/tilt", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.37.7
+    sha256:
+      darwin/arm64: "7f54afff29cae67e2751c13df00a66d56f6fbc4463573089059ba673cf128687"
+      darwin/amd64: "2022e675f9a32cdc651e8096a12caa38720be2d692d7347798607873a107fd61"
+      linux/arm64: "9f381347fa18ffca3f1d3dcdd3f6745281a6647e6107199832ceaa62a461964a"
+      linux/amd64: "b695193fab68def8310cb971fa60bbe47ba0a782e24f54ebad287c13316a61b0"
+  - version: 0.37.6
+    sha256:
+      darwin/arm64: "eb08d07ff97aae2dd2721f747a30192354fc9f0e69a3d582e17211b878f3ab6d"
+      darwin/amd64: "1ece69812bacb644252d67d997904b48ce793d75f0f2ef26ca98c23ddc96a089"
+      linux/arm64: "9ceee4fb4fbf9bc8085a77b9d42046a734671112c1399982d40b8852c354cac5"
+      linux/amd64: "e9672b8a18d43501f35dcfe98465969a7db0e436b36cf0c50c7e6f8d40de5fe6"
