@@ -1,0 +1,39 @@
+schema: 2
+name: yarn2
+description: Yarn Berry (2.x) package manager for Node.js
+homepage: https://yarnpkg.com
+license: BSD-2-Clause
+
+versionDiscovery:
+  github:
+    repo: yarnpkg/berry
+    filter: '^@yarnpkg/cli/2\.\d+\.\d+$'
+    prefix: "@yarnpkg/cli/"
+
+deps:
+  - node
+
+# repo.yarnpkg.com is the official Berry distribution endpoint (the same
+# URL corepack installs from); the artifact is a single Node script.
+artifact:
+  url: "https://repo.yarnpkg.com/{{.Version}}/packages/yarnpkg-cli/bin/yarn.js"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/yarn", mode: 0o755}
+  - copy: {src: "{{.Artifact}}", dst: "bin/yarnpkg", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.4.3
+    sha256:
+      darwin/arm64: "8c1575156cfa42112242cc5cfbbd1049da9448ffcdb5c55ce996883610ea983f"
+      darwin/amd64: "8c1575156cfa42112242cc5cfbbd1049da9448ffcdb5c55ce996883610ea983f"
+      linux/arm64: "8c1575156cfa42112242cc5cfbbd1049da9448ffcdb5c55ce996883610ea983f"
+      linux/amd64: "8c1575156cfa42112242cc5cfbbd1049da9448ffcdb5c55ce996883610ea983f"
+  - version: 2.4.2
+    sha256:
+      darwin/arm64: "3ceae9c55cc9f52b474922a5c9bdfb32ada8fa003a3e071064e157fc156cfad0"
+      darwin/amd64: "3ceae9c55cc9f52b474922a5c9bdfb32ada8fa003a3e071064e157fc156cfad0"
+      linux/arm64: "3ceae9c55cc9f52b474922a5c9bdfb32ada8fa003a3e071064e157fc156cfad0"
+      linux/amd64: "3ceae9c55cc9f52b474922a5c9bdfb32ada8fa003a3e071064e157fc156cfad0"

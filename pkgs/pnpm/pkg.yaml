@@ -1,0 +1,36 @@
+schema: 2
+name: pnpm
+description: Fast, disk space efficient package manager for Node.js
+homepage: https://pnpm.io
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: pnpm/pnpm
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/pnpm/pnpm/releases/download/v{{.Version}}/pnpm-{{.OS}}-{{replace .Arch \"amd64\" \"x64\"}}.tar.gz"
+
+# The archive holds the pnpm launcher with its dist/ payload beside it; the
+# launcher resolves dist/pnpm.mjs relative to itself, so the layout must be
+# kept intact and the install root itself goes on PATH.
+install:
+  - extract: {strip: 0}
+
+bins: ["."]
+
+versions:
+  - version: 11.22.0
+    sha256:
+      darwin/arm64: "2000dcc8f0718852c2806ba4dca1edaedf18a4a39264474d5a1c8fcee250adfd"
+      linux/arm64: "f1426231f365bdfd46c15fa3d1211c3936ee2c4e557afd304f6c66dbf1b2a8bf"
+      linux/amd64: "4c592fa410eb23b69691a9efb9bf21c87c15b3e9d88c6ec8acdd354a0eb8de71"
+  - version: 11.21.0
+    sha256:
+      darwin/arm64: "860a96978a79ca5132bdc247375f94150a3c98edbecbee36e9f8e0c9e2f7f056"
+      linux/arm64: "64eb219b008f7a4c176d81fbce919c20b0b7e093e815cbb669d46e681451f43b"
+      linux/amd64: "aadc489ce4473c2af0fec06a5c19e113b5793d404eac49853c8153bf4b0d8263"
