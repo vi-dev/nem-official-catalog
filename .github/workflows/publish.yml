@@ -171,10 +171,10 @@ jobs:
         env:
           ENTRIES: ${{ needs.plan.outputs.smoke }}
         run: |
-          readarray -t entries < <(jq -r '.[]' <<< "$ENTRIES")
-          for e in "${entries[@]}"; do
+          # macOS runners ship bash 3.2: no readarray.
+          while IFS= read -r e; do
             nem use -g "$e"
-          done
+          done < <(jq -r '.[]' <<< "$ENTRIES")
           nem status -g
 
   promote:
