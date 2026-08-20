@@ -1,0 +1,28 @@
+schema: 2
+name: marksman
+description: Language server for Markdown
+homepage: https://github.com/artempyanykh/marksman
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: artempyanykh/marksman
+    # releases are tagged by date, not semver
+    filter: '^\d{4}-\d{2}-\d{2}$'
+
+# The macOS asset is a universal binary serving both darwin arches.
+artifact:
+  url: "https://github.com/artempyanykh/marksman/releases/download/{{.Version}}/marksman-{{if eq .OS \"darwin\"}}macos{{else}}linux-{{replace .Arch \"amd64\" \"x64\"}}{{end}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/marksman", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2026-02-08
+    sha256:
+      darwin/arm64: "6a801c17b5ac0dba69787c5282b3b3bd416e66c96253fae098d311c6bbd1833b"
+      darwin/amd64: "6a801c17b5ac0dba69787c5282b3b3bd416e66c96253fae098d311c6bbd1833b"
+      linux/arm64: "db8e124527f7f8048e3e6c91821b9c52ef173d92c01e47d221bf1337afd962fb"
+      linux/amd64: "be5098e8213219269c47fc0d916a66fa31ce0602ec967475c722260aabf26087"

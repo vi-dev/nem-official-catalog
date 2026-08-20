@@ -1,0 +1,31 @@
+schema: 2
+name: ktlint
+description: Kotlin linter and formatter
+homepage: https://ktlint.github.io
+license: MIT
+
+deps:
+  - jdk25
+
+versionDiscovery:
+  github:
+    repo: ktlint/ktlint
+    filter: '^\d+\.\d+\.\d+$'
+
+# The release asset is a shell script with the runnable jar appended, so the
+# same file serves every platform.
+artifact:
+  url: "https://github.com/ktlint/ktlint/releases/download/{{.Version}}/ktlint"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/ktlint", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.8.0
+    sha256:
+      darwin/arm64: "a3fd620207d5c40da6ca789b95e7f823c54e854b7fade7f613e91096a3706d75"
+      darwin/amd64: "a3fd620207d5c40da6ca789b95e7f823c54e854b7fade7f613e91096a3706d75"
+      linux/arm64: "a3fd620207d5c40da6ca789b95e7f823c54e854b7fade7f613e91096a3706d75"
+      linux/amd64: "a3fd620207d5c40da6ca789b95e7f823c54e854b7fade7f613e91096a3706d75"

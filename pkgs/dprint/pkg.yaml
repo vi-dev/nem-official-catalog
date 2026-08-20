@@ -1,0 +1,27 @@
+schema: 2
+name: dprint
+description: Pluggable code formatting platform
+homepage: https://dprint.dev
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: dprint/dprint
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/dprint/dprint/releases/download/{{.Version}}/dprint-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "dprint", dst: "bin/dprint", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.56.0
+    sha256:
+      darwin/arm64: "79f5c80a3ddebb4717a89a25a79ec1c50947d4cef141df243757925cb47d32e1"
+      darwin/amd64: "466dd67e15fca266f3749008ef5d23ea7a6c657ef8204257dbb8c23636fc9aca"
+      linux/arm64: "2e7d50e342d9d9d85b811635a04f3d49abdf7ec96d5b346cda932a7c4d42a7ab"
+      linux/amd64: "e958bfa3fec5256e72c2e4e028fa5674e43023eaff80d704ca96827af2eba240"

@@ -1,0 +1,27 @@
+schema: 2
+name: black
+description: Opinionated Python code formatter
+homepage: https://github.com/psf/black
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: psf/black
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/psf/black/releases/download/{{.Version}}/black_{{if eq .OS \"darwin\"}}macos{{else}}linux{{if eq .Arch \"arm64\"}}-arm{{end}}{{end}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/black", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 26.5.1
+    sha256:
+      darwin/arm64: "43e7b13344bd04db205d3c2655fbf47fbca552188bbecae0175a7611f83d1e08"
+      linux/arm64: "f86f36b37a00aff3d547eb61d017880aab413990bca5fb0632ed83e3497684f9"
+      linux/amd64: "384e4b901a9824369c6d94d8f5f52ed0dea347334d4fa2e01fc0177e19126483"

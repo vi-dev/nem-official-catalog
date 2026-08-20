@@ -1,0 +1,28 @@
+schema: 2
+name: shellharden
+description: Corrective syntax highlighter and rewriter for bash
+homepage: https://github.com/anordal/shellharden
+license: MPL-2.0
+
+versionDiscovery:
+  github:
+    repo: anordal/shellharden
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/anordal/shellharden/releases/download/v{{.Version}}/shellharden-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "shellharden", dst: "bin/shellharden", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 4.3.2
+    sha256:
+      darwin/arm64: "4279643d791619f7ce4a3fbdedb0cefd51916cd5d64b2956cb1e69df744678ec"
+      darwin/amd64: "6996f9d05fcc4fccfba3aac068552d38b2b08c99e51e5e15c3f8beab207e4baf"
+      linux/arm64: "299a1922ab716e23f960024aca1cdacaf485d3d932b6d65033deb6ea3606fe26"
+      linux/amd64: "270527e7cb76f39d980914d93b235ff056bfda22bb85de53469c7f2d42bf3751"

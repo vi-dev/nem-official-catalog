@@ -1,0 +1,30 @@
+schema: 2
+name: oxlint
+description: Linter for JavaScript and TypeScript written in Rust
+homepage: https://oxc.rs
+license: MIT
+
+# oxc is a monorepo; the released CLI binaries share the apps_v tag series.
+versionDiscovery:
+  github:
+    repo: oxc-project/oxc
+    filter: '^apps_v\d+\.\d+\.\d+$'
+    prefix: "apps_v"
+
+artifact:
+  url: "https://github.com/oxc-project/oxc/releases/download/apps_v{{.Version}}/oxlint-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+# The tarball holds a single binary named after the target triple.
+install:
+  - extract: {strip: 0}
+  - copy: {src: "oxlint-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}", dst: "bin/oxlint", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.79.0
+    sha256:
+      darwin/arm64: "930e3656277ca6ad135fe7bda18e1f64886e0f8d0755df8b19cd6b499f12931b"
+      darwin/amd64: "debd377ff3e7929743c440c6f23546a99658f7b0271725718c45197ace49bc5a"
+      linux/arm64: "f3d9d662cc686c4f774663121da89dba4af10a5248bfbb6cf98db49cc27546e7"
+      linux/amd64: "cdecc9297885c2e88c510c52d32f880cdd3e7372041d654fde2525be5235492a"

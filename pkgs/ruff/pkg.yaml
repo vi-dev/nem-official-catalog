@@ -1,0 +1,27 @@
+schema: 2
+name: ruff
+description: Extremely fast Python linter and code formatter
+homepage: https://docs.astral.sh/ruff/
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: astral-sh/ruff
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/astral-sh/ruff/releases/download/{{.Version}}/ruff-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "ruff", dst: "bin/ruff", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.16.3
+    sha256:
+      darwin/arm64: "136a4db6512d9b16dda56ac8604696ed65c3b1a914a142de029e7f8d5006f1d9"
+      darwin/amd64: "05c2a6705e7c0c056d6d93ff538978583f0c47b4c28d334ab9d58d2e8daf4c24"
+      linux/arm64: "b9cc833f5db856484b38718c9da195a6ec990707307bda30530913a09705419a"
+      linux/amd64: "7ab3b978d2c0b1c96b2323d4e5c4f35284ae1cdf35d2f7399595c74c805f5fa3"

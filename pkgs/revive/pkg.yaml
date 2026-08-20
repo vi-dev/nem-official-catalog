@@ -1,0 +1,28 @@
+schema: 2
+name: revive
+description: Configurable and extensible linter for Go
+homepage: https://revive.run
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: mgechev/revive
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/mgechev/revive/releases/download/v{{.Version}}/revive_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "revive", dst: "bin/revive", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.15.0
+    sha256:
+      darwin/arm64: "627f6a4561be15bae619f9d43997695385a6261a575ea67a64c084c9a09d572d"
+      darwin/amd64: "8146f2aed999a03b24ba5c51be396f3609a900d1a2be10d6fb5132774247cf9b"
+      linux/arm64: "9420579d8594e21bdacd1aaec9f2d7f13829fee1c0c5981b00c6f4dbfe4f73e3"
+      linux/amd64: "b9b03a625a40c79edf53c20447881095d4bf4c26afdaed090c399fdb32d2d3e2"

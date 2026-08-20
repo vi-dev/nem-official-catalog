@@ -1,0 +1,28 @@
+schema: 2
+name: xcodegen
+description: Generates Xcode projects from a YAML spec
+homepage: https://github.com/yonaskolb/XcodeGen
+license: MIT
+
+platforms: [darwin/arm64, darwin/amd64]
+
+versionDiscovery:
+  github:
+    repo: yonaskolb/XcodeGen
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/yonaskolb/XcodeGen/releases/download/{{.Version}}/xcodegen.zip"
+
+# xcodegen resolves its setting presets from ../share relative to the binary,
+# so the extracted layout is kept as-is.
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.46.0
+    sha256:
+      darwin/arm64: "4d9e34b62172d645eed6457cac13fc222569974098ef4ee9c3368bedf0196806"
+      darwin/amd64: "4d9e34b62172d645eed6457cac13fc222569974098ef4ee9c3368bedf0196806"

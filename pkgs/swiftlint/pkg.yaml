@@ -1,0 +1,28 @@
+schema: 2
+name: swiftlint
+description: Linter for Swift style and conventions
+homepage: https://github.com/realm/SwiftLint
+license: MIT
+
+platforms: [darwin/arm64, darwin/amd64]
+
+versionDiscovery:
+  github:
+    repo: realm/SwiftLint
+    filter: '^\d+\.\d+\.\d+$'
+
+# portable_swiftlint.zip holds a universal binary covering both macOS arches.
+artifact:
+  url: "https://github.com/realm/SwiftLint/releases/download/{{.Version}}/portable_swiftlint.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "swiftlint", dst: "bin/swiftlint", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.65.0
+    sha256:
+      darwin/arm64: "d6cb0aa7a2f5f1ef306fc9e37bcb54dc9a26facc8f7784ac0c3dd3eccf5c6ba6"
+      darwin/amd64: "d6cb0aa7a2f5f1ef306fc9e37bcb54dc9a26facc8f7784ac0c3dd3eccf5c6ba6"

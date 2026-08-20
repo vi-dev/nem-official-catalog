@@ -1,0 +1,27 @@
+schema: 2
+name: mago
+description: PHP toolchain with formatter, linter, and static analyzer
+homepage: https://mago.carthage.software
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: carthage-software/mago
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/carthage-software/mago/releases/download/{{.Version}}/mago-{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "mago", dst: "bin/mago", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.47.2
+    sha256:
+      darwin/arm64: "cba019c8bb654047d053fd0f8eb7cf6c7df48ef98ca3ac8d2de4504660f9ff2d"
+      darwin/amd64: "aded37851135104faa54c69b7552bf33835b857458400da1d6550322270120d2"
+      linux/arm64: "4c08a63b92807cac6beaad00b54f3eaf07772ea2e62d2a691b601feed308acd1"
+      linux/amd64: "37cc8edbc5bad4abdaeafb88b7840d4877c4379a69d53f78a1a85121a923312b"

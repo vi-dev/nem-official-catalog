@@ -1,0 +1,29 @@
+schema: 2
+name: diffsitter
+description: Tree-sitter based AST difftool
+homepage: https://github.com/afnanenayet/diffsitter
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: afnanenayet/diffsitter
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/afnanenayet/diffsitter/releases/download/v{{.Version}}/diffsitter-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+# git-diffsitter is a wrapper script that calls diffsitter from PATH, so both
+# must stay in the same directory.
+install:
+  - extract: {strip: 0}
+
+bins: ["."]
+
+versions:
+  - version: 0.9.0
+    sha256:
+      darwin/arm64: "83b02d6a27ce7f9365f068ffd400dada36e8fa449e48f1f8895dd77912650ecb"
+      darwin/amd64: "91e3f5509d85b6702063d91a8a658a3f3d1c375d3a13c30a99bd234a7282a29e"
+      linux/arm64: "8f651d1db49c8ffb8974faaff442cc9dd8153b07271261da61380968e2db6957"
+      linux/amd64: "3496d7ae8dfdd3eba92edd1ccd68f79442ff86a48f30d54b4fd522e772e699b9"

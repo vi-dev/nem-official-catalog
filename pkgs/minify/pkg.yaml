@@ -1,0 +1,28 @@
+schema: 2
+name: minify
+description: Minifier for HTML, CSS, JS, JSON, SVG, and XML
+homepage: https://github.com/tdewolff/minify
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: tdewolff/minify
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/tdewolff/minify/releases/download/v{{.Version}}/minify_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "minify", dst: "bin/minify", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.24.17
+    sha256:
+      darwin/arm64: "2e5d0623a6c5ffdb96c675214472c411557a89e456c1046b715ae80a985bb189"
+      darwin/amd64: "06d4936a1129577af20f0adc9b292165e03792666caa195ba9d15846d67766ce"
+      linux/arm64: "6c0e5b41e6f23314c25b6079cc4630b2434c33b8b57d523a50a0077c76f70c6d"
+      linux/amd64: "5baa0aa1255146fdf52ca46eeb15d856b59382966965808499c3b6252fb1d7e7"

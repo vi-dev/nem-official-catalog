@@ -1,0 +1,27 @@
+schema: 2
+name: ty
+description: Python type checker and language server
+homepage: https://github.com/astral-sh/ty
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: astral-sh/ty
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/astral-sh/ty/releases/download/{{.Version}}/ty-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "ty", dst: "bin/ty", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.0.73
+    sha256:
+      darwin/arm64: "9adcc77248a6ef6c4f185a71dfec87d7d0499c1d0a5e61e32dff4f8b21d8cd83"
+      darwin/amd64: "0ea1cf4577dfac855b3ae15b02326b9ba27c0d020373938f59cd4a662bce2e08"
+      linux/arm64: "efc09714a11d74aa7dfcbbb35d849e068839bb77f2420816a51559c33bb08dd7"
+      linux/amd64: "a3a8fe9c4ece8236630a426e747981a480a1e79a90dc9b27bb149f69b9a56a2f"

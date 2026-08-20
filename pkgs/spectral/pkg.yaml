@@ -1,0 +1,27 @@
+schema: 2
+name: spectral
+description: JSON/YAML linter for OpenAPI, AsyncAPI, and Arazzo
+homepage: https://stoplight.io/spectral
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: stoplightio/spectral
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/stoplightio/spectral/releases/download/v{{.Version}}/spectral-{{replace .OS \"darwin\" \"macos\"}}-{{replace .Arch \"amd64\" \"x64\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/spectral", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 6.16.3
+    sha256:
+      darwin/arm64: "d01857a60831def88c310078708c7a990c17f2ad3e2a09b4e84c57e1c02e8f06"
+      darwin/amd64: "929c855efd66eee1bbb25132be24bb94d65ae9a79523c94e457b3b4c130cbe7f"
+      linux/arm64: "fdaf5f04d74dbc293a7c4895b1430a40ffeb3ee6f84d0998d33dd4bee1aa5954"
+      linux/amd64: "b90ac8da7b804d04052b9db8d4ea5028d29fba9bc69b02dc85d46e5fcc476452"

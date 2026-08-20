@@ -1,0 +1,28 @@
+schema: 2
+name: dotenv-linter
+description: Linter for .env files
+homepage: https://dotenv-linter.github.io
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: dotenv-linter/dotenv-linter
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/dotenv-linter/dotenv-linter/releases/download/v{{.Version}}/dotenv-linter-{{.OS}}-{{if eq .OS \"darwin\"}}{{replace .Arch \"amd64\" \"x86_64\"}}{{else}}{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}{{end}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "dotenv-linter", dst: "bin/dotenv-linter", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 4.0.0
+    sha256:
+      darwin/arm64: "430ed45983cfc1d242cae959ec4b3b2df43fa1aff07d7750cc836d2f6479799a"
+      darwin/amd64: "143361bcd3c859cac0b16a6eaa51f3f69f270f17a55431e2e44d76722a7f0271"
+      linux/arm64: "c4113aafd35e5f9095b2f757061d07cc8eb5cc0bcd755249877af08b7ffafb9a"
+      linux/amd64: "9e2f1f6eb88a71ac15ef209f78f5a68644db82f132d2677112b4f80ec2bd2127"

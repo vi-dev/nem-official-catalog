@@ -1,0 +1,28 @@
+schema: 2
+name: markdown-oxide
+description: Markdown language server for personal knowledge management
+homepage: https://oxide.md
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: Feel-ix-343/markdown-oxide
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/Feel-ix-343/markdown-oxide/releases/download/v{{.Version}}/markdown-oxide-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "markdown-oxide", dst: "bin/markdown-oxide", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.25.12
+    sha256:
+      darwin/arm64: "fd851fbec60dc7cda5b21c682232e5c6ae6671c726e64bce3fe20013223c5774"
+      darwin/amd64: "706faf36ab17de112b9811090ef275e3e27472c2382bccf33880cce48e0a03c7"
+      linux/arm64: "6634b644ff0bcc1b8fb27cc518f82618547ec43fe19d515a890e8e8756950020"
+      linux/amd64: "ad4248cf5d3f0e9d9f120b579501c45dad9c46bfcb4ddec36d2cb85d68a58828"
