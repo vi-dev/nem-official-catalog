@@ -1,0 +1,28 @@
+schema: 2
+name: curlie
+description: Curl frontend with httpie-style output
+homepage: https://rs.github.io/curlie
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: rs/curlie
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/rs/curlie/releases/download/v{{.Version}}/curlie_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "curlie", dst: "bin/curlie", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.8.2
+    sha256:
+      darwin/arm64: "6501b25208c0edad5b3e1dbfaaa4cc963cccd1245d4c7d36b30b61607d0ae260"
+      darwin/amd64: "2c3493a39a0e07beed52a97db643995f32511fd3bab4a831e27ca8cbb1f06ad7"
+      linux/arm64: "570d505ad08e51ffe98e2ee39ee969cb340e846bc17a10ed2e4ba7a5e9d64c1a"
+      linux/amd64: "033d39a06d7a4320f923c49b488b89ec415c1901413ae85d26b9f7a09b38f1a1"

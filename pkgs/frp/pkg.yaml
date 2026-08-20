@@ -1,0 +1,29 @@
+schema: 2
+name: frp
+description: Reverse proxy exposing local servers behind NAT or a firewall
+homepage: https://github.com/fatedier/frp
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: fatedier/frp
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/fatedier/frp/releases/download/v{{.Version}}/frp_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "frpc", dst: "bin/frpc", mode: 0o755}
+  - copy: {src: "frps", dst: "bin/frps", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.71.0
+    sha256:
+      darwin/arm64: "45be02b186860d375ed49a8941ae9569628a54bf14e67fc36b29c98c99dabcc6"
+      darwin/amd64: "1b1b4e2f1836e21e8733f1dddaacd4ed9ae67d7dbee39046b9d7b7eda6253637"
+      linux/arm64: "f33c293c275d8fc68c654b6fba8f10b2551d6463d09a9fc9cffb7227eae82266"
+      linux/amd64: "84f27e39f11169f7adcef8e8b70c9329de17747b1f14dad9fb95eef5682ea716"

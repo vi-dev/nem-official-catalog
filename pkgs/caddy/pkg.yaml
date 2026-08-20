@@ -1,0 +1,28 @@
+schema: 2
+name: caddy
+description: Web server with automatic HTTPS
+homepage: https://caddyserver.com
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: caddyserver/caddy
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/caddyserver/caddy/releases/download/v{{.Version}}/caddy_{{.Version}}_{{replace .OS \"darwin\" \"mac\"}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "caddy", dst: "bin/caddy", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.11.4
+    sha256:
+      darwin/arm64: "9efb0af2d6cf09cfb5053c0e51721b9b3d4956d346234f39368d943d25a3c9a7"
+      darwin/amd64: "34bc9e5cceee8d67844ef51da624f5b79e8d070f27236e050c3f0066a2dba534"
+      linux/arm64: "52d42ae12b3462097e9868da6dfed3c9648ae12edd3b3638102312af84cb6904"
+      linux/amd64: "527fbf917c39189a1e3b31d34fa955601680b2d5c8055d2a87b8b9588dec7bb9"

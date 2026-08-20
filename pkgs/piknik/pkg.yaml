@@ -1,0 +1,28 @@
+schema: 2
+name: piknik
+description: Copy and paste anything over the network
+homepage: https://github.com/jedisct1/piknik
+license: BSD-2-Clause
+
+platforms: [darwin/arm64, darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: jedisct1/piknik
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/jedisct1/piknik/releases/download/{{.Version}}/piknik-{{if eq .OS \"darwin\"}}macos{{if eq .Arch \"amd64\"}}-intel{{end}}{{else}}linux_x86_64{{end}}-{{.Version}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "piknik", dst: "bin/piknik", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.10.2
+    sha256:
+      darwin/arm64: "c775cd3a835128fb26ba6d17d4b0260d56693ecc0f47e66d7d8a32bfcb3c36a5"
+      darwin/amd64: "2b0232e3b8faf4859f59e5100625da5a6549008c9b3f044abb06db44e5146e07"
+      linux/amd64: "205e93cd4cd5c4bbde25288d54f94a386c4a6daf32a644946a32012a2128d257"

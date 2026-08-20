@@ -1,0 +1,27 @@
+schema: 2
+name: logdy
+description: Realtime log viewer with a web UI
+homepage: https://logdy.dev
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: logdyhq/logdy-core
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/logdyhq/logdy-core/releases/download/v{{.Version}}/logdy_{{.OS}}_{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/logdy", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.17.1
+    sha256:
+      darwin/arm64: "055831648de4cb346382ed1e6950cce9632a6a48cb1a2f4aeb3a28a80eebdd43"
+      darwin/amd64: "6b7fd2518444fc107aad829ebe775b8ee005b1c9de4422365baf87b6776d714d"
+      linux/arm64: "7fee598981b496a5175c59f69f9a0eaa2a3397de291152e06f634764e5a495db"
+      linux/amd64: "e51ba54043efd052ed7aca4d6db1695825bae294c65f64794c20243ae05bae7c"

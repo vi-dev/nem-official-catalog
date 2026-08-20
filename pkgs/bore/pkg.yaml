@@ -1,0 +1,28 @@
+schema: 2
+name: bore
+description: TCP tunnel exposing local ports to a remote server
+homepage: https://github.com/ekzhang/bore
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: ekzhang/bore
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/ekzhang/bore/releases/download/v{{.Version}}/bore-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "bore", dst: "bin/bore", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.6.0
+    sha256:
+      darwin/arm64: "65f43a67b90874700538bdb6064c5e92276e64dfba24f5cd72ef24a035eec3bc"
+      darwin/amd64: "206db723a382bbc18d2893fc8472868e0b5f41de35975269aab7891ecc8659cc"
+      linux/arm64: "ffc4515f3617420b243758cf36ed6a63208d7dba76b2ec3e90d1f476a9742951"
+      linux/amd64: "e484d1e3acba77169b773f31a5bfb34192d4b660f44a094a658a2522cd2270f7"

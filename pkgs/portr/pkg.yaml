@@ -1,0 +1,28 @@
+schema: 2
+name: portr
+description: Expose local http, tcp or websocket connections to the internet
+homepage: https://github.com/amalshaji/portr
+license: AGPL-3.0
+
+versionDiscovery:
+  github:
+    repo: amalshaji/portr
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/amalshaji/portr/releases/download/v{{.Version}}/portr_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "portr", dst: "bin/portr", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.0.18
+    sha256:
+      darwin/arm64: "d90a79991336187d302f5c91cbce7aa292cf59713d3d1b72b345d111b978ef70"
+      darwin/amd64: "7ceca11400b4ff8b2db2cab41411019ce35f66687825704562fe62c428a104a2"
+      linux/arm64: "faeb65f6a4183f3022cc4e70b28952332d1656a1482e0c4bad43b998595dc9b6"
+      linux/amd64: "e92aa2b1bc2ea2bc7fa13b79f595d3588c501e983e26659bf5df3705b9d7d807"

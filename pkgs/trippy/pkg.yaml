@@ -1,0 +1,27 @@
+schema: 2
+name: trippy
+description: Network diagnostic tool combining traceroute and ping
+homepage: https://trippy.rs
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: fujiapple852/trippy
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/fujiapple852/trippy/releases/download/{{.Version}}/trippy-{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "trip", dst: "bin/trip", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.13.0
+    sha256:
+      darwin/arm64: "5bb2c22822a8d301bd462dc35bec865b9eae1737e9180406b6eacdd46d44adf2"
+      darwin/amd64: "26e7000df77a52fd8462040ebee1ebde9ada2e8d853b97838321b484928d9ea3"
+      linux/arm64: "73af939aa94e9e0f07cac2b3c8177e02a6b1c3be88299d85988e02be81ae7004"
+      linux/amd64: "aa2b7b2a0773f3cc04da691100419049950b690fe3736d25e24ac955b63d6056"

@@ -1,0 +1,27 @@
+schema: 2
+name: websocat
+description: Command-line client for WebSockets, like netcat for ws://
+homepage: https://github.com/vi/websocat
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: vi/websocat
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/vi/websocat/releases/download/v{{.Version}}/websocat.{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/websocat", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.14.1
+    sha256:
+      darwin/arm64: "c7402a1de17aa5446f86a7fe439cf502c49436c1f2df298c16fd8c2bf092a84e"
+      darwin/amd64: "45521ba59a6604785543406bf8e398ce7d565d54c09657176afba795dd28f191"
+      linux/arm64: "711a69576a2ff473fb01a90ffafb571c2ed019e55479d7ae71b12c2eadeb7011"
+      linux/amd64: "66f8dd3a0394761556339117f8bb5123bddefd44e087af2a72ec22b0bd08d514"

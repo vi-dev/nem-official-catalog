@@ -1,0 +1,28 @@
+schema: 2
+name: static-web-server
+description: Cross-platform asynchronous web server for static file serving
+homepage: https://static-web-server.net
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: static-web-server/static-web-server
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/static-web-server/static-web-server/releases/download/v{{.Version}}/static-web-server-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "static-web-server", dst: "bin/static-web-server", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.44.0
+    sha256:
+      darwin/arm64: "5f22e1d0072a0f5bf8bb32468885d6ba7bc9df470d37f16bdd71f9697832964f"
+      darwin/amd64: "484708863fa0fa39fbfe1a46d99c3671f46c72862dff724da2b480cdc79ced1b"
+      linux/arm64: "e9d6bd0b05dea441028eb4e690249ab585d711b311646bf9f420fcea01449670"
+      linux/amd64: "804bc0c31c78385ac04e9a36f3c2aa3d3170eb77d66807c2a1660c56b2026bb1"

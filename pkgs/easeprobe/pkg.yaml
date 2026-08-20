@@ -1,0 +1,27 @@
+schema: 2
+name: easeprobe
+description: Standalone health and status checking tool with notifications
+homepage: https://github.com/megaease/easeprobe
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: megaease/easeprobe
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/megaease/easeprobe/releases/download/v{{.Version}}/easeprobe-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.3.0
+    sha256:
+      darwin/arm64: "0759ef22fa067520b3e5a6b92250f318bb7dd387158857011496df2687271be1"
+      darwin/amd64: "4d4804625ccb5c4780f5971a3c3c108f4442085ff6548ab166316690a9c20c5e"
+      linux/arm64: "85f4a8a154c703737fd603906b6a5c5408a2dbd917814cdeab79784f091ba149"
+      linux/amd64: "75304e336ae5e7b6a0002b2076d2c77acdd08be599246df8d28666621e95698d"

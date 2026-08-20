@@ -1,0 +1,28 @@
+schema: 2
+name: plow
+description: HTTP benchmarking tool with terminal and web UI
+homepage: https://github.com/six-ddc/plow
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: six-ddc/plow
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/six-ddc/plow/releases/download/v{{.Version}}/plow_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "plow", dst: "bin/plow", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.4.0
+    sha256:
+      darwin/arm64: "18011f7f8565ccc9e2efc829cc2b5979fc11af93e5885e61391879ff40f05d5f"
+      darwin/amd64: "748dc0296959e23c87d11965fd6d6429d244aee91fd106dac666942159458a29"
+      linux/arm64: "5fecc6e1724b081ca2c3afc99f02218a132e6ae545dcc5eb64e5fa94b353c035"
+      linux/amd64: "9827ce2615e090e6805351a81d9d5597843154107772973489aa6dd8f35fd164"

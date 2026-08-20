@@ -1,0 +1,30 @@
+schema: 2
+name: tailscale
+description: WireGuard-based mesh VPN client and daemon
+homepage: https://tailscale.com
+license: BSD-3-Clause
+
+platforms: [linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: tailscale/tailscale
+    # Odd minor versions are unstable builds and never reach the stable channel.
+    filter: '^v\d+\.\d*[02468]\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://pkgs.tailscale.com/stable/tailscale_{{.Version}}_{{.Arch}}.tgz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "tailscale", dst: "bin/tailscale", mode: 0o755}
+  - copy: {src: "tailscaled", dst: "bin/tailscaled", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.102.3
+    sha256:
+      linux/arm64: "a0fa1b154af8c61f862a2259f559f7396d96c0225f4a863eae2333e1546bbe25"
+      linux/amd64: "36ddd9b51be57ffc2990cf76323cfa13643bfbb1b8a969f6183fa164741cdef5"

@@ -1,0 +1,28 @@
+schema: 2
+name: pgrok
+description: Multi-tenant HTTP/TCP reverse tunnel over SSH remote port forwarding
+homepage: https://github.com/pgrok/pgrok
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: pgrok/pgrok
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/pgrok/pgrok/releases/download/v{{.Version}}/pgrok_{{.Version}}_{{.OS}}_{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "pgrok", dst: "bin/pgrok", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.7.0
+    sha256:
+      darwin/arm64: "73f198665c006ef9b26f43d49d2b9eddac67f88e2dbe769739e75960edac2541"
+      darwin/amd64: "51af807cf0097c5c6936781b99127cbd5d037a67f78fd01786c513c3dcb28660"
+      linux/arm64: "29e3d96c179e9d9156b5817ba17402ed17f8dd17c0822c47c077358bd67ada7b"
+      linux/amd64: "efee1c17387713356bc26a769bbb01a5d755212b190d5f9e8b49c36ef7f524fe"

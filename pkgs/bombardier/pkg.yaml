@@ -1,0 +1,27 @@
+schema: 2
+name: bombardier
+description: HTTP benchmarking tool
+homepage: https://github.com/codesenberg/bombardier
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: codesenberg/bombardier
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/codesenberg/bombardier/releases/download/v{{.Version}}/bombardier-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/bombardier", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.0.2
+    sha256:
+      darwin/arm64: "5d893be6e3e90d660c798b13f7616bdcee6954c04be4f34eb5b45a667e50e18b"
+      darwin/amd64: "27def2847d80cdeec9c3a7fd21ef6be13fc5657c4ee9f61bdb86e307413d8d56"
+      linux/arm64: "258025ea4dc183bbe3f4ccc7772de1faf2c73700e9f81aa5b84e0c1799d7323c"
+      linux/amd64: "d3dc4a9ecec3f8bd43f8c196ad533cb4b79ca55b11fc74c3184231e00a95bc0b"

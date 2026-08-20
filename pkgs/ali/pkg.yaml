@@ -1,0 +1,28 @@
+schema: 2
+name: ali
+description: HTTP load generator with real-time terminal plots
+homepage: https://github.com/nakabonne/ali
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: nakabonne/ali
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/nakabonne/ali/releases/download/v{{.Version}}/ali_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "ali", dst: "bin/ali", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.8.0
+    sha256:
+      darwin/arm64: "bd1fd8486da3333a5c994ff43a3f066edcfd922c678a29f5a9e02807177f4e64"
+      darwin/amd64: "44fc0ebabf919b41a741e6ff3537ae48fd8872387901b83e08d9bf76fba6c451"
+      linux/arm64: "a71bb89dcf1ceb7431327bb7f162c7ad30c675d0e5b4cae183e83fac276212f4"
+      linux/amd64: "6bd43212f032528dd0a6c6db00035432051d1566d7af8ef0ef1b91a0b041705c"

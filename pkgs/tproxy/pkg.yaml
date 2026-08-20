@@ -1,0 +1,28 @@
+schema: 2
+name: tproxy
+description: Proxy that inspects and analyzes TCP connections
+homepage: https://github.com/kevwan/tproxy
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: kevwan/tproxy
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kevwan/tproxy/releases/download/v{{.Version}}/tproxy-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "tproxy", dst: "bin/tproxy", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.9.2
+    sha256:
+      darwin/arm64: "122e09cc7fbde54f6952e1155baa783536d238176cee7c647d65c69cd7837e30"
+      darwin/amd64: "91aed312160fd56aba19869c0f7b3f30badcada00b1cd26630fcc0d71eda6946"
+      linux/arm64: "fad03e3558a4ea518f0c1ad885ca9525fd9005470fbb15e4b75e2cfd18fa9de0"
+      linux/amd64: "115b0c7eda6928b65262acf5a820014443f0e4272790296d353d31be6de7f6a4"

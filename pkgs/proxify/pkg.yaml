@@ -1,0 +1,28 @@
+schema: 2
+name: proxify
+description: Proxy for capturing, manipulating, and replaying HTTP traffic
+homepage: https://github.com/projectdiscovery/proxify
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: projectdiscovery/proxify
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/projectdiscovery/proxify/releases/download/v{{.Version}}/proxify_{{.Version}}_{{replace .OS \"darwin\" \"macOS\"}}_{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "proxify", dst: "bin/proxify", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.0.16
+    sha256:
+      darwin/arm64: "6267cd19da192061651a6fcf24a2c03d399c6b060794f3c3169a475244ff413d"
+      darwin/amd64: "614fdc4e1767a993cd5d97b00d15dff159b435a8c05a3aae4e0ce319958497a4"
+      linux/arm64: "374d71918dc3e9088bbad5e7f5aa5c643b4f87fbb57a43cdb5e3446f2392a14f"
+      linux/amd64: "242eb958d95b05ca2cf9e2b874ddbee8f143ac13eac4aba3637b2f5736f9c1be"

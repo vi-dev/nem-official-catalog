@@ -1,0 +1,28 @@
+schema: 2
+name: ghz
+description: gRPC benchmarking and load testing tool
+homepage: https://ghz.sh
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: bojand/ghz
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/bojand/ghz/releases/download/v{{.Version}}/ghz-{{.OS}}-{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "ghz", dst: "bin/ghz", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.121.0
+    sha256:
+      darwin/arm64: "7fb423cacf60f581b0f0f88f9360e1ad73af514251cf3b32ca2b9d390a7bfb94"
+      darwin/amd64: "a8434978e47f476d75c70244bd78e22e5db56dcb38bb3f9ba5a0b52a9c7ed78a"
+      linux/arm64: "02a40abcfc10b98eab5b693511abe044f5a3410d77bcc86c9a3a0eeb615eb77a"
+      linux/amd64: "9ae3b93f2c46dac9136e29e81b4a1de8d4e56f092a6fe46884a25c9c83cb2324"

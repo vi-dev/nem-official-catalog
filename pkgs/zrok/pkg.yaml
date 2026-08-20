@@ -1,0 +1,29 @@
+schema: 2
+name: zrok
+description: Peer-to-peer sharing platform built on OpenZiti
+homepage: https://zrok.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: openziti/zrok
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/openziti/zrok/releases/download/v{{.Version}}/zrok_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  # v2 archives ship the binary as zrok2 so it can sit beside a v1 install.
+  - copy: {src: "zrok2", dst: "bin/zrok", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.0.4
+    sha256:
+      darwin/arm64: "ad90ee0730bdd066a0a95c1f57bb250bac1b2d5c474ba662043820ea0d2b7e86"
+      darwin/amd64: "d0d0882d84768081c7cbd45c03490bd13e305d19861eaf4811a11e6eb1db5924"
+      linux/arm64: "71a08d11058959a0b90e8f59d4a33612b5fc010fced8c65883995cf64e5502cc"
+      linux/amd64: "1877981b9050c9d69c61bc12c0b92c2da7330e3fbb374faa78ffdbfa37f8a8e3"

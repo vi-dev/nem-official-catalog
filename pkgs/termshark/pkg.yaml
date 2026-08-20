@@ -1,0 +1,28 @@
+schema: 2
+name: termshark
+description: Terminal UI for tshark packet capture
+homepage: https://termshark.io
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: gcla/termshark
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/gcla/termshark/releases/download/v{{.Version}}/termshark_{{.Version}}_{{replace .OS \"darwin\" \"macOS\"}}_{{replace .Arch \"amd64\" \"x64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "termshark", dst: "bin/termshark", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.4.0
+    sha256:
+      darwin/arm64: "440e2e3968df66a6c71317b00e3de816d2aa4469097218fcf17fabcea0b28480"
+      darwin/amd64: "fbbe6232aeac6aeafbfb439629270437a2dc307f6346bc225c37df7f5645f842"
+      linux/arm64: "6dc3003a48291c463f057d0151727e0d21e295d804f082f3d35d72fd94d0a56e"
+      linux/amd64: "a28b2ab534ba8bf2297bbe9846281e62aa0010832b75773369e0d48912acef74"
