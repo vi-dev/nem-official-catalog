@@ -1,0 +1,27 @@
+schema: 2
+name: bottom
+description: Graphical system monitor (btm)
+homepage: https://github.com/ClementTsang/bottom
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: ClementTsang/bottom
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/ClementTsang/bottom/releases/download/{{.Version}}/bottom_{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "btm", dst: "bin/btm", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.14.8
+    sha256:
+      darwin/arm64: "60138a19944eeb8cb177fea4f4d6d042d3971828de0418b034618d6837d62c1a"
+      darwin/amd64: "3d7b137934b4e88ecbed3c6f17d15115ca892863198d21ce890b885c3362ca95"
+      linux/arm64: "cc6ad0527598fb45eff929ac168e0c93eb7c3cd604723876b9df9b487ac10a47"
+      linux/amd64: "9d071c11a5b5bf266f05aa6519a43ad353330155d3d5627a750572d85ed19f54"

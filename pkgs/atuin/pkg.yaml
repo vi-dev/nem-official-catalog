@@ -1,0 +1,28 @@
+schema: 2
+name: atuin
+description: Shell history with sync and search
+homepage: https://atuin.sh
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: atuinsh/atuin
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/atuinsh/atuin/releases/download/v{{.Version}}/atuin-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "atuin", dst: "bin/atuin", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 18.19.0
+    sha256:
+      darwin/arm64: "40c8eb1fc12c0f5174fd4f20bc791310f19e58a31791f20d14d72f15661f19f1"
+      darwin/amd64: "63bc85c87be38b8876de6935370b29978848c2b52575f4ace79e565c6a7206a1"
+      linux/arm64: "cb4a00c042178814114e7188505100ad7ac2f43c573d0578e764d309c038aa96"
+      linux/amd64: "a2cd1f7bba0e45cf620683833a6414b9dd74a0c446e4d819258b6717109bc0fd"

@@ -1,0 +1,27 @@
+schema: 2
+name: dasel
+description: Query and modify JSON, YAML, TOML, XML, and CSV
+homepage: https://github.com/TomWright/dasel
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: TomWright/dasel
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/TomWright/dasel/releases/download/v{{.Version}}/dasel_{{.OS}}_{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/dasel", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.11.2
+    sha256:
+      darwin/arm64: "63407a21f1354dda62c7f015e5262a91b05ce20a858406e2aeac3e5fc614f355"
+      darwin/amd64: "25d46ae4aa84c8e898a1f3cb6315e5a0c7f4e2962835c5510102e56cfe1303a4"
+      linux/arm64: "df33920a792cd8ee5573cec3632a710cd2178d7bc4fc3892c6be78f35e7cbcc6"
+      linux/amd64: "5006ee3a4239ab6a3edb1bf5c932874d814f7c276117ca677352697a4f547799"

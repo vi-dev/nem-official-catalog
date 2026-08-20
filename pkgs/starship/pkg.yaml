@@ -1,0 +1,28 @@
+schema: 2
+name: starship
+description: Minimal, fast, customizable shell prompt
+homepage: https://starship.rs
+license: ISC
+
+versionDiscovery:
+  github:
+    repo: starship/starship
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/starship/starship/releases/download/v{{.Version}}/starship-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "starship", dst: "bin/starship", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.26.0
+    sha256:
+      darwin/arm64: "c40b27b11f580411e068f2fa6c1be7830a387c0bc47a94d1d37f32b054c5361d"
+      darwin/amd64: "5548f406a4b6f5695903bdea83f77ce47ec12c8c0e62dabd33122d8f133e4207"
+      linux/arm64: "dc30189378d2f2e287384e8a692d3f95ad1df64cf0e8c36aa9201516028aed6b"
+      linux/amd64: "b7c232b0e8249d8e55a40beb79c5c43a7d370f3f9408bd215deb0170daeaadf3"

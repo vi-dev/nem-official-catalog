@@ -1,0 +1,28 @@
+schema: 2
+name: dust
+description: More intuitive du, showing disk usage as a tree
+homepage: https://github.com/bootandy/dust
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: bootandy/dust
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/bootandy/dust/releases/download/v{{.Version}}/dust-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "dust", dst: "bin/dust", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.2.5
+    sha256:
+      darwin/arm64: "7f17449fecff70cce61e6060fac490dfe66b1b40ee1639bc1f72d121b846e364"
+      darwin/amd64: "29566236d7a5e2afbc3fcf2d365845a4eaf0fc969a4ed9f8b878bc1a4fc7d2b8"
+      linux/arm64: "331b328233a70e56f0509ff962b2a6ea606eb2e654ce8a0e9a3bebe1bd54a2be"
+      linux/amd64: "79813b5743fab1e04c1d9c34042aab865dbe09efb76719e7c7d260568850fabc"

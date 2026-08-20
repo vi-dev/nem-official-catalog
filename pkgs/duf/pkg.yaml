@@ -1,0 +1,28 @@
+schema: 2
+name: duf
+description: Disk usage viewer with a friendly UI
+homepage: https://github.com/muesli/duf
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: muesli/duf
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/muesli/duf/releases/download/v{{.Version}}/duf_{{.Version}}_{{.OS}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "duf", dst: "bin/duf", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.9.1
+    sha256:
+      darwin/arm64: "512ba0ff3585bb8c65841de557a4c4b8712332db005dc952fa98d373a05d01df"
+      darwin/amd64: "e3384519b0055c904b7352b55cd81bd101f5dd94dab1195a72880bddca7c2aaf"
+      linux/arm64: "22ea0ad29f6610bf443aa351e600de97e47a9b380ef58316606a84bb8f595216"
+      linux/amd64: "5add851e7062c5e56939abb664705e4d14fa2d06289490aff31d51f153832de7"

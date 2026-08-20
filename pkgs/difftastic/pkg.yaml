@@ -1,0 +1,27 @@
+schema: 2
+name: difftastic
+description: Structural diff that understands syntax (difft)
+homepage: https://difftastic.wilfred.me.uk
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: Wilfred/difftastic
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/Wilfred/difftastic/releases/download/{{.Version}}/difft-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "difft", dst: "bin/difft", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.70.0
+    sha256:
+      darwin/arm64: "1921267221fcb5779d30c4dcc0b3b4620abbe851ffd5596a4715576581518f51"
+      darwin/amd64: "c180541ef7963aad4f75d4ef99aed2bf7f5c132d25a3b8152b20309be1fba82f"
+      linux/arm64: "e729684907d67d1a1727a08f443877e19e40eeb2efebcd95c1b8f7fee4284e8e"
+      linux/amd64: "2997d2bbe620534edbd79b0049f00ce84eef3fedb15c7822456d58e38d8b05c9"

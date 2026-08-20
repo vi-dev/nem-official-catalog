@@ -1,0 +1,28 @@
+schema: 2
+name: gron
+description: Make JSON greppable
+homepage: https://github.com/tomnomnom/gron
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: tomnomnom/gron
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/tomnomnom/gron/releases/download/v{{.Version}}/gron-{{.OS}}-{{.Arch}}-{{.Version}}.tgz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "gron", dst: "bin/gron", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.7.1
+    sha256:
+      darwin/arm64: "1b9b987c6ead684a992db91b7a32fd15ef946013dfabfe84d00b2fa6f55d7182"
+      darwin/amd64: "59034d4aa883c5815784b290567d104669a51f20eaf97f1d8baa4f74e22047d6"
+      linux/arm64: "5d1d4764723a0f768d9ddef0685a052f564c8bbf5e475382342faf4224a07d80"
+      linux/amd64: "ca0335826b02b044fa05d7e951521e45c6ced1c381a73ed5803450088e18bf22"

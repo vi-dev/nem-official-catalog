@@ -1,0 +1,28 @@
+schema: 2
+name: hyperfine
+description: Command-line benchmarking tool
+homepage: https://github.com/sharkdp/hyperfine
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: sharkdp/hyperfine
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/sharkdp/hyperfine/releases/download/v{{.Version}}/hyperfine-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "hyperfine", dst: "bin/hyperfine", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.20.0
+    sha256:
+      darwin/arm64: "8ee7067016620447c9d2d6234ec9a4680f958b7ad983549b56334668f63075b5"
+      darwin/amd64: "f58d0b90993fadfa122a351428c469ce24afef3865f027f0e6e86f0830d088f1"
+      linux/arm64: "90875cb1db7a1d797c311174d061728361e58fc70e3b62262a00635ac3b1997c"
+      linux/amd64: "63ad53934062118f5b0be11785e0bb1603d4b91667d1921f2fd8df9a8712040a"

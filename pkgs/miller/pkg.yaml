@@ -1,0 +1,28 @@
+schema: 2
+name: miller
+description: Query and transform CSV, TSV, and JSON with mlr
+homepage: https://miller.readthedocs.io
+license: BSD-2-Clause
+
+versionDiscovery:
+  github:
+    repo: johnkerl/miller
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/johnkerl/miller/releases/download/v{{.Version}}/miller-{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "mlr", dst: "bin/mlr", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 6.21.0
+    sha256:
+      darwin/arm64: "e172a045a813de63753ddbe043208785e944819b082526ddd927559eeb0ad176"
+      darwin/amd64: "0b02be2a7166b56bad29b0446e2a2cc8c47269410e6af2841174aa1854fde53a"
+      linux/arm64: "3f4bc15993da3039e5aad1f67a114817db5d933a1cde26b6c2edf867de467d27"
+      linux/amd64: "22daf43f3afc7c497da0b9480a0d4ef0d39c9bf68b2460068dd0187ed44f7b80"

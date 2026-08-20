@@ -1,0 +1,28 @@
+schema: 2
+name: zellij
+description: Terminal workspace and multiplexer
+homepage: https://zellij.dev
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: zellij-org/zellij
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/zellij-org/zellij/releases/download/v{{.Version}}/zellij-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "zellij", dst: "bin/zellij", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.44.3
+    sha256:
+      darwin/arm64: "b6acf83a7739cf5f0f4e9bd47709642d4d98acbbf8c34d4a12c6e706f531da61"
+      darwin/amd64: "59f803faa32cd4e5f316f0dc2d3b7a5530a72553e38ad939286471848a418eeb"
+      linux/arm64: "15e6534d42644d66973d136c590c49739dcfd6a1a2a0d3d917973f16c81b45fb"
+      linux/amd64: "0f7c346788627f506c0a28296517768633cff24fc822a739f8264b640ecad751"
