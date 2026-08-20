@@ -1,0 +1,29 @@
+schema: 2
+name: alertmanager
+description: Alert routing and notification handler for Prometheus
+homepage: https://prometheus.io/docs/alerting/latest/alertmanager/
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: prometheus/alertmanager
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/prometheus/alertmanager/releases/download/v{{.Version}}/alertmanager-{{.Version}}.{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "alertmanager", dst: "bin/alertmanager", mode: 0o755}
+  - copy: {src: "amtool", dst: "bin/amtool", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.34.0
+    sha256:
+      darwin/arm64: "0cb31efe439c58ab77594b62a28f9de95f2d08beccf0f11eba4b822b2f549b82"
+      darwin/amd64: "2c76c6bb30f030296cbfbf803bfd99494987197fcb8743f73ef5f351d568ce97"
+      linux/arm64: "a96ef16598ddc58e84d28167b3352b30e3205698d76c56ef467e4504d7664da4"
+      linux/amd64: "19c75a11d8c03dc4ade7abdbddfb3a8f28c9e7b000d0849cda0cd71dffd74a03"

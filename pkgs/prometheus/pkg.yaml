@@ -1,0 +1,29 @@
+schema: 2
+name: prometheus
+description: Monitoring system and time series database
+homepage: https://prometheus.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: prometheus/prometheus
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/prometheus/prometheus/releases/download/v{{.Version}}/prometheus-{{.Version}}.{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "prometheus", dst: "bin/prometheus", mode: 0o755}
+  - copy: {src: "promtool", dst: "bin/promtool", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.14.0
+    sha256:
+      darwin/arm64: "a9623f7f4fe65b1b171b423c1a72bbf23dfdf41a171dcb33e7dd302af80dc01c"
+      darwin/amd64: "a14307b9726e66cadb81be9a544732623af26dabeb7702c987aa9c3c062ada34"
+      linux/arm64: "077f3781ab7245dc04c9a3c9b78ba120fc8e41aa0dc97489b0af67247e50ba83"
+      linux/amd64: "f665c6da19eb7ba399c915d30c7d9793c9b417bf8a749b504bc470678631478d"

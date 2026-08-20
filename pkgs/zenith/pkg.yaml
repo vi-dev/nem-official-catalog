@@ -1,0 +1,28 @@
+schema: 2
+name: zenith
+description: Terminal system monitor with zoomable CPU, disk, and network charts
+homepage: https://github.com/bvaisvil/zenith
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: bvaisvil/zenith
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  # linux/amd64 is the only glibc build upstream ships; linux/arm64 is musl-only
+  url: "https://github.com/bvaisvil/zenith/releases/download/{{.Version}}/zenith-{{if eq .OS \"darwin\"}}macOS-{{replace .Arch \"amd64\" \"x86_64\"}}{{else}}Linux-{{if eq .Arch \"amd64\"}}gnu-x86_64{{else}}musl-arm64{{end}}{{end}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "zenith", dst: "bin/zenith", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.15.0
+    sha256:
+      darwin/arm64: "f2e0d4bbc671ca51ff11f535cc2f0d9734ad7ea21f09c4e9c2963bd066da063a"
+      darwin/amd64: "2d5009f332d55b4fed7a6c8820403ef75f7f27f75a47d2eb91c8eef5336fb7f6"
+      linux/arm64: "3b514b8e3d9a6971ecd07fca572e0a6012d663edf849f2a45380017ca451ecba"
+      linux/amd64: "e5010d4a33ae2b08cb7f5762037623735a2dd95b13855dcc919ad7ca5f1f2024"

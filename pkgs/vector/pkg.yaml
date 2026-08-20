@@ -1,0 +1,32 @@
+schema: 2
+name: vector
+description: High-performance observability data pipeline
+homepage: https://vector.dev
+license: MPL-2.0
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: vectordotdev/vector
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+# macOS assets use the Go arch spelling (arm64-apple-darwin), Linux ones the
+# Rust target triple.
+artifact:
+  url: "https://github.com/vectordotdev/vector/releases/download/v{{.Version}}/vector-{{.Version}}-{{if eq .OS \"darwin\"}}arm64-apple-darwin{{else}}{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-unknown-linux-musl{{end}}.tar.gz"
+
+# Tar entries are prefixed "./", so the target-triple dir is the second
+# component and stripping it leaves bin/vector at the root.
+install:
+  - extract: {strip: 2}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.57.0
+    sha256:
+      darwin/arm64: "009c35b45bbd5a2bf84b876e56347848d75502a03a5bd37258fb54f6d9c40baf"
+      linux/arm64: "81cec5343e49985351e13f76ae3d550d7b0f0ac64fd4d88c07e3873bdfdf100a"
+      linux/amd64: "b04fafcffcbeb3d43cbba587583dbe3338b24dd34256b3967fb15d137aff75f2"

@@ -1,0 +1,30 @@
+schema: 2
+name: victoriametrics
+description: Time series database and monitoring solution
+homepage: https://victoriametrics.com
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: VictoriaMetrics/VictoriaMetrics
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+# The plain asset is the single-node build; -cluster and -enterprise
+# variants share the same version and differ only by this suffix.
+artifact:
+  url: "https://github.com/VictoriaMetrics/VictoriaMetrics/releases/download/v{{.Version}}/victoria-metrics-{{.OS}}-{{.Arch}}-v{{.Version}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "victoria-metrics-prod", dst: "bin/victoria-metrics", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.150.0
+    sha256:
+      darwin/arm64: "ed6e2c06e88fed5865fbe838d34f68613208f79032308cd12ec7d7b13785d978"
+      darwin/amd64: "46bf0d386197990a9d21fc470021990c8f0304690b6598a474cf1fffe14c2df0"
+      linux/arm64: "fdb9e272f5e4d49cb506991b7293ed53bccbff821a62653dea7c463ae1980da5"
+      linux/amd64: "22bfe77be3de1ad03f214a005129312536d77ed4e293b66c186df417ee40a61d"

@@ -1,0 +1,28 @@
+schema: 2
+name: asciigraph
+description: Draw ASCII line graphs from data in the terminal
+homepage: https://github.com/guptarohit/asciigraph
+license: BSD-3-Clause
+
+versionDiscovery:
+  github:
+    repo: guptarohit/asciigraph
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/guptarohit/asciigraph/releases/download/v{{.Version}}/asciigraph_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "asciigraph", dst: "bin/asciigraph", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.10.0
+    sha256:
+      darwin/arm64: "f514c349826cfb4f2944426ae2517385d167779a75a2bea70209b632df4a246b"
+      darwin/amd64: "f41baf36496fa25865746b010b278792a30cdba6c5c604551a849088cc6108ac"
+      linux/arm64: "ca5772034c8a831b491b7fd09a931377e7e1b0820b51335603051fcabab95bd1"
+      linux/amd64: "c5ab53fa975a6c843b183ec401f322e20908ca502400f9726c3b07ca48f05b85"

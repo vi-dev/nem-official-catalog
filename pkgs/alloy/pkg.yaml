@@ -1,0 +1,28 @@
+schema: 2
+name: alloy
+description: OpenTelemetry Collector distribution with programmable pipelines
+homepage: https://grafana.com/oss/alloy
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: grafana/alloy
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/grafana/alloy/releases/download/v{{.Version}}/alloy-{{.OS}}-{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "alloy-{{.OS}}-{{.Arch}}", dst: "bin/alloy", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.18.1
+    sha256:
+      darwin/arm64: "29bb1342eb2313a1bfeb486aeea25583d828da34b60d29c8583fc6a99544e3c2"
+      darwin/amd64: "7baf34a99554c252c463c348d9a46ed66a7cd54111569119087b224b012ea541"
+      linux/arm64: "499446cfe22514d6c9f00af953d98162526ea818e84c4e452f8fddbbfa8676d6"
+      linux/amd64: "fac853cbc3983a50a2368f9a685b31f74392ae86dd6155461b11a911c07b483c"
