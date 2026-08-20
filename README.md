@@ -98,10 +98,12 @@ index digest (listed under the package's versions on GHCR):
 
 ### Rebuild a package's archives
 
-    gh workflow run build.yml -f package="<name>@<version>"
+    gh workflow run build.yml -f package="<name>@<version> [<name>@<version> …]"
 
-Add `-f force=true` to overwrite archives whose rebuilt content is
-unchanged. Rebuilt archives go live immediately — archives are fetched by
+Multiple space- or comma-separated pairs build in one run — the shared
+publish lock holds only one pending run, so batch rather than dispatching
+per version. Add `-f force=true` to overwrite archives whose rebuilt
+content is unchanged. Rebuilt archives go live immediately — archives are fetched by
 version and never pass the staging tag — so verify afterwards with
 `gh workflow run smoke.yml`.
 

@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       package:
-        description: One package@version pair to force-build (empty = only missing archives)
+        description: Space- or comma-separated package@version pairs to force-build (empty = only missing archives)
         default: ""
       force:
         description: With package, overwrite archives even when a rebuilt platform entry is unchanged
@@ -45,9 +45,14 @@ jobs:
           PACKAGE: ${{ inputs.package }}
         run: |
           if [ -n "$PACKAGE" ]; then
-            name=${PACKAGE%@*}
-            ver=${PACKAGE##*@}
-            plan=$(jq -c -n --arg p "$name" --arg v "$ver" '[{package: $p, version: $v}]')
+            plan='[]'
+            for pv in $(printf '%s\n' "$PACKAGE" | tr ',' ' '); do
+              case "$pv" in
+                *@*) ;;
+                *) echo "invalid package spec '$pv'; want name@version" >&2; exit 1 ;;
+              esac
+              plan=$(jq -c --arg p "${pv%@*}" --arg v "${pv##*@}" '. + [{package: $p, version: $v}] | unique' <<<"$plan")
+            done
             for plat in linux/amd64 linux/arm64 darwin/arm64; do
               key=$(printf '%s' "$plat" | tr '/' '_')
               echo "$key=$plan" >> "$GITHUB_OUTPUT"
@@ -68,11 +73,14 @@ jobs:
             } >> "$GITHUB_STEP_SUMMARY"
             for plat in linux/amd64 linux/arm64 darwin/arm64; do
               key=$(printf '%s' "$plat" | tr '/' '_')
-              echo "$key=$(jq -c --arg p "$plat" '.[$p]' /tmp/plan.json)" >> "$GITHUB_OUTPUT"
+              echo "$key=$(jq -c --arg p "$plat" '.[$p] // []' /tmp/plan.json)" >> "$GITHUB_OUTPUT"
             done
           fi
 
-  # Build jibs are chained to avoid racing on the archive index.
+  # Build jobs are chained: an archive index is one tag per package@version
+  # merged read-modify-write, so the same pair must not push from two
+  # platforms at once. Within a job, matrix entries are distinct pairs
+  # writing distinct tags, and run in parallel safely.
   build-linux-amd64:
     needs: plan
     if: ${{ needs.plan.outputs.linux_amd64 != '[]' }}
