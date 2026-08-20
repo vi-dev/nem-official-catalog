@@ -1,0 +1,28 @@
+schema: 2
+name: cargo-make
+description: Rust task runner and build tool
+homepage: https://github.com/sagiegurari/cargo-make
+license: Apache-2.0
+
+platforms: [darwin/arm64, darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: sagiegurari/cargo-make
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/sagiegurari/cargo-make/releases/download/{{.Version}}/cargo-make-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.zip"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "cargo-make", dst: "bin/cargo-make", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.37.24
+    sha256:
+      darwin/arm64: "823fe51d2baa5679a5dfd33c703d0176374f8f023a2ee950f2e03dc4f31ee523"
+      darwin/amd64: "afd10db16ce089e0208d4829d46351833d9eb61f3181452a38a2a089bafedc31"
+      linux/amd64: "ff76969f0caab39c56d168b94b2540fde34609aa6562d555081818ece387b005"

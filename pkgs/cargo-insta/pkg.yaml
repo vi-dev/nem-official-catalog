@@ -1,0 +1,28 @@
+schema: 2
+name: cargo-insta
+description: Cargo subcommand for insta snapshot testing
+homepage: https://insta.rs
+license: Apache-2.0
+
+platforms: [darwin/arm64, darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: mitsuhiko/insta
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/mitsuhiko/insta/releases/download/{{.Version}}/cargo-insta-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.xz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "cargo-insta", dst: "bin/cargo-insta", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.48.0
+    sha256:
+      darwin/arm64: "26f081f5bf62d1dc03aae9c4137188d66a2debe6bcaf2884f2153fcb6eda27cb"
+      darwin/amd64: "e2d6d6fa4bcb30f7d4834f6254a6da7f2982a9e9a3882695aca5e83d64231267"
+      linux/amd64: "703aa7d151ae59cac0bf8e7c2c27da4aca8070f3cb178f624ae10621ef77f5f5"
