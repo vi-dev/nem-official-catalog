@@ -1,0 +1,28 @@
+schema: 2
+name: upx
+description: Executable packer that compresses binaries in place
+homepage: https://upx.github.io
+license: GPL-2.0-or-later
+
+platforms: [linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: upx/upx
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/upx/upx/releases/download/v{{.Version}}/upx-{{.Version}}-{{.Arch}}_{{.OS}}.tar.xz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "upx", dst: "bin/upx", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 5.2.0
+    sha256:
+      linux/arm64: "55d48a61e8ffd17152db871c855376cba7f08e830b37799d0947a16dff8ec36c"
+      linux/amd64: "3db5d3294707439db97866feab8d75d800f028f48481a40547411824da4288a1"

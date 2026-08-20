@@ -1,0 +1,28 @@
+schema: 2
+name: procs
+description: Modern replacement for ps written in Rust
+homepage: https://github.com/dalance/procs
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: dalance/procs
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/dalance/procs/releases/download/v{{.Version}}/procs-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace .OS \"darwin\" \"mac\"}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "procs", dst: "bin/procs", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.14.12
+    sha256:
+      darwin/arm64: "20c7a33426ed7a43c3e13a48f2d1866ecc979a8ad46733f86ddc78ab7f12d49c"
+      darwin/amd64: "2c276f40c99051984942a5b135b74ce4bc9184984a1543dddfcf275bde71d8d4"
+      linux/arm64: "74b4f82acc6fe553cbd5af20ba0baac420b42bef9bb0cbb38fef14b8317d9f91"
+      linux/amd64: "81964faf9d5cd0e9f399d5d0954fb6fe4d4d9f7d3cbec4507633df5a45b11713"

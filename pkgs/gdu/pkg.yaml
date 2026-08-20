@@ -1,0 +1,28 @@
+schema: 2
+name: gdu
+description: Fast disk usage analyzer with a console interface
+homepage: https://github.com/dundee/gdu
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: dundee/gdu
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/dundee/gdu/releases/download/v{{.Version}}/gdu_{{.OS}}_{{.Arch}}.tgz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "gdu_{{.OS}}_{{.Arch}}", dst: "bin/gdu", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 5.37.0
+    sha256:
+      darwin/arm64: "9141cd08df9266b497babcfe84ba08eb28645ea568c113f5cc9d1b125f08dcf3"
+      darwin/amd64: "ba8ea36b67a77f8ca33f96c46a4d470e1344a9a5d26fd621653391c00f2c30cd"
+      linux/arm64: "40bde14eceec8b8c025dd12338564b7dbe1224f69189fa109de6455e3d31b994"
+      linux/amd64: "cee74b2806a83134d36ed3692a1b6c88eeeb5a123b468b962fdfb3191ad7f40a"

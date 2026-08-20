@@ -1,0 +1,28 @@
+schema: 2
+name: dua
+description: Disk usage analyzer with interactive deletion
+homepage: https://github.com/Byron/dua-cli
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: Byron/dua-cli
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/Byron/dua-cli/releases/download/v{{.Version}}/dua-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "dua", dst: "bin/dua", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.42.1
+    sha256:
+      darwin/arm64: "453fb5c43ab862b534c7059cb5d1b5584105a08c32db376555cb4931e5d60f79"
+      darwin/amd64: "7568c5960074f4250781fcddd1d8bac0178b3cf2cf22f76377dcc63121bf7e81"
+      linux/arm64: "3b68248d4b6c4b05042f1ba7579502cc6a62fbe903be3871b54f3fd99fd5c98d"
+      linux/amd64: "897e1f394c696c5be81670f95fb457c89ee35e898aa3100f95b7abf1563bf329"

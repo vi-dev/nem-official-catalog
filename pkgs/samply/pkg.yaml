@@ -1,0 +1,28 @@
+schema: 2
+name: samply
+description: Command-line sampling profiler
+homepage: https://github.com/mstange/samply
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: mstange/samply
+    filter: '^samply-v\d+\.\d+\.\d+$'
+    prefix: "samply-v"
+
+artifact:
+  url: "https://github.com/mstange/samply/releases/download/samply-v{{.Version}}/samply-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.xz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "samply", dst: "bin/samply", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.13.1
+    sha256:
+      darwin/arm64: "7597239aa3769e75058be5ed359dbfe067f5e7714a5f052c45dd81d509aec17f"
+      darwin/amd64: "a57f05f9162d06c36df6d51425d976ac774a8cd6dbd84050e6303fa8bf813998"
+      linux/arm64: "aa465162b62830168775b7ff4804bc35049436dcbc29bb3d1ea9f580380ea06a"
+      linux/amd64: "61875daad67888798690dea3cb2748279df6ac299c5c6a857d67eed7642473d9"

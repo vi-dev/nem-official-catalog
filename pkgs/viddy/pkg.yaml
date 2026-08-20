@@ -1,0 +1,28 @@
+schema: 2
+name: viddy
+description: Watch command with time machine and pager
+homepage: https://github.com/sachaos/viddy
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: sachaos/viddy
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/sachaos/viddy/releases/download/v{{.Version}}/viddy-v{{.Version}}-{{replace .OS \"darwin\" \"macos\"}}-{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "viddy", dst: "bin/viddy", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.3.1
+    sha256:
+      darwin/arm64: "46e9f219299e6a012075b46191fed21663bd916cea95f1e419b787a87ddd48bf"
+      darwin/amd64: "fe3afac2154cdc6432449d1cf526744389f8686bd9b240f146e632aa532205ad"
+      linux/arm64: "4bf88aa5443b09a49e8af55c1e92ff6148486856703b8f886e1984b0e541af4d"
+      linux/amd64: "c0406da6c19bbfbf0381a1a54cf7098a97372c15e5d64bed38e4b8be53e8455e"

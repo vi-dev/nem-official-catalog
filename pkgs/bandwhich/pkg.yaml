@@ -1,0 +1,28 @@
+schema: 2
+name: bandwhich
+description: Terminal bandwidth utilization monitor
+homepage: https://github.com/imsnif/bandwhich
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: imsnif/bandwhich
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/imsnif/bandwhich/releases/download/v{{.Version}}/bandwhich-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "bandwhich", dst: "bin/bandwhich", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.23.1
+    sha256:
+      darwin/arm64: "3b440e6a48c94c2ca7507d45f769d8e97fe9069bafa6f718b045a185addfad36"
+      darwin/amd64: "d4c8f25b997c3f1ad807f251db1d3a0ac53cfcc4d98757d6932360316789ff29"
+      linux/arm64: "6bbf084e5280a1a10833b8f466728ff428a7d637282c0487d6fcda0c4781357a"
+      linux/amd64: "fec93e01c393cd3ef8aa168a675dffb8fa4841d5fd93390b5d14f238ae29e59c"
