@@ -1,0 +1,28 @@
+schema: 2
+name: woodpecker-cli
+description: Command-line client for the Woodpecker CI engine
+homepage: https://woodpecker-ci.org
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: woodpecker-ci/woodpecker
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/woodpecker-ci/woodpecker/releases/download/v{{.Version}}/woodpecker-cli_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "woodpecker-cli", dst: "bin/woodpecker-cli", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.17.0
+    sha256:
+      darwin/arm64: "658e96f71baf95b1b9fe5b9ec88915df7d104a26673bdfa0a396cfa115829e3d"
+      darwin/amd64: "fed628f336b77d6722517ea8d09970074a6a36eadab1621c740358e9f6e8b661"
+      linux/arm64: "5f3cd4f70d07749f37f6550139b2028a35904af097287712a3f1bc4b138e56e2"
+      linux/amd64: "61d2726269d004b577fad6a06e58c2a6cc32c3c5ba3f57dc39240815a314fbe8"

@@ -1,0 +1,28 @@
+schema: 2
+name: dagger
+description: Programmable CI/CD engine running pipelines in containers
+homepage: https://dagger.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: dagger/dagger
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/dagger/dagger/releases/download/v{{.Version}}/dagger_v{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "dagger", dst: "bin/dagger", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.21.8
+    sha256:
+      darwin/arm64: "f3f37a831afd53d09bf9c9a9df63492c16ad43622e5c197d9815e82f334ef1c4"
+      darwin/amd64: "4759befe3fa951fd2ba05551306023df7e8c7fc9eff57bb823481803cb44b215"
+      linux/arm64: "cd0df4885f2050082932b4abc5a6aad9a733f6aa4e7d8474740558517ffec4af"
+      linux/amd64: "53e226c7da8fb75171e58c35759d736d961ce8b3a12db0baa7b7107954fccc5a"

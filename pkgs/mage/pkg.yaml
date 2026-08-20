@@ -1,0 +1,28 @@
+schema: 2
+name: mage
+description: Make-like build tool using Go
+homepage: https://magefile.org
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: magefile/mage
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/magefile/mage/releases/download/v{{.Version}}/mage_{{.Version}}_{{replace (replace .OS \"darwin\" \"macOS\") \"linux\" \"Linux\"}}-{{replace (replace .Arch \"arm64\" \"ARM64\") \"amd64\" \"64bit\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "mage", dst: "bin/mage", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.17.2
+    sha256:
+      darwin/arm64: "5fd6f61170bb7584a4ca3ce4fd01137fe5a8edaf6c096d9f2ad30754d1d92797"
+      darwin/amd64: "bb43eec76388b1445c4ce019c5ac3bb305a56f77c5f580c5067871ff01ea7741"
+      linux/arm64: "5a88f89b52a0270a60c1fd57f964d24af78ac21c6848642f05db1300fe193980"
+      linux/amd64: "b1dd189f5a4d38484176dd5be3b651eb7cbc0b78eaf4bb9715738aa24edec644"

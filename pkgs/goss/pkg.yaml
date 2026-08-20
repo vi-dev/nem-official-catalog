@@ -1,0 +1,28 @@
+schema: 2
+name: goss
+description: YAML-based server validation and testing tool
+homepage: https://github.com/goss-org/goss
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: goss-org/goss
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/goss-org/goss/releases/download/v{{.Version}}/goss_{{.Version}}_{{.OS}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "goss", dst: "bin/goss", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.4.10
+    sha256:
+      darwin/arm64: "3e5b0ff38ef1b005ee8c5e048cf8d44d700ae7529628f210bd60bff2adaf3e34"
+      darwin/amd64: "71d12ae057a929d278146ba38ca80aa1cf7159daf055d1b0065e49bb7f5d6b4a"
+      linux/arm64: "90a59612b4d67d9f1a9038634c000790136bb82526a69de1e81ac075c2f6d2c6"
+      linux/amd64: "26e365428946294bcec0c61d867bb3c8349f39feb3d0e6f59084e98632785cc7"

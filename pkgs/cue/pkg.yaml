@@ -1,0 +1,28 @@
+schema: 2
+name: cue
+description: Data constraint language for configuration and validation
+homepage: https://cuelang.org
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: cue-lang/cue
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/cue-lang/cue/releases/download/v{{.Version}}/cue_v{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "cue", dst: "bin/cue", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.17.1
+    sha256:
+      darwin/arm64: "64921403f012a97f89494c03605db2fbf7d9daa77dc2631819ac4406cb2e8074"
+      darwin/amd64: "80aa026c3f47400c7bfc228b3422fd56b7c6c5ea4d70686f8d8f01ced716d3de"
+      linux/arm64: "0d729be30d52c952ca38fc9dcb692caa09d8463fa0b64df5781312779183fbcd"
+      linux/amd64: "a39b0c97695069d95d276d99be0f5dbabb081d801bfdc9ba49b76efaf94e2369"

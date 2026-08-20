@@ -1,0 +1,26 @@
+schema: 2
+name: pkl
+description: Configuration language with rich validation and tooling
+homepage: https://pkl-lang.org
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: apple/pkl
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/apple/pkl/releases/download/{{.Version}}/pkl-{{replace .OS \"darwin\" \"macos\"}}-{{replace .Arch \"arm64\" \"aarch64\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/pkl", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.32.1
+    sha256:
+      darwin/arm64: "563eb51c9a20b16a3625464ed745c675ed9750381f2126722696a0d7cac1d9d3"
+      darwin/amd64: "5b74b903234047960144f66f2cebdd12d267d9b98e8155ed91d2ae5ed27e2d1f"
+      linux/arm64: "a76d2dd47da435a8f911b0347373f47c7e59ea54fb75ff846d20b8df10dba058"
+      linux/amd64: "3180b62da95c0cad1d904e9bb6c5f4a8f9032413c21e53194bb91ff1ee5f3211"
