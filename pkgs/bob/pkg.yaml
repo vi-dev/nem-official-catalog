@@ -1,0 +1,28 @@
+schema: 2
+name: bob
+description: Version manager for Neovim
+homepage: https://github.com/MordechaiHadad/bob
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: MordechaiHadad/bob
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/MordechaiHadad/bob/releases/download/v{{.Version}}/bob-{{replace .OS \"darwin\" \"macos\"}}-{{replace (replace .Arch \"amd64\" \"x86_64\") \"arm64\" \"arm\"}}.zip"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "bob", dst: "bin/bob", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 4.1.7
+    sha256:
+      darwin/arm64: "0c4e375c6cdab6ca9f2de2e8c30d0621ab7f577f7316e4d1cc0a25cf138df810"
+      darwin/amd64: "eb6093dbcb452f81c578abccf96fa1ec75ad7ac3f653b55ac735960d03a89418"
+      linux/arm64: "dc9286bc169f25c3eda633e44ea12b2bc6e18d8f2d096c670fd34929bc4e4ec9"
+      linux/amd64: "a3e125379a99e4a82faf2c335c6fb85de694a112cf32ab085c10dd59dffd0a78"

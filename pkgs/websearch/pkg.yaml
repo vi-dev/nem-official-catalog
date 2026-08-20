@@ -1,0 +1,29 @@
+schema: 2
+name: websearch
+description: Open a web search from the terminal
+homepage: https://github.com/zquestz/s
+license: MIT
+
+platforms: [darwin/arm64, darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: zquestz/s
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/zquestz/s/releases/download/v{{.Version}}/s-{{.OS}}_{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "s", dst: "bin/s", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.8.1
+    sha256:
+      darwin/arm64: "b458886d3841a574cb50bad90b368f80ecd1c0214607e900516bf56de5ddce21"
+      darwin/amd64: "9a6a82791d48a37f262a438b8733d4ed02cfb6a7f481942c141d7dc9894b4506"
+      linux/amd64: "7676ba5e2ee5f1d16dada1e13bed62eea27f4f9f1521117b280e52cca8ae8cb5"

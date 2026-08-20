@@ -1,0 +1,28 @@
+schema: 2
+name: runme
+description: Run commands and workflows defined in markdown documents
+homepage: https://runme.dev
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: runmedev/runme
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/runmedev/runme/releases/download/v{{.Version}}/runme_{{.OS}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "runme", dst: "bin/runme", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.17.4
+    sha256:
+      darwin/arm64: "cba556395ca24ccee641ee2faa20cc5a4150826205371de354aafc4a4d830381"
+      darwin/amd64: "7c69077ad7331725fa5224fab95562089a42c95baad42b130e1b0b3774ebc480"
+      linux/arm64: "fd016b92115d7f77806c70619ee113dc951c49398863e54bc83eadb9d48665e4"
+      linux/amd64: "78af7ed33a84ff91a617a018886730038f10af8f73027451d322c21c417fed2c"

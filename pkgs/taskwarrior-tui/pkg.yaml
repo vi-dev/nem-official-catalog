@@ -1,0 +1,29 @@
+schema: 2
+name: taskwarrior-tui
+description: Terminal user interface for taskwarrior
+homepage: https://kdheepak.com/taskwarrior-tui
+license: MIT
+
+platforms: [darwin/arm64, darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: kdheepak/taskwarrior-tui
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kdheepak/taskwarrior-tui/releases/download/v{{.Version}}/taskwarrior-tui-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "taskwarrior-tui", dst: "bin/taskwarrior-tui", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.27.0
+    sha256:
+      darwin/arm64: "7498df3d3a9562c81edf45df83fa33aa02e3684b06a9e992647444b2ba94280d"
+      darwin/amd64: "8ac868100d5141ed533f1716b4b7232e5ecaeb6756d148ea4d3bb9b259dddf91"
+      linux/amd64: "b10a64a977b9b289d79cc292af8b05bc9e8e2efd2b6dd64f0f449337c9c3d530"
