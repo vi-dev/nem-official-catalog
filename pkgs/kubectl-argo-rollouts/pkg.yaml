@@ -1,0 +1,27 @@
+schema: 2
+name: kubectl-argo-rollouts
+description: Kubectl plugin and CLI for Argo Rollouts
+homepage: https://argoproj.github.io/rollouts/
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: argoproj/argo-rollouts
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/argoproj/argo-rollouts/releases/download/v{{.Version}}/kubectl-argo-rollouts-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/kubectl-argo-rollouts", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.9.1
+    sha256:
+      darwin/arm64: "e2ada94223e4cfffd8fbc14724e230b072becd007a7fde6f3296a95bcf56596e"
+      darwin/amd64: "1212551121b2d41ea61ea1f11703e486c34915145d3894c718e613d31e472305"
+      linux/arm64: "44f4f5dc0668430cadc5f4cc52e4ae1bf0a3f2f60320af6b3b2edd3c826402b5"
+      linux/amd64: "466d93ccf767e975691359c6c9bb6750696e54c336d28ccd4d39e0f0519e8bf6"

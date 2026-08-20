@@ -1,0 +1,29 @@
+schema: 2
+name: krew
+description: Kubectl plugin manager
+homepage: https://krew.sigs.k8s.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: kubernetes-sigs/krew
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kubernetes-sigs/krew/releases/download/v{{.Version}}/krew-{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  # installed as kubectl-krew so kubectl discovers it as a plugin
+  - copy: {src: "krew-{{.OS}}_{{.Arch}}", dst: "bin/kubectl-krew", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.5.0
+    sha256:
+      darwin/arm64: "cd6e58b4e954e301abd19001d772846997216d696bcaa58f0bcf04708339ece3"
+      darwin/amd64: "2d60559126452b57e3df0612f0475a473363f064da35f817290dbbcd877d1ea8"
+      linux/arm64: "ab7a98b992424e76b6c162f8b67fb76c4b1e243598aa2807bdf226752f964548"
+      linux/amd64: "5d5a221fffdf331d1c5c68d9917530ecd102e0def5b5a6d62eeed1c404efb28a"

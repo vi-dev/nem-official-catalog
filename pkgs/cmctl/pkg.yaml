@@ -1,0 +1,28 @@
+schema: 2
+name: cmctl
+description: CLI for cert-manager
+homepage: https://cert-manager.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: cert-manager/cmctl
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/cert-manager/cmctl/releases/download/v{{.Version}}/cmctl_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "cmctl", dst: "bin/cmctl", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.5.0
+    sha256:
+      darwin/arm64: "91c372b9cf24a261ff6d74de875e73667e5b11f836170e1b9fe1ee3e07522298"
+      darwin/amd64: "7a462c354e00d0e382e4fca28d38db94a4f4e61ce7c34290110a60c38159ed85"
+      linux/arm64: "c46bca0ca061844f973612c15abeb7fbe65621ee9255524f3d17bf0cb3779b09"
+      linux/amd64: "e2dfdf1032e3a442a24b03b996fadb0b8cfeb08ec532c8d724e0178e7e90c7ab"

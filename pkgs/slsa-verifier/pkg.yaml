@@ -1,0 +1,27 @@
+schema: 2
+name: slsa-verifier
+description: Verify SLSA provenance of artifacts
+homepage: https://github.com/slsa-framework/slsa-verifier
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: slsa-framework/slsa-verifier
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/slsa-framework/slsa-verifier/releases/download/v{{.Version}}/slsa-verifier-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/slsa-verifier", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.7.1
+    sha256:
+      darwin/arm64: "39abfcf5f1d690c3e889ce3d2d6a8b87711424d83368511868d414e8f8bcb05c"
+      darwin/amd64: "4baf25415727821f847a38bccedc86c3e5b17cbfc2eb534cd554feb6c856d6f1"
+      linux/arm64: "5d3b2349ede7bfec19e7a21569f18b9f7410145ad12e9584b175370669e14061"
+      linux/amd64: "946dbec729094195e88ef78e1734324a27869f03e2c6bd2f61cbc06bd5350339"

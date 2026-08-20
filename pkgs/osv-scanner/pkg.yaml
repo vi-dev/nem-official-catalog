@@ -1,0 +1,27 @@
+schema: 2
+name: osv-scanner
+description: Vulnerability scanner using the OSV database
+homepage: https://google.github.io/osv-scanner/
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: google/osv-scanner
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/google/osv-scanner/releases/download/v{{.Version}}/osv-scanner_{{.OS}}_{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/osv-scanner", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.5.1
+    sha256:
+      darwin/arm64: "75c44d6332f892a1e56286f4105a98ed751ae28d215ca0a8b65cc00d84103054"
+      darwin/amd64: "9f89beb6c3d784893cb1cae0a3d56c529bfe91075418c2f9440c45b79654198b"
+      linux/arm64: "3d0f5aa5a6baa8eb32bcef247388e149ef6030a6634ccae6fa0d62681fb27a6d"
+      linux/amd64: "f9f25499a2c8cc367b3af45df2ea7eeca7fbccceab9c35079968f4b3652194be"

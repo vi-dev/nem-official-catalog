@@ -1,0 +1,28 @@
+schema: 2
+name: helm-docs
+description: Generate documentation for Helm charts
+homepage: https://github.com/norwoodj/helm-docs
+license: GPL-3.0-only
+
+versionDiscovery:
+  github:
+    repo: norwoodj/helm-docs
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/norwoodj/helm-docs/releases/download/v{{.Version}}/helm-docs_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "helm-docs", dst: "bin/helm-docs", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.14.2
+    sha256:
+      darwin/arm64: "2d8399db5b33d240d5f8985241bcf5483563150b968e3229823822979f3e4b8b"
+      darwin/amd64: "b2f1ffd0feef8dc0901a38a2053481d1d67b63ca30da4ac774166c6b52fa2245"
+      linux/arm64: "c3787212332386dcd122debef7848feb165aa701467ae3e3442df7638f3ac4e4"
+      linux/amd64: "a8cf72ada34fad93285ba2a452b38bdc5bd52cc9a571236244ec31022928d6cc"

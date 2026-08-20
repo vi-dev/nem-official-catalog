@@ -1,0 +1,28 @@
+schema: 2
+name: trufflehog
+description: Find and verify leaked credentials
+homepage: https://github.com/trufflesecurity/trufflehog
+license: AGPL-3.0-only
+
+versionDiscovery:
+  github:
+    repo: trufflesecurity/trufflehog
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/trufflesecurity/trufflehog/releases/download/v{{.Version}}/trufflehog_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "trufflehog", dst: "bin/trufflehog", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.97.0
+    sha256:
+      darwin/arm64: "ad0a99bd48d6df80eabab24d11d0fd771e245fc55ed347f943cafb5e5f497c5c"
+      darwin/amd64: "037e4aeb197870555ff515432bb5f1f2c98dce5f1214631a689112b5e0e4c9fd"
+      linux/arm64: "f48f57e3d4343377865b1b64653f96d381d61a7792d89d026e85524732039fde"
+      linux/amd64: "62224de2f9dd7cd418800feb953760a302ed2f82a7c547fe1146a4874fb179e4"

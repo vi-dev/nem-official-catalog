@@ -1,0 +1,27 @@
+schema: 2
+name: k3d
+description: Run k3s Kubernetes clusters in Docker
+homepage: https://k3d.io
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: k3d-io/k3d
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/k3d-io/k3d/releases/download/v{{.Version}}/k3d-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/k3d", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 5.9.0
+    sha256:
+      darwin/arm64: "fe106541d5d0a3f18debcd4d432a16f8c0ce3e6ddc06f8fbb6f696a122313e00"
+      darwin/amd64: "b4aabc37534f95b9c764e7823f2df923f50d57600837aa60a06266cce47db732"
+      linux/arm64: "03cde5cf23e6e8e67de5a039ecf26e5b85aca82fba3e5d13dadf904cd218a250"
+      linux/amd64: "06d8f25bc3a971c4eb29e0ff08429b180402db0f4dec838c9eac427e296800a0"

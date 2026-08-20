@@ -1,0 +1,28 @@
+schema: 2
+name: lazydocker
+description: Terminal UI for docker and docker-compose
+homepage: https://github.com/jesseduffield/lazydocker
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: jesseduffield/lazydocker
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/jesseduffield/lazydocker/releases/download/v{{.Version}}/lazydocker_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "lazydocker", dst: "bin/lazydocker", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.25.2
+    sha256:
+      darwin/arm64: "4a54d7b4abdf255b2bce9806641eac5568d5b7fbc820c1b5d3f9e34ea1367d60"
+      darwin/amd64: "af70b6e234089aa24924db25fc201d17f224e76d334e743e4595d30cf83a013b"
+      linux/arm64: "005c38b685aaa557e7d646d83a3dadb5024340eeed8c6a2e1949eee6f530de23"
+      linux/amd64: "0d9dbfc26068b218e7ed84b104748cadc6e3cf733c0afd35465306fb39b9523c"

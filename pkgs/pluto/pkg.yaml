@@ -1,0 +1,28 @@
+schema: 2
+name: pluto
+description: Detect deprecated Kubernetes API versions
+homepage: https://github.com/FairwindsOps/pluto
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: FairwindsOps/pluto
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/FairwindsOps/pluto/releases/download/v{{.Version}}/pluto_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "pluto", dst: "bin/pluto", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 5.24.3
+    sha256:
+      darwin/arm64: "650dfc0cf48ac5158ec80147d374381b48200de0b63efa3e0f72452e927b1c3a"
+      darwin/amd64: "5d098949161d0e50103b34536e31be442a1b9ca3c8af6443b3c48a3e4b4a593a"
+      linux/arm64: "ba334c13b0f96b082649210fe643e40e0c4a242c14de6633e71eb7ab015e0029"
+      linux/amd64: "f03bcf0ef81ddd2f2a73e7f6f3542f0e0e14ad3213cbdab725dd55dd1c8766ea"

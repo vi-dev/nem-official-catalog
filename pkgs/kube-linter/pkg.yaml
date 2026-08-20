@@ -1,0 +1,28 @@
+schema: 2
+name: kube-linter
+description: Static analysis for Kubernetes YAML and Helm charts
+homepage: https://github.com/stackrox/kube-linter
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: stackrox/kube-linter
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/stackrox/kube-linter/releases/download/v{{.Version}}/kube-linter-{{.OS}}{{if eq .Arch \"arm64\"}}_arm64{{end}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kube-linter", dst: "bin/kube-linter", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.8.3
+    sha256:
+      darwin/arm64: "6e3443a8ff8625a9fc31a38682c783988d7559018f7ff707a4f8c77c18c92f14"
+      darwin/amd64: "c62e8af3c9df2557c7a3922119ea1b35597794737d1ccad493f63a0d66e7b8fc"
+      linux/arm64: "802e1b09eabd08f6f0a060a6b8ab2bf7bc7e6bf4f673bb2692303704c84b3e22"
+      linux/amd64: "1a6d8419b11971372971fdbc22682b684ebfb7cf1c39591662d1b6ca736c41df"

@@ -1,0 +1,28 @@
+schema: 2
+name: golang-migrate
+description: Database migrations CLI
+homepage: https://github.com/golang-migrate/migrate
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: golang-migrate/migrate
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/golang-migrate/migrate/releases/download/v{{.Version}}/migrate.{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "migrate", dst: "bin/migrate", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 4.19.1
+    sha256:
+      darwin/arm64: "a8cc8657afd1c2c93c78e8b77fd2275d150c29ebc1fff0e8fe0be68751503468"
+      darwin/amd64: "e010d5d1792fa9b368c846f0aa297982322aa5739e784608d3cea653d297e0f4"
+      linux/arm64: "2fea2455c0f3f07cc3f4b98471c951ad1a716059574b20b6416bd1e9058751c5"
+      linux/amd64: "2ac648fbd1b127b69ab5a7b33cf96212178f71e22379fc50573630c6f4c7ce18"

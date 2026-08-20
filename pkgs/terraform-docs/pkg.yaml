@@ -1,0 +1,28 @@
+schema: 2
+name: terraform-docs
+description: Generate documentation from Terraform modules
+homepage: https://terraform-docs.io
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: terraform-docs/terraform-docs
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/terraform-docs/terraform-docs/releases/download/v{{.Version}}/terraform-docs-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "terraform-docs", dst: "bin/terraform-docs", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.24.0
+    sha256:
+      darwin/arm64: "f6b114f4b032f3f9202ab6c23bfd28c3c8e68aeeb8a8f12fc118bf2073081d71"
+      darwin/amd64: "3c3f7f18f908457fd1209cbe341418f7f6bae78c08126cfbe8de0d1b06aa8781"
+      linux/arm64: "d12bd7b73c1fc9c64efc79f8157dd713dabd559f1ecf3cfc0f42e32279a155fd"
+      linux/amd64: "9005daf969de0b50134493a2c00078b49f5f5b39d021cda7c89bf4d4f3d776d3"
