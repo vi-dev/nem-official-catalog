@@ -1,0 +1,29 @@
+schema: 2
+name: gptcommit
+description: Git prepare-commit-msg hook that writes commit messages with an LLM
+homepage: https://github.com/zurawiki/gptcommit
+license: MIT
+
+platforms: [darwin/arm64, darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: zurawiki/gptcommit
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/zurawiki/gptcommit/releases/download/v{{.Version}}/gptcommit-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "gptcommit", dst: "bin/gptcommit", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.5.17
+    sha256:
+      darwin/arm64: "4176e093e55b83d37281cd5ab02ae0f0ad42e2bf540e9709d98c6ba91d5cacff"
+      darwin/amd64: "c94eef03df87c01a7d3833dac41bd09702720fc4524376ad6613ec675c77b942"
+      linux/amd64: "21db474333f3c7875f919b32c10f298674d3adfd4b6828933357f0decb64043d"

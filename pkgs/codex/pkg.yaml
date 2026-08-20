@@ -1,0 +1,29 @@
+schema: 2
+name: codex
+description: Coding agent that runs in the terminal
+homepage: https://github.com/openai/codex
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: openai/codex
+    filter: '^rust-v\d+\.\d+\.\d+$'
+    prefix: "rust-v"
+
+artifact:
+  url: "https://github.com/openai/codex/releases/download/rust-v{{.Version}}/codex-package-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+# The archive ships bin/codex alongside sibling codex-path/ and
+# codex-resources/ trees it resolves at runtime, so the layout is kept intact.
+install:
+  - extract: {strip: 0}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.148.0
+    sha256:
+      darwin/arm64: "bfae69c7bb7a3fbe68161f2ca9328839c7e6eea053a8871186eb6edbb1346870"
+      darwin/amd64: "9ac9245ea244629a9ba4db3315f0cdaebb05182b790ee34271a5060875d836e1"
+      linux/arm64: "580db3c7411f5852b550876f185c30b61b674e01b948fd5030f2cd7a30db110a"
+      linux/amd64: "8c790500af2ba6e74ce4948fe26c651ac1f77f6dbb005b47c8d26ff711146262"

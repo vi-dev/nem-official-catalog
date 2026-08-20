@@ -1,0 +1,28 @@
+schema: 2
+name: github-mcp-server
+description: MCP server for GitHub repositories, issues, and pull requests
+homepage: https://github.com/github/github-mcp-server
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: github/github-mcp-server
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/github/github-mcp-server/releases/download/v{{.Version}}/github-mcp-server_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "github-mcp-server", dst: "bin/github-mcp-server", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.10.1
+    sha256:
+      darwin/arm64: "ca530ba9abf04030104166cc37e1072087a30a173e921c0ed9064f98c73ca039"
+      darwin/amd64: "ea6e86baea583c6c5b55cce071c1c19253009a90f1e987788cb5eb228fcd9556"
+      linux/arm64: "c51dc6cf192c35a328b9f71696d42c38a9a3ba3c2ffe010da836bed071d1ac8a"
+      linux/amd64: "c2629e850a344275cfc5a1590acdfd8c11476a44b688812d460163768e05572d"

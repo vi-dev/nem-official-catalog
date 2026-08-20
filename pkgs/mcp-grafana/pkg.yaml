@@ -1,0 +1,28 @@
+schema: 2
+name: mcp-grafana
+description: MCP server for Grafana dashboards, datasources, and alerts
+homepage: https://github.com/grafana/mcp-grafana
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: grafana/mcp-grafana
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/grafana/mcp-grafana/releases/download/v{{.Version}}/mcp-grafana_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "mcp-grafana", dst: "bin/mcp-grafana", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.1.0
+    sha256:
+      darwin/arm64: "96ccc022d1618a9e9a853f4b765dbaa3f86edeb1b489c1fca7fc150710c9df72"
+      darwin/amd64: "060a71a78d13e9e9f7181b1fa3b3b56c8ed80936a5d254cabafdc2f5e866e715"
+      linux/arm64: "23074b93313a7ae2ee7770b4cb5b4859f2acf1830e56f39e0cf49ce48a49e8ae"
+      linux/amd64: "8468b1e159412eb1ab738786cf0d2755a1ea0a44103ca8c0040849a227746e07"

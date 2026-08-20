@@ -1,0 +1,29 @@
+schema: 2
+name: cagent
+description: Declarative builder and runtime for multi-agent AI systems
+homepage: https://github.com/docker/cagent
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: docker/cagent
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+# Releases ship the binary under the docker-agent name; upstream still calls
+# the tool cagent.
+artifact:
+  url: "https://github.com/docker/cagent/releases/download/v{{.Version}}/docker-agent-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/cagent", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.126.0
+    sha256:
+      darwin/arm64: "853a44a263df3148cba3288509e5921bd105be8f387da0b6b1ac48e39ca87c48"
+      darwin/amd64: "a4d1df600bd7e3c1991f2d94fdfca9f29656fb6c54d9f3967263bede4deb68c3"
+      linux/arm64: "e021d04c3e0c937256102617601c73bc2091e01b49801529956e3844f8a422e9"
+      linux/amd64: "32de0eb652dad6e7a39e2f9c5ff4e5ef3c28afdd33984c06bb9748f5e82d9beb"

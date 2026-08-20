@@ -1,0 +1,28 @@
+schema: 2
+name: claude-code
+description: Agentic coding tool that runs in the terminal
+homepage: https://code.claude.com/docs/en/overview
+license: LicenseRef-Anthropic-Commercial
+
+versionDiscovery:
+  github:
+    repo: anthropics/claude-code
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/anthropics/claude-code/releases/download/v{{.Version}}/claude-{{.OS}}-{{replace .Arch \"amd64\" \"x64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "claude", dst: "bin/claude", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.1.237
+    sha256:
+      darwin/arm64: "cc5c73476727d8a8232eab949c19e3cd1ada2a3e51767b954eccd1ab752c9563"
+      darwin/amd64: "9850f5507a99596cf3f96bb33e6eb6f1478eb0f1063a97e9b72858aebdaca576"
+      linux/arm64: "aa99b5672ec5ac1ba0e5536ab4cab23df0080022df25ae0b84e8a678dbbabe5a"
+      linux/amd64: "fe1c47e3309c731b6c9b382599603df3784b00d65a2236f46c867fc55436adfa"

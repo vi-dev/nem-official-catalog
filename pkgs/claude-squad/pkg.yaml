@@ -1,0 +1,28 @@
+schema: 2
+name: claude-squad
+description: Terminal manager for multiple AI coding agent sessions
+homepage: https://github.com/smtg-ai/claude-squad
+license: AGPL-3.0-only
+
+versionDiscovery:
+  github:
+    repo: smtg-ai/claude-squad
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/smtg-ai/claude-squad/releases/download/v{{.Version}}/claude-squad_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "claude-squad", dst: "bin/cs", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.0.20
+    sha256:
+      darwin/arm64: "7bcea7435ab87e7f726da959e825112613621929aaa01848eb4b799ac75d81ad"
+      darwin/amd64: "8948015426bc58732bfa1e0986d31d261d6633b69d25a1e8727646794257b67f"
+      linux/arm64: "9139d192d77f4d35209f7e6c81beb64264dd78f86933f6b2ef35574b7a8c7102"
+      linux/amd64: "42574a4e1700119774f21fb4ced45df4fb1e0bde74a2132e7bca537b050c4863"

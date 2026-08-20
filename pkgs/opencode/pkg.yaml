@@ -1,0 +1,29 @@
+schema: 2
+name: opencode
+description: AI coding agent for the terminal
+homepage: https://opencode.ai
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: anomalyco/opencode
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+# Upstream ships darwin as zip and linux as tar.gz, hence the extension switch.
+artifact:
+  url: "https://github.com/anomalyco/opencode/releases/download/v{{.Version}}/opencode-{{.OS}}-{{replace .Arch \"amd64\" \"x64\"}}.{{replace (replace .OS \"darwin\" \"zip\") \"linux\" \"tar.gz\"}}"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "opencode", dst: "bin/opencode", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.18.19
+    sha256:
+      darwin/arm64: "0026326bd77a3277ab3726be237410b19389f7829e8bb3c82dfaf9044162067c"
+      darwin/amd64: "ee495d7c30263c2cecb81a4558a9c4d29ac7b27c1df822e9d344a69cb56a75c3"
+      linux/arm64: "506f98a1f618551f1f6fc5dcf591f824bef9d6819d40b27928ad7febcb7c363b"
+      linux/amd64: "7bb35487c55f9957f5d91ae60be6fa49fc8f74629c210c1719ed75fdbf7e2bd9"

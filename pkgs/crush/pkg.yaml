@@ -1,0 +1,28 @@
+schema: 2
+name: crush
+description: Terminal AI coding agent with multi-model support
+homepage: https://github.com/charmbracelet/crush
+license: FSL-1.1-MIT
+
+versionDiscovery:
+  github:
+    repo: charmbracelet/crush
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/charmbracelet/crush/releases/download/v{{.Version}}/crush_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "crush", dst: "bin/crush", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.90.0
+    sha256:
+      darwin/arm64: "fcd956f05db3e57e8a72de30ad541a8bdc09d711bfba5d3d57bf01926a9933a8"
+      darwin/amd64: "825140048dec4651b624a691303c2ab3d90c6def034de0215a7e9e1ea53d6a4d"
+      linux/arm64: "5b08301c9f1127427350ac11ba4fa98829453c38e1d93e70eef8ef0e9d6dbbf1"
+      linux/amd64: "4eebb9ce1a3655560bae03c64bebcc546f6b24ba9f9ebd1e8ea844b8c3b37ea0"

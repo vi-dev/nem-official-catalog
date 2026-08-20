@@ -1,0 +1,32 @@
+schema: 2
+name: ollama
+description: Run large language models locally
+homepage: https://ollama.com
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: ollama/ollama
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+# darwin ships one universal archive with no arch in its name; linux ships
+# per-arch zstd tarballs.
+artifact:
+  url: "https://github.com/ollama/ollama/releases/download/v{{.Version}}/ollama-{{replace (replace (replace .OS \"darwin\" \"darwin.tgz\") \"linux\" \"linux-ARCH.tar.zst\") \"ARCH\" .Arch}}"
+
+# The binary loads its GPU/CPU runner libraries from paths relative to itself,
+# so the upstream layout is kept as-is: darwin puts everything at the root,
+# linux uses bin/ plus lib/ollama.
+install:
+  - extract: {strip: 0}
+
+bins: ["bin", "."]
+
+versions:
+  - version: 0.32.14
+    sha256:
+      darwin/arm64: "c7e8b91485943785bc6d295d96551e971ec94c6829d0d6b3500366942dc50cd1"
+      darwin/amd64: "c7e8b91485943785bc6d295d96551e971ec94c6829d0d6b3500366942dc50cd1"
+      linux/arm64: "7802b739fbdc74df556600f1619f86457b69dce913301cf2d91f7f9d7f7a41b8"
+      linux/amd64: "c620917a71e146ab3a7f893084f066069c4c65d144ef8379a91c3cbe8b27de8f"

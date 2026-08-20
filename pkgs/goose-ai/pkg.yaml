@@ -1,0 +1,28 @@
+schema: 2
+name: goose-ai
+description: Extensible AI agent that runs and edits code locally
+homepage: https://goose-docs.ai
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: aaif-goose/goose
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/aaif-goose/goose/releases/download/v{{.Version}}/goose-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.bz2"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "goose", dst: "bin/goose", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.46.0
+    sha256:
+      darwin/arm64: "de263fb06839de31345dff08aeba999ba165b023cd3cec7ec3bef20f6f4f7e73"
+      darwin/amd64: "b5b66f5d4966aac74998c63420c98b3e289ae498f0c120463ac0b8dbc2a40083"
+      linux/arm64: "b56da65ab1004832ce5524ed40ec6fbe38ba84dae654d0a8eb86be9d90086cf6"
+      linux/amd64: "a1cf4856a765d07d6b95689a53c7bca21fcc6e6d65c0dfd064fc704052b85a7b"

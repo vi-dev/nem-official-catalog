@@ -1,0 +1,28 @@
+schema: 2
+name: aichat
+description: Terminal LLM client with shell assistant and RAG
+homepage: https://github.com/sigoden/aichat
+license: MIT OR Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: sigoden/aichat
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/sigoden/aichat/releases/download/v{{.Version}}/aichat-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "aichat", dst: "bin/aichat", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.30.0
+    sha256:
+      darwin/arm64: "680d36ed7f7ba8a2c2490a099df26c9da54495903c27956109a89c87eeb9edb3"
+      darwin/amd64: "94aa09315773929e027bcb399f78661c2ddffd887b65348bae446601989d9ddd"
+      linux/arm64: "eb1cd0948569404c5d9d01c10b32b902e11f8231073315456454dec246bdf26e"
+      linux/amd64: "6b0cc08c5ceb551dc52bfac2221752f82215be5908c70605d655e9b91ab1557c"

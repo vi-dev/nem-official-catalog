@@ -1,0 +1,27 @@
+schema: 2
+name: tgpt
+description: Terminal AI chatbot client that needs no API keys
+homepage: https://github.com/aandrew-me/tgpt
+license: GPL-3.0
+
+versionDiscovery:
+  github:
+    repo: aandrew-me/tgpt
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/aandrew-me/tgpt/releases/download/v{{.Version}}/tgpt-{{replace .OS \"darwin\" \"mac\"}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/tgpt", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.13.0
+    sha256:
+      darwin/arm64: "ad70c667dd1629b76b43d8481de86723d98ead05271e07d070db80a77945f4ed"
+      darwin/amd64: "f1e09e06b21fd1af64b6b8e693b59702c23505bdebc61428a54b9460ef53bfa8"
+      linux/arm64: "27b10998e652619ed15dd796dfb6ce41b01a533803a56d444cd7bda2c0227fec"
+      linux/amd64: "5160d48afb02fbc9d4858e6bb3633f59c781f91f3482fa14d5a847ed1059ecc1"
