@@ -1,0 +1,28 @@
+schema: 2
+name: lychee
+description: Fast link checker for Markdown, HTML, and more
+homepage: https://lychee.cli.rs
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: lycheeverse/lychee
+    filter: '^lychee-v\d+\.\d+\.\d+$'
+    prefix: "lychee-v"
+
+artifact:
+  url: "https://github.com/lycheeverse/lychee/releases/download/lychee-v{{.Version}}/lychee-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "lychee", dst: "bin/lychee", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.24.2
+    sha256:
+      darwin/arm64: "c9d3740ea2d891854d37116c9fba840f37b6e7c89d330e7db84ac333631c4977"
+      darwin/amd64: "887503a9cff667d322b8d0892b40bf49976eb9507af8483220a3706cdad55978"
+      linux/arm64: "5d0b0e3aeab240f41920c633a6eaf97599be6eedda034b36e858ede7dba5e535"
+      linux/amd64: "73657a111819a30c47c08352896796f23d64e4eb2b3ed39b6d32149241566fc5"

@@ -1,0 +1,28 @@
+schema: 2
+name: typos
+description: Source code spell checker
+homepage: https://github.com/crate-ci/typos
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: crate-ci/typos
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/crate-ci/typos/releases/download/v{{.Version}}/typos-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "typos", dst: "bin/typos", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.49.0
+    sha256:
+      darwin/arm64: "8c0e7bd40b2b60c0b0cfe9f74dd814b4d4385c956ce86860f7da9e62d91fdc73"
+      darwin/amd64: "4cecbf653a9fc45f023abf57f4e2e2f6b138c2d2387b09289beacdd3f0ea7bfd"
+      linux/arm64: "85c8b87b22a0fb1da130cd4d495e0beba7f1225eb580933184509e146ec4c509"
+      linux/amd64: "48bd2d58e02ce713b8c0f1aa239e68ee4f7d8c551013135806e6aed3938d9e10"

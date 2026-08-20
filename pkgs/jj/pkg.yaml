@@ -1,0 +1,28 @@
+schema: 2
+name: jj
+description: Git-compatible version control system (Jujutsu)
+homepage: https://github.com/jj-vcs/jj
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: jj-vcs/jj
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/jj-vcs/jj/releases/download/v{{.Version}}/jj-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "jj", dst: "bin/jj", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.44.0
+    sha256:
+      darwin/arm64: "22b92ed109378a9638f0ae55ca7a7bdc9ef26aa60124215a1f04f6808623ba94"
+      darwin/amd64: "aaec25cbe08e52ba98db0773369c76f248d3a77578e2d4b7b4079aa335ef02a3"
+      linux/arm64: "60d42fa2a9abaa445eff10cd2087458562aaad5a54b90309e5a3787ecc985ff2"
+      linux/amd64: "0a07bab4641a55fd2bc2fd1563ba3a3f9a577584086ad74086a1c5b69b3ffce9"

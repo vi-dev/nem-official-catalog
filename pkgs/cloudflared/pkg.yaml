@@ -1,0 +1,32 @@
+schema: 2
+name: cloudflared
+description: Cloudflare Tunnel client
+homepage: https://github.com/cloudflare/cloudflared
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: cloudflare/cloudflared
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/cloudflare/cloudflared/releases/download/{{.Version}}/cloudflared-{{.OS}}-{{.Arch}}{{if eq .OS \"darwin\"}}.tgz{{end}}"
+
+install:
+  # darwin ships a tarball, linux a raw binary
+  - extract: {strip: 0}
+    platforms: [darwin]
+  - copy: {src: "cloudflared", dst: "bin/cloudflared", mode: 0o755}
+    platforms: [darwin]
+  - copy: {src: "{{.Artifact}}", dst: "bin/cloudflared", mode: 0o755}
+    platforms: [linux]
+
+bins: ["bin"]
+
+versions:
+  - version: 2026.8.2
+    sha256:
+      darwin/arm64: "9042c2c5d8b2de78e60f313d5fb31b6c5c1cebde787a3caf1f2c9588084ac442"
+      darwin/amd64: "f1727723c586500e2092368ae21871b3df7ddfd2cb097f22d81bee4a9c458bb4"
+      linux/arm64: "7747d94570fb390cf47dcb4f9555c193c6355cda9793f0d878d9049e5d6a7790"
+      linux/amd64: "fcfb02b575a52ca1af2e3267af4e1517bcdeb30ac48c834c69abaed3c0576ad2"

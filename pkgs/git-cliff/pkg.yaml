@@ -1,0 +1,28 @@
+schema: 2
+name: git-cliff
+description: Changelog generator from conventional commits
+homepage: https://git-cliff.org
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: orhun/git-cliff
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/orhun/git-cliff/releases/download/v{{.Version}}/git-cliff-{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "git-cliff", dst: "bin/git-cliff", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.13.1
+    sha256:
+      darwin/arm64: "21547ae4a0421164070ab75c2522864ea5565858a011fabc5f583061b20f1226"
+      darwin/amd64: "6e60ae390d375cecb9d8008c49f0e724a8dfe40390b532ef5501e421d2cc8acb"
+      linux/arm64: "4054c124b926c117f3fa048939bc8be0a954f29f3b6f367627e8cb22c1971882"
+      linux/amd64: "200d2535da6d9703f3bcc8a4d159c3b55eacdb01cf2148c55b3eee9dd04d5249"

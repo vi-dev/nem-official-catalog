@@ -1,0 +1,28 @@
+schema: 2
+name: zola
+description: Fast static site generator
+homepage: https://www.getzola.org
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: getzola/zola
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/getzola/zola/releases/download/v{{.Version}}/zola-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "zola", dst: "bin/zola", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.23.3
+    sha256:
+      darwin/arm64: "5e3575cc7b054f20002eecf2c2d9850f0771f4f291f5c68ae748c72005679407"
+      darwin/amd64: "1c0a0cc90653b15267d9f6a52e2ff52ee2a442af18235f9dbf5ca5cc30ba137e"
+      linux/arm64: "15387186bc8fde347dd931490afafe462ccc391db049e9e19c80a48dd060a8c9"
+      linux/amd64: "f07c92607e5745268b576bd325ceef3a582aada253bb64db8d92a8a85303d958"

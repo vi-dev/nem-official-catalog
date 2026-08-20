@@ -1,0 +1,28 @@
+schema: 2
+name: vegeta
+description: HTTP load testing tool and library
+homepage: https://github.com/tsenart/vegeta
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: tsenart/vegeta
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/tsenart/vegeta/releases/download/v{{.Version}}/vegeta_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "vegeta", dst: "bin/vegeta", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 12.13.0
+    sha256:
+      darwin/arm64: "fc408e242c4f4839e6fe536dbf1130bb02f430134827f6d831bf367a0929a799"
+      darwin/amd64: "4e912c83ce07db4e1e394e1cbb657f2396dff2f7ed90f03869a184cc17d0f994"
+      linux/arm64: "950381173a5575e25e8e086f36fc03bf65d61a2433329b48e41e1cb5e4133bba"
+      linux/amd64: "e8759ce45c14e18374bdccd3ba6068197bc3a9f9b7e484db3837f701b9d12e61"

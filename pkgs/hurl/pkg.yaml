@@ -1,0 +1,27 @@
+schema: 2
+name: hurl
+description: Run and test HTTP requests defined in plain text
+homepage: https://hurl.dev
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: Orange-OpenSource/hurl
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/Orange-OpenSource/hurl/releases/download/{{.Version}}/hurl-{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  # the tarball already lays out bin/ (hurl and hurlfmt)
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 8.0.1
+    sha256:
+      darwin/arm64: "b57928e246617df73cb1b2157f31f507dcbde6ae12e828cc53dde0e40e05bbbb"
+      darwin/amd64: "55e95bb7a8d61ae6919eaaf96f260f0836f5b34c1b0f7731e38be803f6984367"
+      linux/arm64: "bc4732df4754748e9bf296aa3832ec019f798afb399f1279b72ed37b6e04525c"
+      linux/amd64: "cac7c4670d69444db120edb21fe06c97ba8c80dcc52279957c8dd18f05fb0c06"

@@ -1,0 +1,28 @@
+schema: 2
+name: mdbook
+description: Create books from Markdown
+homepage: https://rust-lang.github.io/mdBook/
+license: MPL-2.0
+
+versionDiscovery:
+  github:
+    repo: rust-lang/mdBook
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/rust-lang/mdBook/releases/download/v{{.Version}}/mdbook-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "mdbook", dst: "bin/mdbook", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.5.4
+    sha256:
+      darwin/arm64: "03e8a6d8b13a2971e0b3280affd03b388373c1485e26f73407c3a76b0b1838df"
+      darwin/amd64: "a47d7bf0d5d670cff9ee6cce95537cbeb62dc10704d9e7131ffbd13e2b59a5de"
+      linux/arm64: "753e5c5c363ee8a56972344dcf91466f005a51db84a7aeffe427ae3ef83d6d44"
+      linux/amd64: "5222beabd3e37dc5be0d18ff99b79058469354db5c220153a1b92db5ba12be89"

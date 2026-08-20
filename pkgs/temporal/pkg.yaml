@@ -1,0 +1,28 @@
+schema: 2
+name: temporal
+description: Temporal workflow platform CLI and dev server
+homepage: https://temporal.io
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: temporalio/cli
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/temporalio/cli/releases/download/v{{.Version}}/temporal_cli_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "temporal", dst: "bin/temporal", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.8.2
+    sha256:
+      darwin/arm64: "dacdc3587682c04cf27e67c8878ca2d755230b6ad63c0c6ebddd7348ae90ed94"
+      darwin/amd64: "489d7f5420cae02b559774ac23df035141954c33a51dba96f5759a0ddccdf1b6"
+      linux/arm64: "83600a8fac6e3da54093e5da6918d399f501532b9f1172235603f9606f4ac6e4"
+      linux/amd64: "d8421bda989e6514b4bdb4d63a9012a8a05a806892e881a5aad8510496349a94"

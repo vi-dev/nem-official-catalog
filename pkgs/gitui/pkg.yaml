@@ -1,0 +1,28 @@
+schema: 2
+name: gitui
+description: Terminal UI for git
+homepage: https://github.com/gitui-org/gitui
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: gitui-org/gitui
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/gitui-org/gitui/releases/download/v{{.Version}}/gitui-{{if eq .OS \"darwin\"}}mac{{if eq .Arch \"amd64\"}}-x86{{end}}{{else}}linux-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}{{end}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "gitui", dst: "bin/gitui", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.28.1
+    sha256:
+      darwin/arm64: "3b519a593383841289361bacf579d4a222169aa7ebbdeae6cc449d488d8bb967"
+      darwin/amd64: "27e2f558ca7ebbc7b5fc4c1f61285355d2ea4735610e906579e5b3c8736e7685"
+      linux/arm64: "2a640da05b73e9152a7bf92bfd7c23acd9d60438f4f2cabb62357014a5fd7c28"
+      linux/amd64: "f6149b9ae203397158b0c89c13cfde718e7121d3d3cd2ebc597f93d6628d9b5b"

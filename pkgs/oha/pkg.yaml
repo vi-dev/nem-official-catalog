@@ -1,0 +1,27 @@
+schema: 2
+name: oha
+description: HTTP load generator with a live TUI
+homepage: https://github.com/hatoo/oha
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: hatoo/oha
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/hatoo/oha/releases/download/v{{.Version}}/oha-{{replace .OS \"darwin\" \"macos\"}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/oha", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.15.0
+    sha256:
+      darwin/arm64: "70d7cb7c15ed3d5eb4b7d9a7e76f0a8ee32ba1f18f560acef3b28e8670b89bb0"
+      darwin/amd64: "fc8ccb4126737aae85cc9fbc6f95b161bf8bbb676bf02d4bb6196ec02c709c36"
+      linux/arm64: "72d5bf4575cede9f9277f93f097b904f893b0f0cd4d92f0869439b05e1403731"
+      linux/amd64: "86ab7fa2c1df23b3bbc53b73561ffa44a7a38ca08f0e10351df9522a5c4c3c61"
