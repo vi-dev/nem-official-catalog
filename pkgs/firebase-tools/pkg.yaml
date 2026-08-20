@@ -1,0 +1,29 @@
+schema: 2
+name: firebase-tools
+description: Command line interface for Firebase projects
+homepage: https://firebase.google.com/docs/cli
+license: MIT
+
+# Upstream ships one x86_64 macOS binary; darwin/arm64 runs it under Rosetta 2.
+platforms: [darwin/arm64, darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: firebase/firebase-tools
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/firebase/firebase-tools/releases/download/v{{.Version}}/firebase-tools-{{replace .OS \"darwin\" \"macos\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/firebase", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 15.28.1
+    sha256:
+      darwin/arm64: "aacec55ab57ff0470e0fe41fc7fc96ddd9d2100e28082f3f935e747d1eb9e491"
+      darwin/amd64: "aacec55ab57ff0470e0fe41fc7fc96ddd9d2100e28082f3f935e747d1eb9e491"
+      linux/amd64: "78e5d2b0fa3d2a84cc015b710fb9c9078315a6ba923289f0759dd5e2b901fa32"

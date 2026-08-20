@@ -1,0 +1,27 @@
+schema: 2
+name: snyk
+description: Security scanner for code, dependencies, and containers
+homepage: https://docs.snyk.io/snyk-cli
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: snyk/cli
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/snyk/cli/releases/download/v{{.Version}}/snyk-{{replace .OS \"darwin\" \"macos\"}}{{if eq .Arch \"arm64\"}}-arm64{{end}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/snyk", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.1306.4
+    sha256:
+      darwin/arm64: "c9f0ef8c4b555f3ac4eb6d3d874d2d06260a58d39e91dbcac4008cfb74c9ecbb"
+      darwin/amd64: "f902dbc0be77cd3778d2a7119cc7235e220cf2ef809171b17b95e295b2e23d35"
+      linux/arm64: "d970aef55c25dc3cb5986853e69643aac7e20acf8c56ffbd304218f41470a7d2"
+      linux/amd64: "78a83f57a16cb660879cb29f75fcb4a6c1ba07791dceb41e2b840fb89741c95c"

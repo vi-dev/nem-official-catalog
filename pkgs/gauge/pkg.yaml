@@ -1,0 +1,28 @@
+schema: 2
+name: gauge
+description: Cross-platform test automation runner
+homepage: https://gauge.org
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: getgauge/gauge
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/getgauge/gauge/releases/download/v{{.Version}}/gauge-{{.Version}}-{{.OS}}.{{replace .Arch \"amd64\" \"x86_64\"}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "gauge", dst: "bin/gauge", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.6.35
+    sha256:
+      darwin/arm64: "669fad269891398ecb08dd773b803ad2160390630d51dadc06b451fe96f16472"
+      darwin/amd64: "235cd620b353553a6a09aaf016e28b10f36fc10e24ba5cef6f43bc14897c350e"
+      linux/arm64: "1e34a9d686ca95c34a00a28a79eda7c3c5edba239226fb546fd8d110b4eb099a"
+      linux/amd64: "6d23292d876f884b43479ff0e50de85132d55579b1f89e2711047cc702d8ed88"

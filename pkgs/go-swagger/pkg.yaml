@@ -1,0 +1,28 @@
+schema: 2
+name: go-swagger
+description: Swagger 2.0 toolkit for Go APIs
+homepage: https://goswagger.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: go-swagger/go-swagger
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/go-swagger/go-swagger/releases/download/v{{.Version}}/swagger_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "swagger", dst: "bin/swagger", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.36.4
+    sha256:
+      darwin/arm64: "d8d7be343eae0a383385a8264fd6939acfd42de3e2089794f5f79d49e59033e3"
+      darwin/amd64: "f2da18688a8054351516e5b118985407ed45763f900b82e86923fdacb6f156d6"
+      linux/arm64: "f3d16f6d2ec0a8ab61b96e999f377ab0e5fe7130ac2f45aacfc520307c9775e4"
+      linux/amd64: "982717601ecabffed4599de64108bcea91eceae589e31c5627ae22d86fc8a466"

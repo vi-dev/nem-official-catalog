@@ -1,0 +1,29 @@
+schema: 2
+name: moon
+description: Build system and monorepo management tool
+homepage: https://moonrepo.dev
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: moonrepo/moon
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/moonrepo/moon/releases/download/v{{.Version}}/moon_cli-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.xz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "moon", dst: "bin/moon", mode: 0o755}
+  - copy: {src: "moonx", dst: "bin/moonx", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.5.2
+    sha256:
+      darwin/arm64: "3315002e7a0f394f2a7590ffea0c1d91d10c41a6b5d3639d31f06dd03b9497da"
+      darwin/amd64: "30fce63e507657c0aab8ef7a5b5edddc4847e1da7a26c96b588c97666fdec5e6"
+      linux/arm64: "e56bb8cc86c9b19e80f8c70f8ec579a2e4ca0af0edc5ac223afa7254ffceaec6"
+      linux/amd64: "e1ed70f1d6ce7f50ce8acc05d4ad230d03680d6646552a494446623338f41ab8"

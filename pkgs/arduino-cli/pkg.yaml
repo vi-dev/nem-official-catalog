@@ -1,0 +1,28 @@
+schema: 2
+name: arduino-cli
+description: Command line interface for Arduino boards and sketches
+homepage: https://arduino.github.io/arduino-cli/
+license: GPL-3.0
+
+versionDiscovery:
+  github:
+    repo: arduino/arduino-cli
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/arduino/arduino-cli/releases/download/v{{.Version}}/arduino-cli_{{.Version}}_{{replace (replace .OS \"darwin\" \"macOS\") \"linux\" \"Linux\"}}_{{replace (replace .Arch \"amd64\" \"64bit\") \"arm64\" \"ARM64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "arduino-cli", dst: "bin/arduino-cli", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.5.1
+    sha256:
+      darwin/arm64: "cb952e8c1621c95ef5f1d17831c945e3d0ec5973f89c557a7ec8feb9c4f7d4c9"
+      darwin/amd64: "c982e940027996bea9901050e95fae99c59c1dcfee54beedecaf28141e7bf2e7"
+      linux/arm64: "1e69e077479f300614d4551334e0a33f08ee40b04315d83b8e7e0e94f0d0ee62"
+      linux/amd64: "28a8e119c498a25607821c36cb2dc49e8463941b261a0d99091baa7bc692dd2b"

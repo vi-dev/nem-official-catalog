@@ -1,0 +1,27 @@
+schema: 2
+name: jira-cli
+description: Interactive command line client for Jira
+homepage: https://github.com/ankitpokhrel/jira-cli
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: ankitpokhrel/jira-cli
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/ankitpokhrel/jira-cli/releases/download/v{{.Version}}/jira_{{.Version}}_{{replace .OS \"darwin\" \"macOS\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.7.0
+    sha256:
+      darwin/arm64: "f9c75d1b242a4cbd78fc49c00c9854c3856f1bd421bdf196c567b3bb71ccf527"
+      darwin/amd64: "c2cb2f6b440522ec73439ec9a10f4a194b78e4c409341d18da3f91dfef59d090"
+      linux/arm64: "80aa3cc02790892b29e1580a8e49eb49a6550815b362c5ef8c05aea1dee73a95"
+      linux/amd64: "b5e0ba4804f3f11f92c483d9a6ea9ebccec1c735cd2e12b0440cab9d7afd626a"

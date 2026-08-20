@@ -1,0 +1,29 @@
+schema: 2
+name: go-blueprint
+description: Scaffolds Go projects with a chosen web framework
+homepage: https://github.com/Melkeydev/go-blueprint
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: Melkeydev/go-blueprint
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+# macOS ships one universal binary, Linux one asset per arch.
+artifact:
+  url: "https://github.com/Melkeydev/go-blueprint/releases/download/v{{.Version}}/go-blueprint_{{.Version}}_{{if eq .OS \"darwin\"}}Darwin_all{{else}}Linux_{{replace .Arch \"amd64\" \"x86_64\"}}{{end}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "go-blueprint", dst: "bin/go-blueprint", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.10.11
+    sha256:
+      darwin/arm64: "d51746a70814fd4e45bd6c7df20ff9f8d9987afba42784d99df6c646dfa198a0"
+      darwin/amd64: "d51746a70814fd4e45bd6c7df20ff9f8d9987afba42784d99df6c646dfa198a0"
+      linux/arm64: "07e8674e7fa962938ffe730fe4e1644c055d0f681f1c211394b4ae950a03bb2b"
+      linux/amd64: "9d8462928921ec74b773d4b09912630309093d76ed49d7987a23241208ae9e43"
