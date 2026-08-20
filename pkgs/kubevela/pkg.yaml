@@ -1,0 +1,28 @@
+schema: 2
+name: kubevela
+description: CLI for the KubeVela application delivery platform
+homepage: https://kubevela.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: kubevela/kubevela
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kubevela/kubevela/releases/download/v{{.Version}}/vela-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "vela", dst: "bin/vela", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.11.0
+    sha256:
+      darwin/arm64: "f008bbe3068c6b6e37f735f8b972cd43bf4c9b779bf8dcb335c03e47005bd968"
+      darwin/amd64: "d75106761979571f719cc1de11b41bd685e0785ef25a53c1dd3aa957b39bd62a"
+      linux/arm64: "9b4f4200c0b120e92a84210d82cc89c4a4c7d7cb5c6a6a69f466ba89f644e544"
+      linux/amd64: "ec66f4d10a7a3ebd276573f60bbe20ade0559d6a9a4f04a736bb3125a4d5cd7f"

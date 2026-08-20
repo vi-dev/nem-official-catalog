@@ -1,0 +1,28 @@
+schema: 2
+name: kdash
+description: Terminal dashboard for Kubernetes clusters
+homepage: https://github.com/kdash-rs/kdash
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: kdash-rs/kdash
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kdash-rs/kdash/releases/download/v{{.Version}}/kdash-{{if eq .OS \"darwin\"}}macos{{if eq .Arch \"arm64\"}}-arm64{{end}}{{else}}{{if eq .Arch \"arm64\"}}aarch64-gnu{{else}}linux{{end}}{{end}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kdash", dst: "bin/kdash", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.1.1
+    sha256:
+      darwin/arm64: "9090a94d6fdd31c1142238330aa9a175fa5e3020706d5ed503ba32e9e8a15abf"
+      darwin/amd64: "41592507b6c6373ab0cfe6ce337dc00d087937c2b7ad691a378442c4067386e9"
+      linux/arm64: "58bc06b1be215746246c5370ec29652af94e76fb63fcd0ab8e3e8ce2177e9cb9"
+      linux/amd64: "97507163287b0de2e246624a4f6dba2fc79290d2b003c9c711d2c73343a2f3d6"

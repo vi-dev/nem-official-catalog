@@ -1,0 +1,27 @@
+schema: 2
+name: telepresence
+description: Local development against a remote Kubernetes cluster
+homepage: https://www.telepresence.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: telepresenceio/telepresence
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/telepresenceio/telepresence/releases/download/v{{.Version}}/telepresence-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/telepresence", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.31.2
+    sha256:
+      darwin/arm64: "e16a959934e5b49fdf8ada712b946a27aaf63e038022ce184c9fc76b5c593767"
+      darwin/amd64: "83ce16949e4428176f7fbbf5975c4d668f6142685f088d26752572b682a08896"
+      linux/arm64: "99901c2ce8bb4e7d324fd3133463d90a162b56f47c3419e4fa7e5bfb07c17fe2"
+      linux/amd64: "d512fa457d9d02b9fdda2a6e353bafadc6eaf6b6af749c1be33c67c1a96b1e9f"

@@ -1,0 +1,27 @@
+schema: 2
+name: kubie
+description: Context and namespace switcher for kubectl using subshells
+homepage: https://github.com/kubie-org/kubie
+license: Zlib
+
+versionDiscovery:
+  github:
+    repo: kubie-org/kubie
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kubie-org/kubie/releases/download/v{{.Version}}/kubie-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/kubie", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.28.0
+    sha256:
+      darwin/arm64: "d5e757c5cc608fefb7450dd4d395aaf9fc6a52f194af220c9a1fe7ed38570960"
+      darwin/amd64: "5d1ea93a84a75c955b99c2486a95a74d7be7d28825c3ecc3c951453a398a1165"
+      linux/arm64: "04e85711d515d2a81998677d2cdfd6e3d8943dd050b6cd1a5d29ee837b47913e"
+      linux/amd64: "73c33bf140e3a6bf4cb603c371d1189f5bcce85ccc4e48fcfef9cd64642ffead"

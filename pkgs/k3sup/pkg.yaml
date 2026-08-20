@@ -1,0 +1,26 @@
+schema: 2
+name: k3sup
+description: Bootstrap k3s clusters over SSH
+homepage: https://github.com/alexellis/k3sup
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: alexellis/k3sup
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/alexellis/k3sup/releases/download/{{.Version}}/k3sup{{if eq .OS \"darwin\"}}-darwin{{end}}{{if eq .Arch \"arm64\"}}-arm64{{end}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/k3sup", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.13.12
+    sha256:
+      darwin/arm64: "afd14e7d02e5a758869fab465ee75af1c9d44a33d54335a71c030d6db5419283"
+      darwin/amd64: "f16cd60910691d4a2a6463b278c7d231791644d2a291da6e2f915f7a50875995"
+      linux/arm64: "c6358c9bca8531b424e5484a5f41a710b613ca606d3ab5c724d11c0a39dcce6a"
+      linux/amd64: "95fe9511cda5ecfa8829a5ce8d3fca6dae68bdd3b0b9946e1634d57761530b45"

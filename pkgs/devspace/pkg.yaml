@@ -1,0 +1,27 @@
+schema: 2
+name: devspace
+description: Develop and deploy applications directly inside Kubernetes
+homepage: https://devspace.sh
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: devspace-sh/devspace
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/devspace-sh/devspace/releases/download/v{{.Version}}/devspace-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/devspace", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 6.3.21
+    sha256:
+      darwin/arm64: "0cfb2ca74ece2e9e8c2a60bd8d02e8fb7620411917b97689f2f1a39314c2ba0a"
+      darwin/amd64: "47ba9e4c78c1dbcd4139b385c23021614597faaad79a929054beb7de4a559ae7"
+      linux/arm64: "8652285a22f079d4bfeda37a2f1089d56e64a34a76d32537dfb20a7cd6e69fcb"
+      linux/amd64: "9720a6c87a2465f6d73b4db5a908e15e1971158443b5de9162d94aa5f87f79f0"

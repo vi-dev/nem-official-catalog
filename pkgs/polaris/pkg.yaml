@@ -1,0 +1,28 @@
+schema: 2
+name: polaris
+description: Best-practices validation for Kubernetes configuration
+homepage: https://polaris.docs.fairwinds.com
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: FairwindsOps/polaris
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/FairwindsOps/polaris/releases/download/v{{.Version}}/polaris_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "polaris", dst: "bin/polaris", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 10.2.2
+    sha256:
+      darwin/arm64: "cef78663f1b2704e797108dffbc206e99d1423020b8271676528db78e81413ac"
+      darwin/amd64: "84d691a02328dc3c8a1e4dd5de73fd66727863a579cd886ed58e111c75385c2a"
+      linux/arm64: "d749c0fe048b25d2d389df84f6656b6c772fb7231613dadb1d490504fa86775e"
+      linux/amd64: "862305442292c6ba8d4d84b8d840e6c77aebf785f410929de2d81bcf72758187"

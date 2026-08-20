@@ -1,0 +1,28 @@
+schema: 2
+name: kube-bench
+description: Checks Kubernetes against the CIS Kubernetes Benchmark
+homepage: https://github.com/aquasecurity/kube-bench
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: aquasecurity/kube-bench
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/aquasecurity/kube-bench/releases/download/v{{.Version}}/kube-bench_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kube-bench", dst: "bin/kube-bench", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.16.0
+    sha256:
+      darwin/arm64: "88562c03fbffafb2c46de935573a4778c0cfa7cce234bdfeb370a9d5d3b8120a"
+      darwin/amd64: "0c1d7acaa459073e73f2754812dada5f4eb97c057a9929de52c81c8d37b726be"
+      linux/arm64: "64500561f5fcaa3f86fe951ed26bbfc28f7bbf3d2eac13843abfd2924955d10b"
+      linux/amd64: "82dbc7e598740dc9344d41f8ad0b8210d57c4c00bdb2c5f1d8a69a2b98baddcf"

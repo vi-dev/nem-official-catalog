@@ -1,0 +1,28 @@
+schema: 2
+name: kubectl-ai
+description: AI agent for operating Kubernetes clusters
+homepage: https://github.com/GoogleCloudPlatform/kubectl-ai
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: GoogleCloudPlatform/kubectl-ai
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/GoogleCloudPlatform/kubectl-ai/releases/download/v{{.Version}}/kubectl-ai_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubectl-ai", dst: "bin/kubectl-ai", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.0.31
+    sha256:
+      darwin/arm64: "dded8831a44bdfa29304b5872ece3ec9976f852a3f1b97777ba31d5bb60095d7"
+      darwin/amd64: "7dc5f921063b74122f935e8f730cbe763bf868495b7cea03017f404ce7dd4de0"
+      linux/arm64: "c2eb7fb99bf5217968a505ab38b0a230d86d1581957ccdda66167020b114d90d"
+      linux/amd64: "872ef891232b01772c46a54b1866b383e043100e3806835158187c603eb490d1"

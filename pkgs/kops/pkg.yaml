@@ -1,0 +1,27 @@
+schema: 2
+name: kops
+description: Production-grade Kubernetes cluster installation and management
+homepage: https://kops.sigs.k8s.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: kubernetes/kops
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kubernetes/kops/releases/download/v{{.Version}}/kops-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/kops", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.36.2
+    sha256:
+      darwin/arm64: "55fe326d78f13bc7580589959c82103b4ef319a3418468b8659d772d86dc6806"
+      darwin/amd64: "94c022b42e43cf9c09e2f7cbc2a78ae509f547799597111dd75a9d4f28df40da"
+      linux/arm64: "a76472e9b4ca549202fda98bd706d593be550c203eb5b02c9fbbfd8c20dc5419"
+      linux/amd64: "0a497df3665569f07c76c31a245ab2cc69e1d327faf7805b83358fde5a4b8da1"

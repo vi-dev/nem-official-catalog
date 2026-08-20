@@ -1,0 +1,28 @@
+schema: 2
+name: kubescape
+description: Kubernetes security, compliance, and misconfiguration scanner
+homepage: https://kubescape.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: kubescape/kubescape
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kubescape/kubescape/releases/download/v{{.Version}}/kubescape_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubescape", dst: "bin/kubescape", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 4.0.12
+    sha256:
+      darwin/arm64: "90e8b1bad859b9d4e64a5ed8ff4542143de1058198bf0974fb0fe3a3c9c703d1"
+      darwin/amd64: "1744a164cb4a2c028dde6bebc7e35290459b9cbbe0aefb115a6f1322c6b7125c"
+      linux/arm64: "b7b1b42d5ded8d805ee4ba7e2cf9146989a6ec9d27e94266644d9948e102ed10"
+      linux/amd64: "707aec6c708b7e90c1aeba71d9f7ce8050a03a84c6c146227d8c050e8155a7bc"

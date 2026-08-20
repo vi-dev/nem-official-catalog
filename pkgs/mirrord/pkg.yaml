@@ -1,0 +1,27 @@
+schema: 2
+name: mirrord
+description: Run local processes in the context of a Kubernetes cluster
+homepage: https://mirrord.dev
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: metalbear-co/mirrord
+    filter: '^\d+\.\d+\.\d+$'
+
+# macOS ships one universal binary; Linux is per-arch.
+artifact:
+  url: "https://github.com/metalbear-co/mirrord/releases/download/{{.Version}}/mirrord_{{if eq .OS \"darwin\"}}mac_universal{{else}}linux_{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}{{end}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/mirrord", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.249.0
+    sha256:
+      darwin/arm64: "6b59fa1d6ce9bc8367f11b6c87fe9c0c35f8e8dce1574227d9fd68baf4e8c8fc"
+      darwin/amd64: "6b59fa1d6ce9bc8367f11b6c87fe9c0c35f8e8dce1574227d9fd68baf4e8c8fc"
+      linux/arm64: "414c88a0155ea10a4a4bcfd3faa0390007cda6813c2208e7a288edf40cc23395"
+      linux/amd64: "c7db909c7ed08462c5ca8e4f128369a95653ad7da47a917872b9ce6686bdb5b4"

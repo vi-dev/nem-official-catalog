@@ -1,0 +1,27 @@
+schema: 2
+name: kubent
+description: Checks Kubernetes clusters for deprecated API usage
+homepage: https://github.com/doitintl/kube-no-trouble
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: doitintl/kube-no-trouble
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/doitintl/kube-no-trouble/releases/download/{{.Version}}/kubent-{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubent", dst: "bin/kubent", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.7.3
+    sha256:
+      darwin/arm64: "23d5ae5b7ecb46e870be555d87f1a7792a8d170a8fe488da63a5a31fcca5b176"
+      darwin/amd64: "e6682a9595ee2767f0dd633c61006ccc2492e641ed64146d17aca671578e9e48"
+      linux/arm64: "f6f669e19414b6ea3201103791d5c0965ad5c6f20cd6efbd5265d08d7bf6e478"
+      linux/amd64: "ac96ace138f18a864a6b5bd64643cecbab2887f868da35853812cfdecd307b6d"

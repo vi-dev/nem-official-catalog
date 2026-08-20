@@ -1,0 +1,28 @@
+schema: 2
+name: kubespy
+description: Observe Kubernetes resources in real time
+homepage: https://github.com/pulumi/kubespy
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: pulumi/kubespy
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/pulumi/kubespy/releases/download/v{{.Version}}/kubespy-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubespy", dst: "bin/kubespy", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.6.3
+    sha256:
+      darwin/arm64: "5d666133e0c8ac654ba593bb738a60465e0e33488511dd57c616c5570dc11ff3"
+      darwin/amd64: "dad45380fd487c7dff63d06ed5860ff66e497832fd67d28f02500d1f639b81d8"
+      linux/arm64: "f5ce81c121637b6bbf090f1b62641cb906d7284444ba1bd9e66ab8942717c5d0"
+      linux/amd64: "a1e9a38fd9afddeaec6c5c992aee8cb9ddaeabf9d6f122241754426a79d9b86e"

@@ -1,0 +1,28 @@
+schema: 2
+name: k8sgpt
+description: Scans Kubernetes clusters and explains issues in plain language
+homepage: https://k8sgpt.ai
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: k8sgpt-ai/k8sgpt
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/k8sgpt-ai/k8sgpt/releases/download/v{{.Version}}/k8sgpt_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "k8sgpt", dst: "bin/k8sgpt", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.4.36
+    sha256:
+      darwin/arm64: "9e5a49ca089f964c98734ea7723033bbf272e36afb132231ce4ccf9f7713e704"
+      darwin/amd64: "756091fc3fd6f4148c44c4cd8dfce8d872b7b3e924b7511ab3da619c07e19b2d"
+      linux/arm64: "6baa11f4e7cab19861b6ed9dfd07d3556e406b393e19c1dbe9b1639bbf241531"
+      linux/amd64: "8541e3cfae39c236e65b90a205a00ac6b6195f1d511e09bc9be197582b53a1b4"

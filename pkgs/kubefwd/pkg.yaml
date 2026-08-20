@@ -1,0 +1,28 @@
+schema: 2
+name: kubefwd
+description: Bulk port forwarding for Kubernetes services
+homepage: https://kubefwd.com
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: txn2/kubefwd
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/txn2/kubefwd/releases/download/v{{.Version}}/kubefwd_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubefwd", dst: "bin/kubefwd", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.25.16
+    sha256:
+      darwin/arm64: "fc7a0126559cdd9e5cf8ddaf6a271b2d06381787bc3d3005ae48739a88f7d56c"
+      darwin/amd64: "905a3dd8a70d5acfcfe2a03f41feec264ac0c11cf7e5633b489716d719b64a6b"
+      linux/arm64: "e01ade02d919be2c7e306543f0a65de2e629c254ef16b51ecb45830b0044a3e8"
+      linux/amd64: "07275cad05b2427069071160125b8cb29e94dd44582f685ce6d966fa9e7fb7d7"

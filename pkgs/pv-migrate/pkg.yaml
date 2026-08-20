@@ -1,0 +1,28 @@
+schema: 2
+name: pv-migrate
+description: Migrate data between Kubernetes persistent volume claims
+homepage: https://github.com/utkuozdemir/pv-migrate
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: utkuozdemir/pv-migrate
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/utkuozdemir/pv-migrate/releases/download/v{{.Version}}/pv-migrate_v{{.Version}}_{{.OS}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "pv-migrate", dst: "bin/pv-migrate", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.6.1
+    sha256:
+      darwin/arm64: "f99e86c04d07848d03a23eee9acc4ba39f7a3cf1d2742baa06fd7c9aa28e9821"
+      darwin/amd64: "caf2a3e4faa0b78241e5648ad645e6f2d152bc8dac1d7eec8cf7e8d9c90177bc"
+      linux/arm64: "9ab436961fe5b5b0f49f032c064f0a6f16577ea42ba57f69ba87e2c822fef933"
+      linux/amd64: "eeb2e88d0ebea7c3705db0e534c056c1cd4ec2fd8c8ba3e18a74f485dc8c26b2"
