@@ -43,43 +43,15 @@ build:
     url: 'https://gnupg.org/ftp/gcrypt/gpgme/gpgme-{{.Version}}.tar.bz2'
   output: out
   steps:
-    # Derive each dep prefix from the injected -I flags and add their bin/ dirs
-    # (gpgrt-config / libassuan-config aren't on a link dep's PATH). LD_LIBRARY_PATH
-    # lets ld resolve libassuan.so.9 transitively — GNU ld won't use -L for that.
     # --enable-languages= builds the C library only; MAKEINFO=true skips the
     # texinfo manual; -fgnu89-inline (macOS only) avoids the duplicate __sputc.
     - run: |
         set -e
-        lge= assuan=
-        for t in $CPPFLAGS; do
-          case "$t" in
-            -I*/include)
-              p=${t#-I}; p=${p%/include}
-              case "$p" in *libgpg-error*) lge=$p ;; *libassuan*) assuan=$p ;; esac ;;
-          esac
-        done
-        export PATH="$assuan/bin:$lge/bin:$PATH"
-        export LD_LIBRARY_PATH="$assuan/lib:$lge/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
         cflags="-O2"
         case "$NEM_OS" in darwin) cflags="-fgnu89-inline -O2" ;; esac
         ./configure --prefix=/ --libdir=/lib --disable-dependency-tracking --enable-shared --disable-static --disable-doc \
           --disable-gpg-test --disable-gpgsm-test --disable-g13-test --disable-gpgconf-test \
           --enable-languages= \
-          --with-libgpg-error-prefix="$lge" --with-libassuan-prefix="$assuan" \
           CFLAGS="$CFLAGS $cflags"
         make MAKEINFO=true -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
         make MAKEINFO=true install DESTDIR="$NEM_OUTPUT"
-    - run: |
-        case "$NEM_OS" in
-        darwin)
-          cd "$NEM_OUTPUT"
-          install_name_tool -id @rpath/libgpgme.11.dylib lib/libgpgme.11.dylib
-          for f in bin/gpgme-json bin/gpgme-tool; do
-            [ -e "$f" ] || continue
-            install_name_tool -change /lib/libgpgme.11.dylib @rpath/libgpgme.11.dylib "$f"
-            codesign -f -s - "$f"
-          done
-          codesign -f -s - lib/libgpgme.11.dylib
-          ;;
-        esac
-        rm -f "$NEM_OUTPUT/lib"/*.la

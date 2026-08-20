@@ -25,14 +25,3 @@ build:
   output: out
   steps:
     - run: ./configure --prefix=/ --libdir=/lib --disable-dependency-tracking --enable-shared --disable-static --disable-doc --disable-nls --disable-tests && make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)" && make install DESTDIR="$NEM_OUTPUT"
-    # macOS: rewrite the absolute dylib id to @rpath. Drop the libtool archive —
-    # its baked libdir misleads a dependent's libtool once installed elsewhere.
-    - run: |
-        case "$NEM_OS" in
-        darwin)
-          cd "$NEM_OUTPUT"
-          install_name_tool -id @rpath/libgpg-error.0.dylib lib/libgpg-error.0.dylib
-          codesign -f -s - lib/libgpg-error.0.dylib
-          ;;
-        esac
-        rm -f "$NEM_OUTPUT/lib"/*.la

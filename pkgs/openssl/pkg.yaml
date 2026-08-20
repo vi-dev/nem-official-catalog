@@ -72,22 +72,3 @@ build:
   output: out
   steps:
     - run: ./Configure --prefix=/ --libdir=lib --openssldir=/etc/ssl shared no-docs && make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)" && make install_sw DESTDIR="$NEM_OUTPUT"
-    # macOS bakes absolute /lib/libX.<major>.dylib install names; rewrite every
-    # crypto/ssl reference to @rpath and re-sign. Linux emits sonames directly.
-    - run: |
-        case "$NEM_OS" in
-        darwin)
-          so="${NEM_VERSION%%.*}"
-          cd "$NEM_OUTPUT"
-          install_name_tool -id "@rpath/libcrypto.$so.dylib" "lib/libcrypto.$so.dylib"
-          install_name_tool -id "@rpath/libssl.$so.dylib" "lib/libssl.$so.dylib"
-          for f in "lib/libssl.$so.dylib" bin/openssl "lib/engines-$so"/*.dylib lib/ossl-modules/*.dylib; do
-            [ -e "$f" ] || continue
-            install_name_tool \
-              -change "/lib/libcrypto.$so.dylib" "@rpath/libcrypto.$so.dylib" \
-              -change "/lib/libssl.$so.dylib" "@rpath/libssl.$so.dylib" "$f"
-            codesign -f -s - "$f"
-          done
-          codesign -f -s - "lib/libcrypto.$so.dylib" "lib/libssl.$so.dylib"
-          ;;
-        esac
