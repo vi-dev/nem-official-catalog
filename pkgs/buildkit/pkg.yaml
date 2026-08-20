@@ -1,0 +1,30 @@
+schema: 2
+name: buildkit
+description: BuildKit build daemon and its buildctl client
+homepage: https://github.com/moby/buildkit
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: moby/buildkit
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/moby/buildkit/releases/download/v{{.Version}}/buildkit-v{{.Version}}.{{.OS}}-{{.Arch}}.tar.gz"
+
+# darwin ships buildctl alone; linux adds buildkitd plus the buildkit-runc,
+# CNI and qemu helpers it resolves through PATH, so the archive's own bin/ is
+# exposed whole rather than lifting single binaries out of it.
+install:
+  - extract: {strip: 0}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.32.2
+    sha256:
+      darwin/arm64: "a404ae44f4ea5c533d22363543c873f94429ebc803da2e2a73b3b4f051cdd92a"
+      darwin/amd64: "c1e230aec90b79d6a70c28a24f7b13a0427596f95110427ae906621d9011838d"
+      linux/arm64: "9e8f46bf309ec0ab262967be5538a4dbe06be756a82621f98253933bac5dcf92"
+      linux/amd64: "2975d0f651ad96ba8b80b9992ae1f9a964f4408569af5b6dc36544165c3926af"

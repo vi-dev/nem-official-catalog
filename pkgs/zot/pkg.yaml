@@ -1,0 +1,27 @@
+schema: 2
+name: zot
+description: OCI-native container image and artifact registry
+homepage: https://zotregistry.dev
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: project-zot/zot
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/project-zot/zot/releases/download/v{{.Version}}/zot-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/zot", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.1.20
+    sha256:
+      darwin/arm64: "7bdade2bfca62f5466c53dc56dd2237a56b8d321584ad5e4b87c84f8917c0a51"
+      darwin/amd64: "13886c499b085bf6ca67a30de07399d8582e6f2cd71512ec1fc7458bc5c39d8a"
+      linux/arm64: "d6a39475587be18ec3d42e0d2bfa50f5c5064cbbcdc222dbd88e55ecf69dd8e9"
+      linux/amd64: "a32e42d042d1f17b5b1317e55cc1a415a744c873dcd05c25c56b665478258bcb"

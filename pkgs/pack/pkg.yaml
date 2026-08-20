@@ -1,0 +1,29 @@
+schema: 2
+name: pack
+description: CLI for building apps with Cloud Native Buildpacks
+homepage: https://buildpacks.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: buildpacks/pack
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+# amd64 assets carry no arch suffix at all; arm64 ones are suffixed -arm64.
+artifact:
+  url: "https://github.com/buildpacks/pack/releases/download/v{{.Version}}/pack-v{{.Version}}-{{replace .OS \"darwin\" \"macos\"}}{{replace (replace .Arch \"amd64\" \"\") \"arm64\" \"-arm64\"}}.tgz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "pack", dst: "bin/pack", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.40.9
+    sha256:
+      darwin/arm64: "8400318bf9a9e4aab6a1ed1e35046fecb33d0015e80a43105878913f8e18311a"
+      darwin/amd64: "bdd85a547b8d1322aa42a04ddb837cbd75630264163d41f193bacfb36b082745"
+      linux/arm64: "091ccb213823656c727731537ef8f1000eb4dc3ec61641506653e7f9d6da0c5e"
+      linux/amd64: "dc0ee1e931cf8a106d7555a01a214864f9acb60b77adf15d69b74df4404758e9"

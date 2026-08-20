@@ -1,0 +1,27 @@
+schema: 2
+name: tini
+description: Minimal init process for containers
+homepage: https://github.com/krallin/tini
+license: MIT
+
+platforms: [linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: krallin/tini
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/krallin/tini/releases/download/v{{.Version}}/tini-static-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/tini", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.19.0
+    sha256:
+      linux/arm64: "eae1d3aa50c48fb23b8cbdf4e369d0910dfc538566bfd09df89a774aa84a48b9"
+      linux/amd64: "c5b0666b4cb676901f90dfcb37106783c5fe2077b04590973b885950611b30ee"

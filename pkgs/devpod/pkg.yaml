@@ -1,0 +1,27 @@
+schema: 2
+name: devpod
+description: Client-only tool for devcontainer-based development environments
+homepage: https://devpod.sh
+license: MPL-2.0
+
+versionDiscovery:
+  github:
+    repo: loft-sh/devpod
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/loft-sh/devpod/releases/download/v{{.Version}}/devpod-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/devpod", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.6.15
+    sha256:
+      darwin/arm64: "0c50934f4199732ff37e89708bc5c028ecda75d854a151cb2644e4ba39f4d7f7"
+      darwin/amd64: "1205fc8626d9daa011479ded3ce7271359714f0d011acfcf739adf90901a6ee8"
+      linux/arm64: "9226161e0c9f5a45d0f8d1778f940498e787b650f0e0fcf3c29f1f67e7a3f272"
+      linux/amd64: "cc50bce09229d5a6d448ac1d4494327f4b8f7a20321e5fcee3bfec1aef0d20c5"

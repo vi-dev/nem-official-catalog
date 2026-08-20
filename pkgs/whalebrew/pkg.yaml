@@ -1,0 +1,26 @@
+schema: 2
+name: whalebrew
+description: Install Docker images as command-line tools
+homepage: https://github.com/whalebrew/whalebrew
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: whalebrew/whalebrew
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/whalebrew/whalebrew/releases/download/{{.Version}}/whalebrew-{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}-{{replace .Arch \"amd64\" \"x86_64\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/whalebrew", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.5.0
+    sha256:
+      darwin/arm64: "eceef0e0b6cf3809985283fb0e5d19639adf3f987c0f64186aa93f27637d5c62"
+      darwin/amd64: "f86930f0a130524b9e3e5ef4a6c1e4050fbf0cc55b44442c47602f7e962ca030"
+      linux/arm64: "74a6f5880e7b72d0b5f8533245552aefc6f1a1d35f6dcf5635c2ff52f89c2e20"
+      linux/amd64: "bedce7a77e2be2051728cb9c32f976ce3f754b9f7ec06775f2f4b20103a7db99"

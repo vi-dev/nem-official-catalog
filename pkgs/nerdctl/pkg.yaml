@@ -1,0 +1,28 @@
+schema: 2
+name: nerdctl
+description: Docker-compatible CLI for containerd
+homepage: https://github.com/containerd/nerdctl
+license: Apache-2.0
+
+platforms: [linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: containerd/nerdctl
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/containerd/nerdctl/releases/download/v{{.Version}}/nerdctl-{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "nerdctl", dst: "bin/nerdctl", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.3.5
+    sha256:
+      linux/arm64: "76ced9bd0d03f6140f9cf7b927958b654cb8d5ecd3c58af585d096c8bdf9d6c2"
+      linux/amd64: "de3206aeb7cbd5f20f5fb1f55c1e3bf2db1be567812a8a3f5e65eba2488347ee"

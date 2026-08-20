@@ -1,0 +1,27 @@
+schema: 2
+name: container-structure-test
+description: Validate the structure of container images
+homepage: https://github.com/GoogleContainerTools/container-structure-test
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: GoogleContainerTools/container-structure-test
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/GoogleContainerTools/container-structure-test/releases/download/v{{.Version}}/container-structure-test-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/container-structure-test", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.22.1
+    sha256:
+      darwin/arm64: "ba00172029ecec3afda7fd93a5eee7cdaef710196df7103689da3386eba56b0a"
+      darwin/amd64: "1ca7265ed9061785a39cda83d5a8104c769bbf432dab40a269596ea6f1a13c45"
+      linux/arm64: "801826ed107222120eb6df8c143b7de752cfebbe3aebfeea576e7098486917c2"
+      linux/amd64: "fa35e89512a8978585f76cf41397956d2e3a30c62c2ad3fb857b1597074d14ca"

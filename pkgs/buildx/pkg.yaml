@@ -1,0 +1,27 @@
+schema: 2
+name: buildx
+description: Docker CLI plugin for extended build capabilities
+homepage: https://github.com/docker/buildx
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: docker/buildx
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/docker/buildx/releases/download/v{{.Version}}/buildx-v{{.Version}}.{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/docker-buildx", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.36.1
+    sha256:
+      darwin/arm64: "214cdc36788602862dbc82b523d58648b4585c7b0ff95218b0817c44db5573d7"
+      darwin/amd64: "52a39ee4012d18f83373656712102ebda55656121dcdabbbb1ccfbd41b7debe8"
+      linux/arm64: "5d0cafd9d16afe1a0f0d9529885344ace2cc99efdd531b6c783c5455a6001569"
+      linux/amd64: "48af8a397ebd60178778bf63611dbcebe5f5e7a9be90eb9147b24b9587455778"

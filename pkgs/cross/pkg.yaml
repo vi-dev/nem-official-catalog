@@ -1,0 +1,28 @@
+schema: 2
+name: cross
+description: Zero-setup cross compilation and cross testing of Rust crates
+homepage: https://github.com/cross-rs/cross
+license: Apache-2.0
+
+platforms: [darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: cross-rs/cross
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/cross-rs/cross/releases/download/v{{.Version}}/cross-{{replace .Arch \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "cross", dst: "bin/cross", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.2.5
+    sha256:
+      darwin/amd64: "84a664edbd5405efc985e9423804cc63d12e55691b9c7e9729355fdf7b9af015"
+      linux/amd64: "a486cefa6cb486971b97be321ea9dfc2e90c1979550295314a368f53fab6d588"
