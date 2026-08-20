@@ -1,0 +1,42 @@
+schema: 2
+name: podman-remote
+description: Podman remote client for managing OCI containers and pods
+homepage: https://podman.io
+license: Apache-2.0
+
+# upstream ships no darwin/amd64 artifacts as of 6.x
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: podman-container-tools/podman
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/podman-container-tools/podman/releases/download/v{{.Version}}/{{if eq .OS \"darwin\"}}podman-remote-release-darwin_{{.Arch}}.zip{{else}}podman-remote-static-linux_{{.Arch}}.tar.gz{{end}}"
+
+install:
+  # the darwin zip nests everything under podman-<version>/; stripping it
+  # keeps the copy sources version-independent. podman-mac-helper provides
+  # the Docker-compatible socket for `podman machine`.
+  - extract: {strip: 1}
+    platforms: [darwin]
+  - copy: {src: "usr/bin/podman", dst: "bin/podman", mode: 0o755}
+    platforms: [darwin]
+  - copy: {src: "usr/bin/podman-mac-helper", dst: "bin/podman-mac-helper", mode: 0o755}
+    platforms: [darwin]
+  # linux static tarball: bin/podman-remote-static-linux_<arch>
+  - extract: {strip: 1}
+    platforms: [linux]
+  - copy: {src: "podman-remote-static-linux_{{.Arch}}", dst: "bin/podman", mode: 0o755}
+    platforms: [linux]
+
+bins: ["bin"]
+
+versions:
+  - version: 6.1.0
+    sha256:
+      darwin/arm64: "ff5e1fa29e9e4544118639791d9e483114a2279c0070963ecab480d25f345dcb"
+      linux/arm64: "aa152311cda6f4254a2ebe08d750ab6fa8fd8fa95a0edb720bf3731c424ec7fd"
+      linux/amd64: "460b4cd2e1a7e5a2dddeb39f4fb427315a7de8a9fafc85483bd67667819fe032"
