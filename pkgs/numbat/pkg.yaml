@@ -1,0 +1,28 @@
+schema: 2
+name: numbat
+description: Calculator language with first-class physical units
+homepage: https://numbat.dev
+license: MIT OR Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: sharkdp/numbat
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/sharkdp/numbat/releases/download/v{{.Version}}/numbat-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "numbat", dst: "bin/numbat", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.23.0
+    sha256:
+      darwin/arm64: "58dabb8ca9476009d03f2a3d3993768fa2946657c6423eed8ed31d31cc6e35cf"
+      darwin/amd64: "e50d7fc908d56f97b9de1e509039cf9d9ae31a5d4280dd2b58f201c17f194de5"
+      linux/arm64: "a14bf43da8036f085ee3f897cfe0f88a2add5662fc8abdcf3e1879acbecd7c4d"
+      linux/amd64: "e31ba03eefbb8232e15dc7c0204df5e2158021d70cc94e3bc1e429e0b7d4b15a"

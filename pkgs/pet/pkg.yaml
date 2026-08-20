@@ -1,0 +1,28 @@
+schema: 2
+name: pet
+description: Command-line snippet manager
+homepage: https://github.com/knqyf263/pet
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: knqyf263/pet
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/knqyf263/pet/releases/download/v{{.Version}}/pet_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "pet", dst: "bin/pet", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.0.1
+    sha256:
+      darwin/arm64: "f3ba11bc1cb2b2edc8725648e52d871e417eaa76d8b1c12fa8e24e4f1c704f03"
+      darwin/amd64: "463504d65d898ea62ef38d513e852fb4e9068993276a600085947231237a4ff9"
+      linux/arm64: "f2a950f42789ec1e0952259c3c1731e03b2eb034bd830ae494a6268e9cac9273"
+      linux/amd64: "be6ca6b64953f3c63430b1519382bdf56a062a03944b9a3723513b285c91dd20"

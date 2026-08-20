@@ -1,0 +1,28 @@
+schema: 2
+name: superfile
+description: Modern terminal file manager
+homepage: https://github.com/yorukot/superfile
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: yorukot/superfile
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/yorukot/superfile/releases/download/v{{.Version}}/superfile-{{.OS}}-v{{.Version}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 3}
+  - copy: {src: "spf", dst: "bin/spf", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.6.0
+    sha256:
+      darwin/arm64: "131f654e7f8366fd37dbe9363739f8d82e57ff3f632f45963cd233c049cfad2a"
+      darwin/amd64: "c08544196ff21fc415ae7cffc800d8400914af647e44eb2613968c09d5868d90"
+      linux/arm64: "2e8150dab1a139e3a081bd74a9c775155e8d0241c34ae3f8d30817a3df1b8f06"
+      linux/amd64: "d45b0e95072629a6aa7983a84eedca9cd7a98861e67ef91be1415496e3dda309"

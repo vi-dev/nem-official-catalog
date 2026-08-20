@@ -1,0 +1,30 @@
+schema: 2
+name: mcfly
+description: Context-aware shell history search
+homepage: https://github.com/cantino/mcfly
+license: MIT
+
+# Upstream publishes no aarch64-apple-darwin asset.
+platforms: [darwin/amd64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: cantino/mcfly
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/cantino/mcfly/releases/download/v{{.Version}}/mcfly-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "mcfly", dst: "bin/mcfly", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.9.4
+    sha256:
+      darwin/amd64: "5ab584300dc6405a4730feb08f44ac4a7cd4a3308a1f9dc28813aa2d36782c7f"
+      linux/arm64: "57eb23c3c40b3a7675dc1fe3b785501a6a41598b9b3cbe35d80f8d65267cf1cd"
+      linux/amd64: "72d2c6fdaa111ac96c2cf725fc40e313e2856643482be58608911a09440313f1"

@@ -1,0 +1,28 @@
+schema: 2
+name: peco
+description: Simplistic interactive filtering tool
+homepage: https://github.com/peco/peco
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: peco/peco
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/peco/peco/releases/download/v{{.Version}}/peco_{{.Version}}_{{.OS}}_{{.Arch}}.{{if eq .OS \"darwin\"}}zip{{else}}tar.gz{{end}}"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "peco", dst: "bin/peco", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.6.0
+    sha256:
+      darwin/arm64: "778a4ed7b254294451b5ec1695097e72ce0c70b2e753ee32bfde2158a72c4ed7"
+      darwin/amd64: "89db4861044958f0ebe349b5009137fa8323390b6ff5c19f2ccbb578a6b03e54"
+      linux/arm64: "035184a97026f79dbc6571a3bf5f74586c523e4485c034322e93820e3f135494"
+      linux/amd64: "93d4418ab1261eb723a1f614c2e652c9e912885cff7d969f913c0686459c62e8"

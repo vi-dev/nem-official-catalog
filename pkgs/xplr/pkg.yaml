@@ -1,0 +1,29 @@
+schema: 2
+name: xplr
+description: Hackable TUI file explorer
+homepage: https://xplr.dev
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: sayanarijit/xplr
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+# amd64 assets carry no arch suffix; only arm64 is spelled out.
+artifact:
+  url: "https://github.com/sayanarijit/xplr/releases/download/v{{.Version}}/xplr-{{if eq .OS \"darwin\"}}macos{{else}}linux{{end}}{{if eq .Arch \"arm64\"}}-aarch64{{end}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "xplr", dst: "bin/xplr", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.1.1
+    sha256:
+      darwin/arm64: "0390464448eb305724d20d0660de9ca15ad66af470b6f5c6663e8526f12aeb36"
+      darwin/amd64: "a81f0285843fcfc5d6afbc0e7414babc7daacd6a838443547a5fd1c1c7a21205"
+      linux/arm64: "eba03cb98255b8d16b2b1d72d7e0f1be04545f35d9c8b8d0f39bf387d7357ccc"
+      linux/amd64: "8531ab7cb8fb259e72f7575dd27b6238def07ddf54ada66ea3cce525b797260b"

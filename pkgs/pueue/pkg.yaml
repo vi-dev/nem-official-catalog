@@ -1,0 +1,29 @@
+schema: 2
+name: pueue
+description: CLI client for the pueue command queue daemon
+homepage: https://github.com/Nukesor/pueue
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: Nukesor/pueue
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+# Upstream ships the pueued daemon as a separate bare binary; a package has one
+# artifact, so only the pueue client is installed here.
+artifact:
+  url: "https://github.com/Nukesor/pueue/releases/download/v{{.Version}}/pueue-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/pueue", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 4.0.4
+    sha256:
+      darwin/arm64: "7780dbd21e3a4106e88a57396d6dc2dbcbbae253c7e00d92d994902896b8cb82"
+      darwin/amd64: "c5b89a2f9f9d355b33880735a1f12a8b8d09002f95cc7d2e5f3294e313fb8540"
+      linux/arm64: "759bf5100a51024997111c6913aaf3330a0cdfd893ff552dcf429ae9b5e01e09"
+      linux/amd64: "c1b10d7e4e62211075ddd0e1dc3e8cbfc5a43d662cb3be7402a28504e23fcb51"

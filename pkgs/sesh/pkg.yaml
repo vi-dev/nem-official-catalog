@@ -1,0 +1,28 @@
+schema: 2
+name: sesh
+description: Smart session manager for tmux
+homepage: https://github.com/joshmedeski/sesh
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: joshmedeski/sesh
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/joshmedeski/sesh/releases/download/v{{.Version}}/sesh_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "sesh", dst: "bin/sesh", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.28.0
+    sha256:
+      darwin/arm64: "112f0171ff7379c3f1f4317561f796fc6fd77af04320ed952711a38f96f7d30c"
+      darwin/amd64: "098a4b817b1d7a183ebb3618850a5b6c1ef9cd5e9439dc032d8601b00b6d2fe5"
+      linux/arm64: "30249b47a0f60a2da557ecde76c169d0dbc82161b12aa46f9ed47af27a265dc6"
+      linux/amd64: "ac4a0b07f0be4cbb13691a197055ac82e00341e77b915d878df8ad2bcc867fda"

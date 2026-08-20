@@ -1,0 +1,27 @@
+schema: 2
+name: oh-my-posh
+description: Cross-shell prompt renderer
+homepage: https://ohmyposh.dev
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: JanDeDobbeleer/oh-my-posh
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/JanDeDobbeleer/oh-my-posh/releases/download/v{{.Version}}/posh-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/oh-my-posh", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 30.6.5
+    sha256:
+      darwin/arm64: "27b3d4d43632f333472665f8ae4260f66a58b8d1afea741873ef248b61521868"
+      darwin/amd64: "0d1a8d67848a2368d7961741fd148cf77f1cd5a34f97b5130d456dc3a47727f9"
+      linux/arm64: "34d81d2871cd2b211878d3e31bb7c8d7c5e70088170ee526be222a2e6b843c4d"
+      linux/amd64: "079febf68932744a6c8d05179a2798bca083613275eca6de41b1efe9c82e15c8"

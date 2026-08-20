@@ -1,0 +1,28 @@
+schema: 2
+name: choose
+description: Human-friendly alternative to cut and awk
+homepage: https://github.com/theryangeary/choose
+license: GPL-3.0
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: theryangeary/choose
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/theryangeary/choose/releases/download/v{{.Version}}/choose-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/choose", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.3.7
+    sha256:
+      darwin/arm64: "ba89bf6b9bc180e452699cd33e324407f03c9e081f7894f34b4d17fba1ea74d6"
+      linux/arm64: "0db1d789ededcedd2c56222eb28f45d5e5e1c56717c0ba5d26c780696bbe3420"
+      linux/amd64: "9f7e5f6f02e53dc3869cf216db5d481d48f365bdbbebe2f08969734c8443784e"

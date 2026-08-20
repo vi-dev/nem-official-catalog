@@ -1,0 +1,30 @@
+schema: 2
+name: navi
+description: Interactive cheatsheet tool for the command line
+homepage: https://github.com/denisidoro/navi
+license: Apache-2.0
+
+platforms: [linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: denisidoro/navi
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+# Upstream ships arm64 against glibc but amd64 only against musl, so the
+# libc part of the triple rides along with the arch substitution.
+artifact:
+  url: "https://github.com/denisidoro/navi/releases/download/v{{.Version}}/navi-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64-unknown-linux-gnu\") \"amd64\" \"x86_64-unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "navi", dst: "bin/navi", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.24.0
+    sha256:
+      linux/arm64: "de99e69906a0e06ffd30a329645e15f9e96a6b42c49eaac8baccac9bc314768a"
+      linux/amd64: "f334047479241f7c8b48d091f4e814dcc798a51a74dfd04ee63cbf67e8c921ba"

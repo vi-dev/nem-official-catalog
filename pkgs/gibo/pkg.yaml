@@ -1,0 +1,28 @@
+schema: 2
+name: gibo
+description: Fetch gitignore boilerplates from GitHub
+homepage: https://github.com/simonwhitaker/gibo
+license: Unlicense
+
+versionDiscovery:
+  github:
+    repo: simonwhitaker/gibo
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/simonwhitaker/gibo/releases/download/v{{.Version}}/gibo_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "gibo", dst: "bin/gibo", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.0.22
+    sha256:
+      darwin/arm64: "2d96762d78637d02ff3b081f0fa04c3bb790ddce5bbe016991fc7853236c4086"
+      darwin/amd64: "95449fdd20180c6168a52df39a003061c83e5641348eecb6b38a7e1683e5d170"
+      linux/arm64: "f34369fb61374c4d821d6a9991066312d38bbd4d4fd04a109b9fde01b70d4dad"
+      linux/amd64: "be027bc5522e58c65e774174c72b52b94c2a5ba561a978cfe242ce5ff1489c6e"

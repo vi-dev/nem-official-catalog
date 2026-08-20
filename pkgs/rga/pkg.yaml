@@ -1,0 +1,30 @@
+schema: 2
+name: rga
+description: ripgrep wrapper that also searches PDFs, e-books, and archives
+homepage: https://github.com/phiresky/ripgrep-all
+license: AGPL-3.0
+
+versionDiscovery:
+  github:
+    repo: phiresky/ripgrep-all
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+# Linux arm64 is only published as glibc, linux amd64 only as musl.
+artifact:
+  url: "https://github.com/phiresky/ripgrep-all/releases/download/v{{.Version}}/ripgrep_all-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{if eq .OS \"darwin\"}}apple-darwin{{else if eq .Arch \"arm64\"}}unknown-linux-gnu{{else}}unknown-linux-musl{{end}}.tar.gz"
+
+# rga execs its rga-preproc sibling, so the extracted layout is exposed on
+# PATH as-is rather than copying rga alone.
+install:
+  - extract: {strip: 1}
+
+bins: ["."]
+
+versions:
+  - version: 0.10.10
+    sha256:
+      darwin/arm64: "9deeaa927779078568832b5b69ae57986ca917f24974bb4976c062f632846856"
+      darwin/amd64: "3d9fe75878ddab6a8e7abb66ab13af1bdea2844a02c479fb293b7bfb258ab353"
+      linux/arm64: "2cd875ab6c78b27e4830b5bca92c570a8a8dcfb368bc71b189b65ac01fbc3020"
+      linux/amd64: "a969c25b182ac84aa672518313b5f741091decf7d93d03a020bcfe517b9ff4e8"

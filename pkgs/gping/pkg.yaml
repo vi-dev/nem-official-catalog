@@ -1,0 +1,28 @@
+schema: 2
+name: gping
+description: Ping with a graph in the terminal
+homepage: https://github.com/orf/gping
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: orf/gping
+    filter: '^gping-v\d+\.\d+\.\d+$'
+    prefix: "gping-v"
+
+artifact:
+  url: "https://github.com/orf/gping/releases/download/gping-v{{.Version}}/gping-{{replace (replace .OS \"darwin\" \"macOS\") \"linux\" \"Linux-gnu\"}}-{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "gping", dst: "bin/gping", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.20.4
+    sha256:
+      darwin/arm64: "124e5c44dd05abd8f2019bb23e31cc32d700e7f2f15f74692afde53b8c30a24f"
+      darwin/amd64: "b39e8ed591117ca4366502d68ad59e7ade46cdd789853ea78a705ff5f7053d55"
+      linux/arm64: "a912b76238bf73d4ae6a4a2ada7f6dd42c25da37e8f0044f72543323656f7631"
+      linux/amd64: "91dbcc0a2e279f7c91d9155f846fa5ad2626406f3306138ed2495744aaa9bc84"

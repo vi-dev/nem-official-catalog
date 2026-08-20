@@ -1,0 +1,27 @@
+schema: 2
+name: walk
+description: Terminal file manager with fuzzy search
+homepage: https://github.com/antonmedv/walk
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: antonmedv/walk
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/antonmedv/walk/releases/download/v{{.Version}}/walk_{{.OS}}_{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/walk", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.13.0
+    sha256:
+      darwin/arm64: "aa1d40f3a803b98d54895ab267c134573f45570a11b84ffbd9e873233c26fa00"
+      darwin/amd64: "69acb32e8cdaae4680349e4910cf48d23fc25f8d798f941e24f747974211c20b"
+      linux/arm64: "42664c11d54d1e7f7ca5131c34197de120f03d535238d6cadbe03bba8303ebc8"
+      linux/amd64: "7c3b6e28fd0eee20170a07be5ceae001e466d8948b32feb005c447f4cf7c3c21"

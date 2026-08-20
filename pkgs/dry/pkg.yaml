@@ -1,0 +1,27 @@
+schema: 2
+name: dry
+description: Terminal UI for managing Docker containers and images
+homepage: https://moncho.github.io/dry/
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: moncho/dry
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/moncho/dry/releases/download/v{{.Version}}/dry-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/dry", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.13.0
+    sha256:
+      darwin/arm64: "bff562b040501e2850383ceb734b5fe76dfe56a12202e9dc544c0f84c9e515cb"
+      darwin/amd64: "c74971e36d0459abf8d45a5067eab4c7e8da4eab1983e7e387b2078da53dd1e1"
+      linux/arm64: "cb3c466b1bda509155b66361bd00c131da8699aeaa8a2b70196b51cd6555991d"
+      linux/amd64: "c160dea554c74544f68f1de5d406a9d211462caa75cab46c2ae8a46df28e0e36"

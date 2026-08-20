@@ -1,0 +1,28 @@
+schema: 2
+name: hexyl
+description: Command-line hex viewer
+homepage: https://github.com/sharkdp/hexyl
+license: MIT OR Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: sharkdp/hexyl
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/sharkdp/hexyl/releases/download/v{{.Version}}/hexyl-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "hexyl", dst: "bin/hexyl", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.17.0
+    sha256:
+      darwin/arm64: "d8c50f5ec688faf566ea4c13d6aa12a5681dc370dab3ffba0a9db935a5986630"
+      darwin/amd64: "55346f1dcee92bf93f32e104b0fb9d31fab8eec36532a9b6107b4e0e0aef5f46"
+      linux/arm64: "70b97648935f98801fd3c3e4758ff4e92afcf7e75316ff65d4e4f5d2e321b658"
+      linux/amd64: "71b7463b8716225b4248525066e24b1874e954e87f397096f53e8804e3360189"

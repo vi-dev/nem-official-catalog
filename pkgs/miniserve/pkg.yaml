@@ -1,0 +1,27 @@
+schema: 2
+name: miniserve
+description: Serve files and directories over HTTP from the command line
+homepage: https://github.com/svenstaro/miniserve
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: svenstaro/miniserve
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/svenstaro/miniserve/releases/download/v{{.Version}}/miniserve-{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/miniserve", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.35.0
+    sha256:
+      darwin/arm64: "8e8dc916b1dc3bc2a46bf5a44308caf7db153e6940db178668929e1de40d1fbb"
+      darwin/amd64: "63a99448bf7c450f1264a1af313646df30251bdbc3284b8f4d2d55cee2b98c55"
+      linux/arm64: "732b1d5b30a3903580cee9ca24b2ff04ba2a5c78fa1ba6579dc5154fc431b40a"
+      linux/amd64: "c630ee030d5d9d83c88c5cc72f43ae215b0c214d64fd7afc92244fe369af2964"

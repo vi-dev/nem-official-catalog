@@ -1,0 +1,29 @@
+schema: 2
+name: jless
+description: Command-line JSON viewer
+homepage: https://jless.io
+license: MIT
+
+platforms: [darwin/arm64, darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: PaulJuliusMartinez/jless
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/PaulJuliusMartinez/jless/releases/download/v{{.Version}}/jless-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "jless", dst: "bin/jless", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.9.0
+    sha256:
+      darwin/arm64: "1967568762e44d3a5a7b09211c55ff9680419878a5a7045876d2cc6870e40390"
+      darwin/amd64: "8228d44b918af7e904a75df10f85dabf29cdedac17156d870c80968e6836b04f"
+      linux/amd64: "a1e0eb63ef347adc649989ac5c7d2dc896df6d494622b953c86e3a248e733a93"

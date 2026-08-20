@@ -1,0 +1,29 @@
+schema: 2
+name: lnav
+description: Log file navigator for the terminal
+homepage: https://lnav.org
+license: BSD-2-Clause
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: tstack/lnav
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/tstack/lnav/releases/download/v{{.Version}}/lnav-{{.Version}}-{{if eq .OS \"darwin\"}}aarch64-macos{{else}}linux-musl-{{replace .Arch \"amd64\" \"x86_64\"}}{{end}}.zip"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "lnav", dst: "bin/lnav", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.14.0
+    sha256:
+      darwin/arm64: "f282d567e1bdb2c3e54d9502671b8011c0d4e3700b2616cf72778602f8ee0371"
+      linux/arm64: "027e9f540567cd0e9ba00335ab9be0275a414b14608e10d49dc2d6a2633aa546"
+      linux/amd64: "9d146d1da2af005a77920afff5da96d2ae0771ee25450b0954b27de95e7f0f57"

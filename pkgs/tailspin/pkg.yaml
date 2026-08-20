@@ -1,0 +1,27 @@
+schema: 2
+name: tailspin
+description: Log file highlighter
+homepage: https://github.com/bensadeh/tailspin
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: bensadeh/tailspin
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/bensadeh/tailspin/releases/download/{{.Version}}/tailspin-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "tspin", dst: "bin/tspin", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 7.0.0
+    sha256:
+      darwin/arm64: "8a815e7c2449c8ba3d25a475cdd92d9d9127b991d7b46e73623d2992e4bb9ce4"
+      darwin/amd64: "27e38a1e132234a208cf228b0671b27d59a0484b54d4b4fe356d2cd4ed78f41e"
+      linux/arm64: "de78d9e9204af6817cc3dae342e92d41c41975c2bb11ae1abeabf30c43bc86ad"
+      linux/amd64: "f2de9268dc24811908e63a170507d860ac90c7f6a2f1937f59e5cca78cef21a2"

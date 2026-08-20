@@ -1,0 +1,28 @@
+schema: 2
+name: f2
+description: Batch rename files and directories from the command line
+homepage: https://github.com/ayoisaiah/f2
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: ayoisaiah/f2
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/ayoisaiah/f2/releases/download/v{{.Version}}/f2_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "f2", dst: "bin/f2", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.2.2
+    sha256:
+      darwin/arm64: "18d7cf76719b335b1b12ec7605b89637d6d832ec196beca9a0436e270252dd8c"
+      darwin/amd64: "2a037a55f25ee6c083af38ce3aafce885ecedfb13b17c867c2dc930320b5fae5"
+      linux/arm64: "65a38d8fe73a386d86f5163235ba3df04fc6cd45f73a6f67bf90ea02f1b9abfd"
+      linux/amd64: "d44bca9d9a08721655e0fd4a3459f4c2b844abb896de3e6a74551e8bf5f51432"

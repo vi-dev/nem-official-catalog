@@ -1,0 +1,29 @@
+schema: 2
+name: onefetch
+description: Git repository information tool for the terminal
+homepage: https://onefetch.dev
+license: MIT
+
+# Upstream ships one asset per OS: the macOS tarball is arm64-only and the
+# Linux tarball is x86_64-only, so the other two targets have no artifact.
+platforms: [darwin/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: o2sh/onefetch
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/o2sh/onefetch/releases/download/{{.Version}}/onefetch-{{if eq .OS \"darwin\"}}mac{{else}}linux{{end}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "onefetch", dst: "bin/onefetch", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.27.1
+    sha256:
+      darwin/arm64: "5597e2df7cf4bc56d8755c35da8071b0906878ea945147848bb1ba2b91b3ea3a"
+      linux/amd64: "51d6d1d2f7a85bd29dfca2aa3df390616cce322970f7f3cc1840a2295454b0f5"

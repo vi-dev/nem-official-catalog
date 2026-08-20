@@ -1,0 +1,28 @@
+schema: 2
+name: eza
+description: Replacement for ls with colors and git status
+homepage: https://eza.rocks
+license: EUPL-1.2
+
+platforms: [linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: eza-community/eza
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/eza-community/eza/releases/download/v{{.Version}}/eza_{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-unknown-linux-gnu.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "eza", dst: "bin/eza", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.23.5
+    sha256:
+      linux/arm64: "40b87ae8628aa2ff0f0d2dc24ab52f689631366385c3da630bae745671fd71ec"
+      linux/amd64: "35c70c5c43c29108075e58b893234c67ef585f0b53a7eaf8e9e7d4eec9f339b4"

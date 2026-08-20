@@ -1,0 +1,28 @@
+schema: 2
+name: vivid
+description: Themeable LS_COLORS generator with a filetype database
+homepage: https://github.com/sharkdp/vivid
+license: MIT OR Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: sharkdp/vivid
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/sharkdp/vivid/releases/download/v{{.Version}}/vivid-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "vivid", dst: "bin/vivid", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.11.1
+    sha256:
+      darwin/arm64: "82b23caf7c2fd0adeead0df197c76d5d997c57887a6265e7e63e729daec18570"
+      darwin/amd64: "b10548ea09e54d3015fb348466d0c33356106e52e8848545dc5b40fbe57b5547"
+      linux/arm64: "99bf6438b3403bc9255a83363fe5ed49a0f8bd86377a561420836af14dc8e9ee"
+      linux/amd64: "7060e45ba1fc5b25d521704e65d2e5d92c1b219c06b7183ec120a87e1fc376d7"

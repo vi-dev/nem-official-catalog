@@ -1,0 +1,27 @@
+schema: 2
+name: television
+description: General-purpose fuzzy finder TUI
+homepage: https://github.com/alexpasmantier/television
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: alexpasmantier/television
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/alexpasmantier/television/releases/download/{{.Version}}/tv-{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "tv", dst: "bin/tv", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.15.9
+    sha256:
+      darwin/arm64: "94ae7177d499f74e7544243ffe9c82371183ca11a6363f198a4b3d0e29f82732"
+      darwin/amd64: "0c6029ced92ddcf8218a8ce9a9d605d232898e2df021ae212d38c66f6c3abaad"
+      linux/arm64: "78a246170c9d83bea0f0c4a3fa8c9bc5cee80bbe66d34946d06fdc5a17a2cd1a"
+      linux/amd64: "87d47d071f3c3bac939b1e9b2c63e45c299c9ad31cf8711f63dede614d0c6608"

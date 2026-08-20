@@ -1,0 +1,29 @@
+schema: 2
+name: yazi
+description: Terminal file manager with async I/O
+homepage: https://yazi-rs.github.io
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: sxyazi/yazi
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/sxyazi/yazi/releases/download/v{{.Version}}/yazi-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.zip"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "yazi", dst: "bin/yazi", mode: 0o755}
+  - copy: {src: "ya", dst: "bin/ya", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 26.8.15
+    sha256:
+      darwin/arm64: "3f54907ea08abe96506f4b22239340ed8923a6aeaeae78f33d59bce57daca4cd"
+      darwin/amd64: "70bb2bcf57d8af862a54e2d12f2fddceefb9aa4ba3783e9a4dcbf2a8e64aacb3"
+      linux/arm64: "dfaafadd3a80a18ccbd24c32be4888178202ea96f784a9b1021d526c908cab4b"
+      linux/amd64: "a6702034790afcdbb546b73b288c9b184a751fa3f2f17f0ad4d26fc302fb8d45"

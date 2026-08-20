@@ -1,0 +1,28 @@
+schema: 2
+name: tuios
+description: Terminal multiplexer with a windowed interface
+homepage: https://tuios.gaurav.zip
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: Gaurav-Gosain/tuios
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/Gaurav-Gosain/tuios/releases/download/v{{.Version}}/tuios_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "tuios", dst: "bin/tuios", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.7.0
+    sha256:
+      darwin/arm64: "91c6f316d66ebf4b575bc0b2f3cfa95bbb90cce830aa57b94f2b24874f4defcb"
+      darwin/amd64: "d5781bb285a456733c12ec3b40e263736685f1c5a61b93eed232f80ce911dbf3"
+      linux/arm64: "3c38daef629d13d9c4e40b7407ab3bd2ee4a9798995600eb2fcc85fa82d76a22"
+      linux/amd64: "0a42da4dafc170f888d5fc6148c5bc62b3d65b69c3fc82e2ab0bb1ae47875fcd"

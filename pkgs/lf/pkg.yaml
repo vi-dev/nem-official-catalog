@@ -1,0 +1,29 @@
+schema: 2
+name: lf
+description: Terminal file manager
+homepage: https://github.com/gokcehan/lf
+license: MIT
+
+# Upstream tags releases as r<n>, so versions are a plain revision number.
+versionDiscovery:
+  github:
+    repo: gokcehan/lf
+    filter: '^r\d+$'
+    prefix: "r"
+
+artifact:
+  url: "https://github.com/gokcehan/lf/releases/download/r{{.Version}}/lf-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "lf", dst: "bin/lf", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 42
+    sha256:
+      darwin/arm64: "b08f3249cc9536fe7d9a29746a2de322c247f81cd543db541a770fe49b53bd37"
+      darwin/amd64: "3a3c2180cce9274d5c4713b092cff2b1169db9d9df4334e1c40d485eab1e565a"
+      linux/arm64: "b8095f4f9d2561340bea019a21ce5a7ac671f4c76402b7039732c003b6c03951"
+      linux/amd64: "c6abe6c0c11a0a4ae89754884aad67de18decc113935cbc5eaa57dc0d1850fb4"
