@@ -1,0 +1,27 @@
+schema: 2
+name: gofumpt
+description: Stricter gofmt with additional formatting rules
+homepage: https://github.com/mvdan/gofumpt
+license: BSD-3-Clause
+
+versionDiscovery:
+  github:
+    repo: mvdan/gofumpt
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/mvdan/gofumpt/releases/download/v{{.Version}}/gofumpt_v{{.Version}}_{{.OS}}_{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/gofumpt", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.11.0
+    sha256:
+      darwin/arm64: "18936628f195369a80a129c73ee33d23e39086286dab538781ba826effc7e10b"
+      darwin/amd64: "b93b3d2c326196af9fb1ce34a5436a18e7b9a73a795bf42e5b6a542eea88d322"
+      linux/arm64: "9272c2d1738acc1acae33793419e74c69653e70fe56bec4ad9044b12b54715e5"
+      linux/amd64: "9f247ec294f5082375c7b062f3ddf48c8212a8711f65a6d75f5129f7fda0d7da"

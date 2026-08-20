@@ -1,0 +1,28 @@
+schema: 2
+name: staticcheck
+description: Static analysis linter for Go
+homepage: https://staticcheck.dev
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: dominikh/go-tools
+    # releases use calendar versions (2026.1); v0.x tags are library tags
+    filter: '^\d{4}\.\d+(\.\d+)?$'
+
+artifact:
+  url: "https://github.com/dominikh/go-tools/releases/download/{{.Version}}/staticcheck_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "staticcheck", dst: "bin/staticcheck", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2026.1
+    sha256:
+      darwin/arm64: "f71553886fe4bb313da317d7abc3e16fe3cae2dba54f1e07a94a1ae160beced2"
+      darwin/amd64: "4b1483a2b21d555bc04dedb00823143dca66d5e53ac98db8e55ae6df87bebfad"
+      linux/arm64: "dde37c023073aff5d910a85536a80b92a2ae0db75f6a89afcec1272c4fabd6fd"
+      linux/amd64: "9242b4bf5b9f5481fd720ec6d1018b38fbffe0e2730e498923c6e8053e8576be"

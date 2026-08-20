@@ -1,0 +1,28 @@
+schema: 2
+name: nfpm
+description: Builds deb, rpm, apk, ipk, and Arch Linux packages
+homepage: https://nfpm.goreleaser.com
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: goreleaser/nfpm
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/goreleaser/nfpm/releases/download/v{{.Version}}/nfpm_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "nfpm", dst: "bin/nfpm", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.47.0
+    sha256:
+      darwin/arm64: "e8c9d1d9ac218eeed479375143dc46b8d51a2b8dbba8e2f9f15ecc8faa2e404b"
+      darwin/amd64: "2b04108f8757313dde92ed729560845aadfb7782887eb6988a5dd96f9c146861"
+      linux/arm64: "1c0f5f2999b9a974bfb04fdb0cc3306096de530ac5dbb25d739cc5f5219c919c"
+      linux/amd64: "0660ca602b2d2d2ae4781a06c692b3eeb9d437ffea05b831d76e41f4a3188783"

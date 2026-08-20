@@ -1,0 +1,28 @@
+schema: 2
+name: protoc-gen-go
+description: protoc plugin generating Go code from Protocol Buffers
+homepage: https://github.com/protocolbuffers/protobuf-go
+license: BSD-3-Clause
+
+versionDiscovery:
+  github:
+    repo: protocolbuffers/protobuf-go
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/protocolbuffers/protobuf-go/releases/download/v{{.Version}}/protoc-gen-go.v{{.Version}}.{{.OS}}.{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "protoc-gen-go", dst: "bin/protoc-gen-go", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.36.12
+    sha256:
+      darwin/arm64: "951d1d2558bbbc8c6680dcb6d302263fa35302cb6e1fccad297a50d21d827f2b"
+      darwin/amd64: "1df5af4a047a54fb15b1f9c4a174562a692f55cab13e94b8fbf274e766800314"
+      linux/arm64: "bf385e22e18661b044f7b96ec28384f3f76aa6da10e956b450ffb949306768de"
+      linux/amd64: "14abe70d1557026d3dce6676b7a44d3ada91d79902c71cb075fbb8d315943320"

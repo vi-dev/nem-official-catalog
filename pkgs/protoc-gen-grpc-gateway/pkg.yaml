@@ -1,0 +1,27 @@
+schema: 2
+name: protoc-gen-grpc-gateway
+description: protoc plugin generating a RESTful reverse proxy for gRPC
+homepage: https://grpc-ecosystem.github.io/grpc-gateway/
+license: BSD-3-Clause
+
+versionDiscovery:
+  github:
+    repo: grpc-ecosystem/grpc-gateway
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/grpc-ecosystem/grpc-gateway/releases/download/v{{.Version}}/protoc-gen-grpc-gateway-v{{.Version}}-{{.OS}}-{{replace .Arch \"amd64\" \"x86_64\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/protoc-gen-grpc-gateway", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.30.0
+    sha256:
+      darwin/arm64: "4b8204296cfd46d25b23a1929ebb893fe99f00a2b057eef4f63ec794d1274c3a"
+      darwin/amd64: "595a2943b3da556523f72f574e4752eda4607625514af8ff62d051b281cb2f74"
+      linux/arm64: "0f74b7795bafc429b6fbae59d8d5d5600aae6dcd9bd25477a728e4bb67c75aaf"
+      linux/amd64: "3451a430e9dfaa43d199825426e96382348f69c4a42402a5b3f06fdd917c18ca"

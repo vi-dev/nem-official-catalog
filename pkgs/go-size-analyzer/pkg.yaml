@@ -1,0 +1,28 @@
+schema: 2
+name: go-size-analyzer
+description: Analyzes the size composition of compiled Go binaries
+homepage: https://github.com/Zxilly/go-size-analyzer
+license: AGPL-3.0
+
+versionDiscovery:
+  github:
+    repo: Zxilly/go-size-analyzer
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/Zxilly/go-size-analyzer/releases/download/v{{.Version}}/go-size-analyzer_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "gsa", dst: "bin/gsa", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.13.1
+    sha256:
+      darwin/arm64: "bfccd6615bf98674fc621c6698e20a5463d5be8266129a395dbaa91434a787bd"
+      darwin/amd64: "50a012ae31c5dffad926b7f6b6ae1c82bc5f593bce97ab8329b66629bace3825"
+      linux/arm64: "2693b8b5b4f96cd5ec7b4721426d5fc39741b456989e611c6f3807c326e74d88"
+      linux/amd64: "5dc659b12015f9928bbda7404efdb3582a177eaba5b79418d1bdcfa6c44de0f3"

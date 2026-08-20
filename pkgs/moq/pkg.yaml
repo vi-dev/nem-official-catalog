@@ -1,0 +1,28 @@
+schema: 2
+name: moq
+description: Generates interface mock implementations for go generate
+homepage: https://github.com/matryer/moq
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: matryer/moq
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/matryer/moq/releases/download/v{{.Version}}/moq_{{replace (replace .OS \"darwin\" \"macOS\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "moq", dst: "bin/moq", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.7.1
+    sha256:
+      darwin/arm64: "fd7514aabf6fb4dbc985ded3fa9882a1fdd6ea04271b1ae4b8b596a4753890e6"
+      darwin/amd64: "10c08bcf132752e1d6a72df1b6cf3a983e2d547cd6b334e6d249ed5937606fd3"
+      linux/arm64: "a437d2732e340042f89543a73c746302b4e44a9a6cf14a3d069361b01d7b0cc9"
+      linux/amd64: "98b79927474a82aac3e0d49bf2002987431f89ecd8157d2e4616808252b08154"

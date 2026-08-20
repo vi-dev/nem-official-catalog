@@ -1,0 +1,28 @@
+schema: 2
+name: mockery
+description: Mock code generator for Go interfaces
+homepage: https://vektra.github.io/mockery/
+license: BSD-3-Clause
+
+versionDiscovery:
+  github:
+    repo: vektra/mockery
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/vektra/mockery/releases/download/v{{.Version}}/mockery_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "mockery", dst: "bin/mockery", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.7.3
+    sha256:
+      darwin/arm64: "4886bfd00f82dfb0ccd8112aaf4e85af142b4c3e051635120ac73c3394b59ff4"
+      darwin/amd64: "107abe6c7bbf1ecc3d5a2fa9f621ab8d12816367b8ce35d51fa1cbf556f9360b"
+      linux/arm64: "01882151519384bf7877d0c63c0fc02a678ee5d9a2c6c8666675aa17a16744c4"
+      linux/amd64: "150bbabc3c50ceb964b709fdfbc54e095e4f585a85ccfe2c8ee7f640d522f110"

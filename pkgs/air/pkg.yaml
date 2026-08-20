@@ -1,0 +1,28 @@
+schema: 2
+name: air
+description: Live reload for Go applications
+homepage: https://github.com/air-verse/air
+license: GPL-3.0
+
+versionDiscovery:
+  github:
+    repo: air-verse/air
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/air-verse/air/releases/download/v{{.Version}}/air_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "air", dst: "bin/air", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.67.4
+    sha256:
+      darwin/arm64: "377e3f6ad87dc27a1fe665a78229c619188cf70d05ddc24d62ba065ee0824934"
+      darwin/amd64: "a6eccc0afea79497d74edb2f0fc603fd518ac9825a83e487d9e419ee5786035c"
+      linux/arm64: "3b138e3cc01c6f1f077f555baa1db45215c02f1aa57db8ab0b5b082a76a45743"
+      linux/amd64: "c8cc405210e557e2681275688ce700441eac53db9fb42bb58764874ee9aa783d"
