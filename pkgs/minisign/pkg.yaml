@@ -1,0 +1,32 @@
+schema: 2
+name: minisign
+description: Sign files and verify digital signatures
+homepage: https://jedisct1.github.io/minisign/
+license: ISC
+
+# the macOS zip holds an arm64-only binary, so there is no darwin/amd64 build
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: jedisct1/minisign
+    filter: '^\d+\.\d+(\.\d+)?$'
+
+artifact:
+  url: "https://github.com/jedisct1/minisign/releases/download/{{.Version}}/minisign-{{.Version}}-{{if eq .OS \"darwin\"}}macos.zip{{else}}linux.tar.gz{{end}}"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "minisign", dst: "bin/minisign", mode: 0o755}
+    platforms: [darwin]
+  - copy: {src: "minisign-linux/{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}/minisign", dst: "bin/minisign", mode: 0o755}
+    platforms: [linux]
+
+bins: ["bin"]
+
+versions:
+  - version: 0.12
+    sha256:
+      darwin/arm64: "89000b19535765f9cffc65a65d64a820f433ef6db8020667f7570e06bf6aac63"
+      linux/arm64: "9a599b48ba6eb7b1e80f12f36b94ceca7c00b7a5173c95c3efc88d9822957e73"
+      linux/amd64: "9a599b48ba6eb7b1e80f12f36b94ceca7c00b7a5173c95c3efc88d9822957e73"

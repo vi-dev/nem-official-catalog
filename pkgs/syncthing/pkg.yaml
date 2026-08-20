@@ -1,0 +1,28 @@
+schema: 2
+name: syncthing
+description: Continuous file synchronization between devices
+homepage: https://syncthing.net
+license: MPL-2.0
+
+versionDiscovery:
+  github:
+    repo: syncthing/syncthing
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/syncthing/syncthing/releases/download/v{{.Version}}/syncthing-{{if eq .OS \"darwin\"}}macos{{else}}linux{{end}}-{{.Arch}}-v{{.Version}}.{{if eq .OS \"darwin\"}}zip{{else}}tar.gz{{end}}"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "syncthing", dst: "bin/syncthing", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.1.3
+    sha256:
+      darwin/arm64: "e0f0d8df05bf0118c48c6515214a96bf3a3f11dbd115f56c3c0b52251b3f71aa"
+      darwin/amd64: "207557c0f708578375be9a286d13078cd709bfccae43d61d004913bb512b10aa"
+      linux/arm64: "a5c046965b590a8de2f8c8c16a0dbf9201d99600b0cafd604040232b603e4586"
+      linux/amd64: "f929eb8e5b72a85543eeeefb2c38f34a68e0c530e70758a2905b78840c76602c"

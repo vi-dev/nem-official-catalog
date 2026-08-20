@@ -1,0 +1,28 @@
+schema: 2
+name: rustic
+description: Fast, encrypted, deduplicated backups
+homepage: https://rustic.cli.rs
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: rustic-rs/rustic
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/rustic-rs/rustic/releases/download/v{{.Version}}/rustic-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "rustic", dst: "bin/rustic", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.11.4
+    sha256:
+      darwin/arm64: "6df166f68876f1bd1e0965547542374877f04ab498cbb5e19b1b155844bce307"
+      darwin/amd64: "ff0014a53f10965bc7852945ad4ac52532ad8af0efe5e4f4957dd330889946de"
+      linux/arm64: "8d8121f9d72f5320e8a3dd870bce6cf56a4fb8cb4dadc4d29b4eeb228bd88406"
+      linux/amd64: "c20bc3682c6275de3cfbc9317101dca5c0800a2fb5c610d0f9ef2addfd27cf81"

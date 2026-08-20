@@ -1,0 +1,28 @@
+schema: 2
+name: croc
+description: Send files between computers over an encrypted relay
+homepage: https://github.com/schollz/croc
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: schollz/croc
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/schollz/croc/releases/download/v{{.Version}}/croc_v{{.Version}}_{{if eq .OS \"darwin\"}}macOS{{else}}Linux{{end}}-{{replace (replace .Arch \"amd64\" \"64bit\") \"arm64\" \"ARM64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "croc", dst: "bin/croc", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 11.2.2
+    sha256:
+      darwin/arm64: "53e35044fcd8c7cba1d8a03821acb3b2c282928715fa9abc69faf190c4317811"
+      darwin/amd64: "fb7ffa42686eaf5985a69da599b10abe3459d7ad37e5076338c0547fd6fb0ff9"
+      linux/arm64: "54f6b1d252189a89c5468acdddc5c266a8156931179ae5ba4a9e16a2764d9290"
+      linux/amd64: "e4a35eb45a71d373f5e2470c1a8ba29fdf7bf1e5e79dc4d54b25ab5524fe0797"

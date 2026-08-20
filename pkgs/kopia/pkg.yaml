@@ -1,0 +1,28 @@
+schema: 2
+name: kopia
+description: Encrypted, deduplicating backup tool
+homepage: https://kopia.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: kopia/kopia
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kopia/kopia/releases/download/v{{.Version}}/kopia-{{.Version}}-{{replace .OS \"darwin\" \"macOS\"}}-{{replace .Arch \"amd64\" \"x64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "kopia", dst: "bin/kopia", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.23.1
+    sha256:
+      darwin/arm64: "19e6ed637221f4dfd46a46e978ec4c509c386b522d746db2cd6762b217478111"
+      darwin/amd64: "89dd7160a1266413c73bd0aa92459c5e739fcaed2ba30a4cca30aef179f11042"
+      linux/arm64: "a4ffbc019e0b0f932e2632054e73ec521dc1e80172a00095369c53ecf4e5a6cb"
+      linux/amd64: "416d0f84a3dbb321a8b2d8f0997b1a0a6e915babe79ee76fa6e4d2bd1e1c5178"

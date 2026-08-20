@@ -1,0 +1,27 @@
+schema: 2
+name: ouch
+description: Compress and decompress archives from the command line
+homepage: https://github.com/ouch-org/ouch
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: ouch-org/ouch
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/ouch-org/ouch/releases/download/{{.Version}}/ouch-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "ouch", dst: "bin/ouch", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.8.1
+    sha256:
+      darwin/arm64: "ae4b406486c6105913ff86477938a4984636422de2c4766d3c444c580e8bf989"
+      darwin/amd64: "5f27ea43b4f6a73609c94a0e5c2b6fb6b69a2f842bdecf040183303a6dda6378"
+      linux/arm64: "9caf888aa6944887084b917c7872d16a439a82f6ca1754c89816cda5dc957546"
+      linux/amd64: "866884b08ea69fbab80bd79162df408519068a8fa232c2055038a1e561ad8f4c"

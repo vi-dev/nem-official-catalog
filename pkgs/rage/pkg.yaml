@@ -1,0 +1,29 @@
+schema: 2
+name: rage
+description: Rust implementation of the age file encryption format
+homepage: https://github.com/str4d/rage
+license: MIT OR Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: str4d/rage
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/str4d/rage/releases/download/v{{.Version}}/rage-v{{.Version}}-{{replace .Arch \"amd64\" \"x86_64\"}}-{{.OS}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "rage", dst: "bin/rage", mode: 0o755}
+  - copy: {src: "rage-keygen", dst: "bin/rage-keygen", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.12.1
+    sha256:
+      darwin/arm64: "25478bfca7085c7bf59e9f552907d4d0f4635e8de501b0b3553949edef39053e"
+      darwin/amd64: "31697f501b433b6b7bbe75df4536b6c22a11ab164c542d1fdfa7af54b1e7e38e"
+      linux/arm64: "d6814986f9fb0c62bdd4f40a3672468ef3d64d0a3e894ffceb6d1a618309964b"
+      linux/amd64: "c5d7ab41fbf1213590e89721fd2b8eb122e84518c155ce35866f1c5759a3a29f"
