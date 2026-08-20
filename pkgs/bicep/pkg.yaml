@@ -1,0 +1,27 @@
+schema: 2
+name: bicep
+description: Declarative language for deploying Azure resources
+homepage: https://github.com/Azure/bicep
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: Azure/bicep
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/Azure/bicep/releases/download/v{{.Version}}/bicep-{{replace .OS \"darwin\" \"osx\"}}-{{replace .Arch \"amd64\" \"x64\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/bicep", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.46.1
+    sha256:
+      darwin/arm64: "7e1064cc780e1767822d7f112f25fdbe72c956e40f75c24254ce8530b41d649a"
+      darwin/amd64: "b7543d186a29bb0b3971a0b3fc2f6f805de316232fd56c3a880aa86dea9a9035"
+      linux/arm64: "9e1b4302ff15d6cb0f756c876d58e1dd19b63ba37929f9d004949d714b369348"
+      linux/amd64: "3e011d629ea4311b7a7dd8f0040ab2b1a072ea4ff5d02cb75e0e55a9a6703fb9"

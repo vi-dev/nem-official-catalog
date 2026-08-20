@@ -1,0 +1,28 @@
+schema: 2
+name: wrkflw
+description: Validate and run GitHub Actions workflows locally
+homepage: https://github.com/bahdotsh/wrkflw
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: bahdotsh/wrkflw
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/bahdotsh/wrkflw/releases/download/v{{.Version}}/wrkflw-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "wrkflw", dst: "bin/wrkflw", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.8.0
+    sha256:
+      darwin/arm64: "119932dc5c27e146a9ca88247a600a20054b7a243f790615057c81b5aca2bc78"
+      darwin/amd64: "a7b9603c09932f3cc783cb529b18a98cc323069e34db6e897dac011266fbb982"
+      linux/arm64: "44b9d02e3624aa808dfab22bbcc12f65564079e30bc5b7d82a3f32e1f0830234"
+      linux/amd64: "d7140aa917da5bb13a2f27eab6c592bb019cbe4977e14390d579992087a6a902"

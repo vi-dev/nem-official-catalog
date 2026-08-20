@@ -1,0 +1,28 @@
+schema: 2
+name: cloudquery
+description: Data integration platform syncing sources into destinations
+homepage: https://www.cloudquery.io
+license: MPL-2.0
+
+versionDiscovery:
+  github:
+    repo: cloudquery/cloudquery
+    # Monorepo: plugins tag alongside the CLI, so match the cli- tags only.
+    filter: '^cli-v\d+\.\d+\.\d+$'
+    prefix: "cli-v"
+
+artifact:
+  url: "https://github.com/cloudquery/cloudquery/releases/download/cli-v{{.Version}}/cloudquery_{{.OS}}_{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/cloudquery", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 6.41.1
+    sha256:
+      darwin/arm64: "7313b01e994fadb40fc970fa315aaa24a9ce061f761b74f8ab3181b57b50d096"
+      darwin/amd64: "1002c4d684029c54ba463085f9236d1a17f24564642c4cf514866cec83d2ea8b"
+      linux/arm64: "d038139c50d971269fcb75379e93a545d3dd6eed7bf9b7fa54cc0093be7cb1da"
+      linux/amd64: "c076a6f914d4909bc0fe03c4ccec71a3f9ff482f816952642b8773ef444a2fc9"

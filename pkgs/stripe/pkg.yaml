@@ -1,0 +1,28 @@
+schema: 2
+name: stripe
+description: Command-line tool for the Stripe API
+homepage: https://github.com/stripe/stripe-cli
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: stripe/stripe-cli
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/stripe/stripe-cli/releases/download/v{{.Version}}/stripe_{{.Version}}_{{replace .OS \"darwin\" \"mac-os\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "stripe", dst: "bin/stripe", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.50.3
+    sha256:
+      darwin/arm64: "148a658e558fdc7b63c020e825d4189e50d90d4f05cb9087765132a5015ae3f5"
+      darwin/amd64: "0143c4ae333a6cc89915403c00a27bf8e2b91d00fcd48fa9a652a411acbeaffd"
+      linux/arm64: "390bfb9bdcc851a0abf96dd82887bbcd78aedc2d66c4c2a943d975957916a3b9"
+      linux/amd64: "4fda0794278c04f6594565d114ed145735bef7cfc91ddc1d2c18b1d83dec9ac9"

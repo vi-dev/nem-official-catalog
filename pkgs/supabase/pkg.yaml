@@ -1,0 +1,29 @@
+schema: 2
+name: supabase
+description: CLI for developing and deploying Supabase projects
+homepage: https://github.com/supabase/cli
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: supabase/cli
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/supabase/cli/releases/download/v{{.Version}}/supabase_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+# The supabase launcher execs the supabase-go helper from its own directory,
+# so both binaries stay side by side at the package root.
+install:
+  - extract: {strip: 0}
+
+bins: ["."]
+
+versions:
+  - version: 2.115.0
+    sha256:
+      darwin/arm64: "5b25574efd0a67905073085783da3659737d237e5137e3adfe1a9858e94f40dc"
+      darwin/amd64: "0ef10f633c72ea14be92ccd2905af1a92472dfc1e7518e04e887bfca0b45b851"
+      linux/arm64: "02d2dfddf41fb6d03d2f1baf6e0c63b32ecc8c4dfddcbe63f9b11aecd2a9111c"
+      linux/amd64: "ff099608ce758b625532ef03a61f4c9520b995e94ff6cd5480dc0428cad64cb3"

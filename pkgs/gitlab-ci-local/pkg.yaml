@@ -1,0 +1,27 @@
+schema: 2
+name: gitlab-ci-local
+description: Run GitLab CI pipelines locally
+homepage: https://github.com/firecow/gitlab-ci-local
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: firecow/gitlab-ci-local
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/firecow/gitlab-ci-local/releases/download/{{.Version}}/gitlab-ci-local-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "gitlab-ci-local", dst: "bin/gitlab-ci-local", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 4.74.0
+    sha256:
+      darwin/arm64: "7dcd62e5880e4d464517bc60db7d6a4708255beb3312d94b42bb8284d7967380"
+      darwin/amd64: "d95c23de14751da84917dba89f4fb7fbb3aa9431d2e16c40d9a412f698327db8"
+      linux/arm64: "61246367258d32e6568d784f862731646ca8d23b7712049028e306470ee5e469"
+      linux/amd64: "f06ce9b831c7ed03dc50df72d7824cf1a7b158a06a1f0347f5409c9b6fe1dc06"

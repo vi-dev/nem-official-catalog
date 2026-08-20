@@ -1,0 +1,28 @@
+schema: 2
+name: terramate
+description: Orchestration and code generation for Terraform
+homepage: https://terramate.io
+license: MPL-2.0
+
+versionDiscovery:
+  github:
+    repo: terramate-io/terramate
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/terramate-io/terramate/releases/download/v{{.Version}}/terramate_{{.Version}}_{{.OS}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "terramate", dst: "bin/terramate", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.17.2
+    sha256:
+      darwin/arm64: "e42c3e56a076cce8e12dd34585def68e072863d6b0650b68aa774a1b148a0928"
+      darwin/amd64: "3866fecad2bc4486209e5b79f605831bd6446f55ee6f863364d520f8e0204753"
+      linux/arm64: "bb9c945c678ab473952e85d0baee04b7b69027db623f8a92b01fd927ee221140"
+      linux/amd64: "d519f118bbf2db1156df186f4162ef10d317d906af941ee6945300f777963776"

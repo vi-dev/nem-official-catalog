@@ -1,0 +1,27 @@
+schema: 2
+name: chamber
+description: Manage secrets in AWS SSM Parameter Store and Secrets Manager
+homepage: https://github.com/segmentio/chamber
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: segmentio/chamber
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/segmentio/chamber/releases/download/v{{.Version}}/chamber-v{{.Version}}-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/chamber", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.1.5
+    sha256:
+      darwin/arm64: "76f892e355c53dfc61a5b507f14df23410a11cea57e5932e4a0205fe15f89636"
+      darwin/amd64: "ae8277f9efff618c214f22aec3cfa9af23c39c80e083e8c58219d6500a17a87a"
+      linux/arm64: "418ec62341e5d910685d8d1168e94189274e6cf923746aad118a93cb84867fb9"
+      linux/amd64: "f3342541e241a30ac749fd56f9be594b0c1928f6eff30f6ad29fde88835ecdf8"

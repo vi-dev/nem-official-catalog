@@ -1,0 +1,27 @@
+schema: 2
+name: cli53
+description: Command line tool for Amazon Route 53
+homepage: https://github.com/barnybug/cli53
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: barnybug/cli53
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/barnybug/cli53/releases/download/v{{.Version}}/cli53-{{replace .OS \"darwin\" \"mac\"}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/cli53", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.9.0
+    sha256:
+      darwin/arm64: "11ac5c37437f6eaac074bba9cecaaa9fd076af96a9cd415141617ade047e0e0b"
+      darwin/amd64: "a6729bb6b50886576a28c7419b346d7dca370c583b0cb0181aea3c27c13a73f5"
+      linux/arm64: "e778db3590731fa0b4abd89ea42a2493af066c9b970b9a1f7aeba11aecc84637"
+      linux/amd64: "cd95d87f633b85fe8facc7c3c3c8dcbe6d68283e936415c84461f9e7f613dee0"

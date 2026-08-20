@@ -1,0 +1,29 @@
+schema: 2
+name: teller
+description: Secrets manager for developer environments
+homepage: https://github.com/tellerops/teller
+license: Apache-2.0
+
+platforms: [darwin/arm64, darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: tellerops/teller
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/tellerops/teller/releases/download/v{{.Version}}/teller-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace .OS \"darwin\" \"macos\"}}.tar.xz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "teller", dst: "bin/teller", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.0.7
+    sha256:
+      darwin/arm64: "ad4597ff4cd6a8a24b44389b80809dec31461055a4e32731cac2911d4f36adbb"
+      darwin/amd64: "729dbb8b2dec045c7d4450ae8e6c33ea47c3ad33fbbcc7cbf840da9f68c82af3"
+      linux/amd64: "3f4d13aeb516f3c330809f0dc22119d7b7bcb757c0c441431734c0746bf9684f"

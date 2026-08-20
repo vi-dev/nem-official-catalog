@@ -1,0 +1,28 @@
+schema: 2
+name: atlantis
+description: Terraform pull request automation server
+homepage: https://www.runatlantis.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: runatlantis/atlantis
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/runatlantis/atlantis/releases/download/v{{.Version}}/atlantis_{{.OS}}_{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "atlantis", dst: "bin/atlantis", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.47.0
+    sha256:
+      darwin/arm64: "0cd0b4b1530613a9d6ec7babc8254fb3536ea34ca7155be73c32dc40f749979e"
+      darwin/amd64: "62b9383207dd0e4b08bb1a650a0e9e7b3c2e71dd1cd3a8d3be013abaa9dd169a"
+      linux/arm64: "fbba88e622ba84c9b0ff7d3674da669061a2f68787e01b711a1b7ff3b4188e01"
+      linux/amd64: "04c266103dadb20028ef43c7b69447095f0acd575801110a8837778322a4479d"

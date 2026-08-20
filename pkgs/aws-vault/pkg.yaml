@@ -1,0 +1,28 @@
+schema: 2
+name: aws-vault
+description: Securely store and access AWS credentials
+homepage: https://github.com/99designs/aws-vault
+license: MIT
+
+# darwin releases ship only .dmg images, which nem cannot extract.
+platforms: [linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: 99designs/aws-vault
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/99designs/aws-vault/releases/download/v{{.Version}}/aws-vault-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/aws-vault", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 7.2.0
+    sha256:
+      linux/arm64: "176fa59b9e3981720361cd6ed87b5389741953c62ba0a6fa4f2db401f8bef735"
+      linux/amd64: "b92bcfc4a78aa8c547ae5920d196943268529c5dbc9c5aca80b797a18a5d0693"

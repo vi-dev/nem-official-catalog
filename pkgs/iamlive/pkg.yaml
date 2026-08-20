@@ -1,0 +1,28 @@
+schema: 2
+name: iamlive
+description: Generate AWS IAM policies from observed API calls
+homepage: https://github.com/iann0036/iamlive
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: iann0036/iamlive
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/iann0036/iamlive/releases/download/v{{.Version}}/iamlive_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "iamlive", dst: "bin/iamlive", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.1.28
+    sha256:
+      darwin/arm64: "ae8b7803e4c979e1042395071a5e560537575f4bf04c9efd0180cf04e1e39b83"
+      darwin/amd64: "968183496c285838c1a66fd2fb86fd3a117bfe70cdf579e082bb321e03950184"
+      linux/arm64: "1cf213838f4e6bdc9091e3ae1e516643d11bb011e64ec6480f3a3b6dd3bb15ff"
+      linux/amd64: "aef1d41d27c5b9a513f0b96b9ff5ed0fc9c076cea5b024d50311e6a76aae13f7"
