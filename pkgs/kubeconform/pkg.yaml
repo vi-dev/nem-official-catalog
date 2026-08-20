@@ -1,0 +1,28 @@
+schema: 2
+name: kubeconform
+description: Kubernetes manifest validator
+homepage: https://github.com/yannh/kubeconform
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: yannh/kubeconform
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/yannh/kubeconform/releases/download/v{{.Version}}/kubeconform-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubeconform", dst: "bin/kubeconform", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.8.0
+    sha256:
+      darwin/arm64: "f84f4dfbebf4a6b0b230385fa065a39ea35e02608c2b50d025dcf64775a69d67"
+      darwin/amd64: "71dbc87ac9f24099a62b93570e65aa06312ba6ac8aea63b7f86e9d999edf5a92"
+      linux/arm64: "1f53fc8e81258197a35e8603054162a5af1de8c5af13746c71ab680d9534ed87"
+      linux/amd64: "9bc2bffbf71f261128533edaf912153948b7ff238f9a531ae6d34466ec287883"

@@ -1,0 +1,28 @@
+schema: 2
+name: hubble
+description: CLI for Cilium Hubble network observability
+homepage: https://github.com/cilium/hubble
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: cilium/hubble
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/cilium/hubble/releases/download/v{{.Version}}/hubble-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "hubble", dst: "bin/hubble", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.19.4
+    sha256:
+      darwin/arm64: "7634532a50bae27e83dfaa8a2a8b1971024cd1e778aa15dc59e288daa3af4978"
+      darwin/amd64: "a7da3a17132b3ae97b59e6f8a58d2751a414779421de8c0596bc0f1e464166a4"
+      linux/arm64: "ba7f521458147de327cdb0f4bf73abea5bb6c29c1fb8a1e0e16d9bfb50951b31"
+      linux/amd64: "c7c37a5f27ed2ae2d5495c6ddbecc61cebbb841508e77af3c131e96f005ed247"

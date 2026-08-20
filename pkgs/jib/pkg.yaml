@@ -1,0 +1,31 @@
+schema: 2
+name: jib
+description: Build container images for Java applications without a Docker daemon
+homepage: https://github.com/GoogleContainerTools/jib
+license: Apache-2.0
+
+deps:
+  - jdk25
+
+versionDiscovery:
+  github:
+    repo: GoogleContainerTools/jib
+    filter: '^v\d+\.\d+\.\d+-cli$'
+    prefix: "v"
+    suffix: "-cli"
+
+artifact:
+  url: "https://github.com/GoogleContainerTools/jib/releases/download/v{{.Version}}-cli/jib-jre-{{.Version}}.zip"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.13.0
+    sha256:
+      darwin/arm64: "e8f6a4766221e6d3817226b8ee14792c4553e5605e79a48558f0d3bef21e0461"
+      darwin/amd64: "e8f6a4766221e6d3817226b8ee14792c4553e5605e79a48558f0d3bef21e0461"
+      linux/arm64: "e8f6a4766221e6d3817226b8ee14792c4553e5605e79a48558f0d3bef21e0461"
+      linux/amd64: "e8f6a4766221e6d3817226b8ee14792c4553e5605e79a48558f0d3bef21e0461"

@@ -1,0 +1,29 @@
+schema: 2
+name: regal
+description: Linter and language server for Rego
+homepage: https://github.com/open-policy-agent/regal
+license: Apache-2.0
+
+# the repo also carries v1/v2 tags that publish no release assets;
+# binaries only ship for the v0 line
+versionDiscovery:
+  github:
+    repo: open-policy-agent/regal
+    filter: '^v0\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/open-policy-agent/regal/releases/download/v{{.Version}}/regal_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/regal", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.42.0
+    sha256:
+      darwin/arm64: "c3ee16c956b8cd5b3aeb53414afbd2a11b0dff1aa1e726fc91e33e7adef31845"
+      darwin/amd64: "b8fe86028a9730ab6c6fbdf2ef292596b1a0037c3c1accbd0dd00a8724935ff7"
+      linux/arm64: "13a2ba4a049fa8f3f64ed602a56bad1378eec253d36a977799ff51e694e47c77"
+      linux/amd64: "2ebd3c93e4b325b735dbc4851a033e4d7830e88a79c47c8d087ea75c061cec67"

@@ -1,0 +1,30 @@
+schema: 2
+name: etcd
+description: Distributed reliable key-value store and its client tools
+homepage: https://etcd.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: etcd-io/etcd
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/etcd-io/etcd/releases/download/v{{.Version}}/etcd-v{{.Version}}-{{.OS}}-{{.Arch}}.{{if eq .OS \"darwin\"}}zip{{else}}tar.gz{{end}}"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "etcd", dst: "bin/etcd", mode: 0o755}
+  - copy: {src: "etcdctl", dst: "bin/etcdctl", mode: 0o755}
+  - copy: {src: "etcdutl", dst: "bin/etcdutl", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.7.1
+    sha256:
+      darwin/arm64: "a3e839d9128e170c299b1592bed92d8327f258eb94923aea24a0ccf923cf27e9"
+      darwin/amd64: "9746d8b4fa484073d0f0be66d23815c56ad296177602b87cc9b111251916185e"
+      linux/arm64: "d7e25e08f694b6ed7792fc7b7a891fe2c3f3d3dccfe2f3bfdb1547b0eb75b6da"
+      linux/amd64: "e8cd3fa8064c98137c5dbd78b76f969417ace84efb83c481041d7a52ffdd8fb9"

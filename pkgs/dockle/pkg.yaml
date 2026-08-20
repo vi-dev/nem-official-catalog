@@ -1,0 +1,28 @@
+schema: 2
+name: dockle
+description: Container image linter for security and best practices
+homepage: https://github.com/goodwithtech/dockle
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: goodwithtech/dockle
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/goodwithtech/dockle/releases/download/v{{.Version}}/dockle_{{.Version}}_{{replace (replace .OS \"darwin\" \"macOS\") \"linux\" \"Linux\"}}-{{replace (replace .Arch \"arm64\" \"ARM64\") \"amd64\" \"64bit\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "dockle", dst: "bin/dockle", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.4.15
+    sha256:
+      darwin/arm64: "dc6120234cd74a40fedba84290f6b5c397c8f09c645063a3b59dce8283056847"
+      darwin/amd64: "e6b68aca0e7776d857d7f5f226c6dae9b74d8905376636ac4ad93355ec84892d"
+      linux/arm64: "14c2fbcd675afaa0f1717e97ab71eee178dabdef676066189f49bad0f53b8762"
+      linux/amd64: "8bfc9183d1d3d67800edb45bea4bb63ddf1d28bec5f89944075a07007d79caad"

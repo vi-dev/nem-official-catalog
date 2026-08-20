@@ -1,0 +1,28 @@
+schema: 2
+name: tldr
+description: Simplified, community-driven man pages (tlrc client)
+homepage: https://tldr.sh
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: tldr-pages/tlrc
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/tldr-pages/tlrc/releases/download/v{{.Version}}/tlrc-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "tldr", dst: "bin/tldr", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.13.1
+    sha256:
+      darwin/arm64: "7dd8c585da66c9977ecff5d50a93c4c77a946322668b7ab2e0082dd07d11eddf"
+      darwin/amd64: "2db4a3c772ae30243cd6bb4231cc43eff005d311618666af91e49662310b8e8b"
+      linux/arm64: "b58399caf415f9acf35e1079d404458abea1ca098dcdb273363d1966428363cb"
+      linux/amd64: "a0d7d963f2bced8a4fa7ab1a42f24140abdb40ba6033f0996dea2e826e341819"

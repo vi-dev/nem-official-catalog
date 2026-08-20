@@ -1,0 +1,27 @@
+schema: 2
+name: docker-compose
+description: Define and run multi-container applications with Docker
+homepage: https://docs.docker.com/compose/
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: docker/compose
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/docker/compose/releases/download/v{{.Version}}/docker-compose-{{.OS}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/docker-compose", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 5.5.0
+    sha256:
+      darwin/arm64: "6777710e5a5db5709e5f4b5985844e74b73cc1a6123e3a6690b6ababf2deaf51"
+      darwin/amd64: "d0f0c867fd740953899a63d6d1a291dc60200b0961de9612a01bcc560e6e29a6"
+      linux/arm64: "ff42489f5a9b879d5d117c5ffea6defc27390b3286da8ad52cbc9c6ab5df590e"
+      linux/amd64: "c57ab918abd5b05ca7e7d0f275875dd1330a695074f309dc9eab1b49efafcd4b"

@@ -1,0 +1,27 @@
+schema: 2
+name: hadolint
+description: Dockerfile linter
+homepage: https://github.com/hadolint/hadolint
+license: GPL-3.0-only
+
+versionDiscovery:
+  github:
+    repo: hadolint/hadolint
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/hadolint/hadolint/releases/download/v{{.Version}}/hadolint-{{replace .OS \"darwin\" \"macos\"}}-{{replace .Arch \"amd64\" \"x86_64\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/hadolint", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.15.1
+    sha256:
+      darwin/arm64: "5c09f3213f8e40406abe048233d985eebef336d4a6a20021be47fadb6cf480a2"
+      darwin/amd64: "ffe9bb18b23d5ed1eae50237aecdbb523d016e96da0bd4e7aa432040acfc3fde"
+      linux/arm64: "f6198ef8090f404dbb771abfee086eb8c48ac177f30da7fd3510aca35b344b5d"
+      linux/amd64: "c7187db94eeeeca956519a6af171adc31453941a1e777961f6e680f697c8c507"
