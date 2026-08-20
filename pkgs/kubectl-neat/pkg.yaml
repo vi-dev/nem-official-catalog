@@ -1,0 +1,28 @@
+schema: 2
+name: kubectl-neat
+description: Clean Kubernetes manifests for readability
+homepage: https://github.com/itaysk/kubectl-neat
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: itaysk/kubectl-neat
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/itaysk/kubectl-neat/releases/download/v{{.Version}}/kubectl-neat_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubectl-neat", dst: "bin/kubectl-neat", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.0.4
+    sha256:
+      darwin/arm64: "793288c49a10ae36a75cb29fe1af699f1cf535e30695e859af6e1857e15c26da"
+      darwin/amd64: "b58ca9555f996ff1d3fd3212d0672c4c944e6677f0fea89469dc462c73dd09cb"
+      linux/arm64: "0f91c333da093df541a2b680eb499b8597e2433b9014a4ea3bd90e1b19b63b30"
+      linux/amd64: "2a4e0ce4988554e39e66135f3e6894434e7c8629fb173f40bc4e160dbc7f3f25"

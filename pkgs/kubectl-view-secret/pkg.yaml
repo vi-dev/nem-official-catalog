@@ -1,0 +1,29 @@
+schema: 2
+name: kubectl-view-secret
+description: Decode Kubernetes secrets
+homepage: https://github.com/elsesiy/kubectl-view-secret
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: elsesiy/kubectl-view-secret
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/elsesiy/kubectl-view-secret/releases/download/v{{.Version}}/kubectl-view-secret_v{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  # kubectl maps "view-secret" to an underscore executable name
+  - copy: {src: "kubectl-view-secret", dst: "bin/kubectl-view_secret", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.16.0
+    sha256:
+      darwin/arm64: "53ab023f7b60396c790a396f6a3bc33e173b5ebf14081cfac18354a0d23264d4"
+      darwin/amd64: "090d96a5a9728171ecebba42a15ab2c7835d3b63fb4fdc6d76e615ea0b7fb7e1"
+      linux/arm64: "04644e43378f74a09cf60a081759e8b8bbe8281924c0dc20dab31e9d00ab0f37"
+      linux/amd64: "dad8f7d257e17e0a382f139bd756cdb437268d77973ad8ba3c55b346ce5bdd92"

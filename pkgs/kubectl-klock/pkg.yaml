@@ -1,0 +1,28 @@
+schema: 2
+name: kubectl-klock
+description: Watch Kubernetes resources in a live table
+homepage: https://github.com/applejag/kubectl-klock
+license: GPL-3.0-only
+
+versionDiscovery:
+  github:
+    repo: applejag/kubectl-klock
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/applejag/kubectl-klock/releases/download/v{{.Version}}/kubectl-klock_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubectl-klock", dst: "bin/kubectl-klock", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.9.2
+    sha256:
+      darwin/arm64: "c11295888ab2478633e91ba82a9552da3d1ca7e946f9b7f1bcbeb81605ae5b45"
+      darwin/amd64: "4f1696247d5b18067a12ada4c043f0a128ba4d67bce665ce4bf2cac1a357e14c"
+      linux/arm64: "776d8d201bba9724597534de6e0d7ad3c60913fd8e23caafeff07918009df44d"
+      linux/amd64: "b3d113b272f7813be75e12882356cea56255c03c9ea71919c6794977ab6101cf"

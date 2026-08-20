@@ -1,0 +1,28 @@
+schema: 2
+name: kubectl-oomd
+description: Show recently OOMKilled pods and containers
+homepage: https://github.com/jdockerty/kubectl-oomd
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: jdockerty/kubectl-oomd
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/jdockerty/kubectl-oomd/releases/download/v{{.Version}}/oomd_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "oomd", dst: "bin/kubectl-oomd", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.0.7
+    sha256:
+      darwin/arm64: "58b4afc3415889d5fc066eea41b1aa610ac242c9859d99ca1f1c817584d111f4"
+      darwin/amd64: "cd5d7111e58d8b8310985005d4edf3eed90135e20510ef852c0d56f96aa9c68a"
+      linux/arm64: "f7a66ea144313641785dbac861f72be2027c3ba56ea32d4e64177488f1a1ae72"
+      linux/amd64: "2124665b85b4b96bfafc369bbc45c4b9380a2a8f6c72ec3ea9c65cadb5a5bfee"

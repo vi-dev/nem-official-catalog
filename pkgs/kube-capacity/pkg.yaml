@@ -1,0 +1,29 @@
+schema: 2
+name: kube-capacity
+description: Overview of cluster resource requests, limits, and usage
+homepage: https://github.com/robscott/kube-capacity
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: robscott/kube-capacity
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/robscott/kube-capacity/releases/download/v{{.Version}}/kube-capacity_v{{.Version}}_{{.OS}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  # installed under the name kubectl resolves for "resource-capacity"
+  - copy: {src: "kube-capacity", dst: "bin/kubectl-resource_capacity", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.8.0
+    sha256:
+      darwin/arm64: "48ae52e396a34a392924e59e0ccbd1bf512906bb0d8c6b87490b0057c1503d44"
+      darwin/amd64: "c2ddc963bdc09a5ecd5ab1fc0b6bc19c1cc4c5c4a17a8f6cd98670e157dfcbcc"
+      linux/arm64: "ef4ba0c43b57d6efc0472ce465f69a6102bdeeb16541120ea1a510a2d2f98465"
+      linux/amd64: "610ce6e5d7f528df1c60d3b5e277d00ac43cdfd9ce4d36f0b3132bb68fc12cf3"

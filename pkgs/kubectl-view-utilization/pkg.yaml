@@ -1,0 +1,29 @@
+schema: 2
+name: kubectl-view-utilization
+description: Show cluster resource utilization (script plugin)
+homepage: https://github.com/etopeter/kubectl-view-utilization
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: etopeter/kubectl-view-utilization
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/etopeter/kubectl-view-utilization/releases/download/v{{.Version}}/kubectl-view-utilization-v{{.Version}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  # kubectl maps "view-utilization" to an underscore executable name
+  - copy: {src: "kubectl-view-utilization", dst: "bin/kubectl-view_utilization", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.3.3
+    sha256:
+      darwin/arm64: "bcdd9925d13ff3837f61336269f9d45e338ca14df2f8174120bd571217d99918"
+      darwin/amd64: "bcdd9925d13ff3837f61336269f9d45e338ca14df2f8174120bd571217d99918"
+      linux/arm64: "bcdd9925d13ff3837f61336269f9d45e338ca14df2f8174120bd571217d99918"
+      linux/amd64: "bcdd9925d13ff3837f61336269f9d45e338ca14df2f8174120bd571217d99918"

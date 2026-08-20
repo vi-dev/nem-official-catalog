@@ -1,0 +1,29 @@
+schema: 2
+name: kubectl-pod-lens
+description: Show pod-related resources at a glance
+homepage: https://github.com/sunny0826/kubectl-pod-lens
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: sunny0826/kubectl-pod-lens
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/sunny0826/kubectl-pod-lens/releases/download/v{{.Version}}/pod-lens_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  # kubectl maps "pod-lens" to an underscore executable name
+  - copy: {src: "pod-lens", dst: "bin/kubectl-pod_lens", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.3.1
+    sha256:
+      darwin/arm64: "09cea87a8faf6ea0e6bc7372618946aa766bea93bb46ab2f700de5bdbf8be1a5"
+      darwin/amd64: "3e95f78bfff4307c9fc6d89706907c8079e4a38ff29d424e89879475e99e0ef6"
+      linux/arm64: "7e001e759ad950603298195223cd2037b9ea4439344a0579d9517350601a5b6c"
+      linux/amd64: "dc6a6545421c750d3b63f15b7229411d43f83ab5c5f0336c5b1c53be931d6b2c"

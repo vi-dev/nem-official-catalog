@@ -1,0 +1,28 @@
+schema: 2
+name: kubectl-tree
+description: Show hierarchies of Kubernetes objects
+homepage: https://github.com/ahmetb/kubectl-tree
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: ahmetb/kubectl-tree
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/ahmetb/kubectl-tree/releases/download/v{{.Version}}/kubectl-tree_v{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubectl-tree", dst: "bin/kubectl-tree", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.6.0
+    sha256:
+      darwin/arm64: "748bfab7e212dfe244c13a643cfc627ce54968bdf81af22b851fb1068f32cf9f"
+      darwin/amd64: "a59f41c46bdd5505ad71b5f649c8094f05c7fd14f7b0ecd7af2edfb727f84045"
+      linux/arm64: "9571870ed2a5c7e60c5e7a10afe2b06b4f5d1ccd912649477ad159dac72634db"
+      linux/amd64: "6d047927abf0e973a8b825838cb40159012ff917f48b9064075b64fd6dafac42"

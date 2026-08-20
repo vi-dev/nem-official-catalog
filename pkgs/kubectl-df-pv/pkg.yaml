@@ -1,0 +1,29 @@
+schema: 2
+name: kubectl-df-pv
+description: Show disk usage of persistent volumes
+homepage: https://github.com/yashbhutwala/kubectl-df-pv
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: yashbhutwala/kubectl-df-pv
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/yashbhutwala/kubectl-df-pv/releases/download/v{{.Version}}/kubectl-df-pv_v{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  # kubectl maps "df-pv" to an underscore executable name
+  - copy: {src: "df-pv", dst: "bin/kubectl-df_pv", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.5.0
+    sha256:
+      darwin/arm64: "d802c7483703c8b3b29395540e13ef29991268d53dc29623d54fa25f906611fc"
+      darwin/amd64: "03c1ff9857173d2139e8e8ee192c9c545489983bc1ebeffd3fe00190a67e74d0"
+      linux/arm64: "9fa44482ee09e86ae1d6e8ed11632eab0048ae920b40a9ddfdf03b246adb731d"
+      linux/amd64: "6783abeb2d38870e3992b7e88fd62c85e9a7ec022ff5101477c7f38dea8beefe"

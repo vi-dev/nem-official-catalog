@@ -1,0 +1,28 @@
+schema: 2
+name: kubectl-count
+description: Count Kubernetes resources by kind
+homepage: https://github.com/chenjiandongx/kubectl-count
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: chenjiandongx/kubectl-count
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/chenjiandongx/kubectl-count/releases/download/v{{.Version}}/kubectl-count_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubectl-count", dst: "bin/kubectl-count", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.2.6
+    sha256:
+      darwin/arm64: "ae596983b5e2fc64a3d63ff1fce68438a690ea4548622e4912dac8cd8b13e6cf"
+      darwin/amd64: "09aa6f5ae4e6bd9232c1e8c6e8d87a0e94b4abedb1b1a13f08a256ecd5e24db9"
+      linux/arm64: "14a86b64ab7c7855cc8d914c474633062ec78d0d1261988fc2b08cab54374ab1"
+      linux/amd64: "a803d8db7ae75879f02b498287805be74fff81445080ee69e94ae2f2d7ef8f36"

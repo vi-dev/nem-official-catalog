@@ -1,0 +1,28 @@
+schema: 2
+name: kubectl-foreach
+description: Run kubectl against multiple contexts at once
+homepage: https://github.com/ahmetb/kubectl-foreach
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: ahmetb/kubectl-foreach
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/ahmetb/kubectl-foreach/releases/download/v{{.Version}}/kubectl-foreach_v{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubectl-foreach", dst: "bin/kubectl-foreach", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.3.0
+    sha256:
+      darwin/arm64: "fec92eafce5354992d1084a341a07005809408d09265e8054af978c4ce2a39fd"
+      darwin/amd64: "4df4fe5680dcc8e353a2ed16a8af0260d41035807f60dd53583fc37464e87a61"
+      linux/arm64: "db293c0bfd485ee2ae2ce9300bc2a5aa9e9baa404ea853bf3e41b9d6e9feaae1"
+      linux/amd64: "34cd3dad24738d2c70f792be17c2731e4b46fe6a03209a42a08446d0c60d7ea1"

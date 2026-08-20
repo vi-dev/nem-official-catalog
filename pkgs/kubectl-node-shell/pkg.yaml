@@ -1,0 +1,27 @@
+schema: 2
+name: kubectl-node-shell
+description: Open a root shell on a Kubernetes node
+homepage: https://github.com/kvaps/kubectl-node-shell
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: kvaps/kubectl-node-shell
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://raw.githubusercontent.com/kvaps/kubectl-node-shell/v{{.Version}}/kubectl-node_shell"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/kubectl-node_shell", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.11.0
+    sha256:
+      darwin/arm64: "318b1317f9180f07926e12f1337c09c6c3a583e9b5f63efa716fc8a7b3242535"
+      darwin/amd64: "318b1317f9180f07926e12f1337c09c6c3a583e9b5f63efa716fc8a7b3242535"
+      linux/arm64: "318b1317f9180f07926e12f1337c09c6c3a583e9b5f63efa716fc8a7b3242535"
+      linux/amd64: "318b1317f9180f07926e12f1337c09c6c3a583e9b5f63efa716fc8a7b3242535"

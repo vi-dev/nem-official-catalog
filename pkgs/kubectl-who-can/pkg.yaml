@@ -1,0 +1,29 @@
+schema: 2
+name: kubectl-who-can
+description: Show which subjects have RBAC permissions
+homepage: https://github.com/aquasecurity/kubectl-who-can
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: aquasecurity/kubectl-who-can
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/aquasecurity/kubectl-who-can/releases/download/v{{.Version}}/kubectl-who-can_{{.OS}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  # kubectl maps "who-can" to an underscore executable name
+  - copy: {src: "kubectl-who-can", dst: "bin/kubectl-who_can", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.4.0
+    sha256:
+      darwin/arm64: "df67cee447444a3e317e7efe0cf167c4ebcdd82f3dd1f23ab2f795ada5db48a4"
+      darwin/amd64: "87d13dce52322d2e2fb075e0a26a0ceabbbe97bcb270f033b20ab66b20b10161"
+      linux/arm64: "dd889ca24159c59622c3465627513bb4004704cbac54f7907e80ec8a07e62760"
+      linux/amd64: "3ba4a529e2f759b13030e5fc803639fda6e13fd05ed0d8bda1c722459a298f32"

@@ -1,0 +1,28 @@
+schema: 2
+name: kubectl-slice
+description: Split multi-document Kubernetes YAML into files
+homepage: https://github.com/patrickdappollonio/kubectl-slice
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: patrickdappollonio/kubectl-slice
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/patrickdappollonio/kubectl-slice/releases/download/v{{.Version}}/kubectl-slice_{{.OS}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubectl-slice", dst: "bin/kubectl-slice", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.4.2
+    sha256:
+      darwin/arm64: "46dbfdb8635a015b9352d78b8865fd19ca10fd30933dc74ffbd208ace371033e"
+      darwin/amd64: "90c1d2013bcf8ca71a0307da932e2d4ee2ad58578076256a8a4ded842291648a"
+      linux/arm64: "869d685033c4b186b5d5175b67a18c138e0117173b8713387038701486fb5737"
+      linux/amd64: "f5d99615ea4eafe4ff9e9258957753d3081e3f123d7c8818506b30c267060c22"

@@ -1,0 +1,28 @@
+schema: 2
+name: kubecolor
+description: Colorize kubectl output
+homepage: https://kubecolor.github.io
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: kubecolor/kubecolor
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kubecolor/kubecolor/releases/download/v{{.Version}}/kubecolor_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubecolor", dst: "bin/kubecolor", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.6.0
+    sha256:
+      darwin/arm64: "22f08853f8925613f1792dd5acaaf0661284bb647d69ff50ad9552027b0d456a"
+      darwin/amd64: "8edea5adc6bdb121ec907014790ca780c97aac3766e0c27327227ccc0748c7e4"
+      linux/arm64: "aa56015817bdfe8a8944169e5b18108235fb5bca671f89fa52613b4379bf1f66"
+      linux/amd64: "ded167eb2d94145cc46e4ccb52db24e85a865858353014514a85cb59c649d2fe"

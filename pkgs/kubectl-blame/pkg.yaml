@@ -1,0 +1,28 @@
+schema: 2
+name: kubectl-blame
+description: Annotate Kubernetes fields with their last manager
+homepage: https://github.com/knight42/kubectl-blame
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: knight42/kubectl-blame
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/knight42/kubectl-blame/releases/download/v{{.Version}}/kubectl-blame-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubectl-blame", dst: "bin/kubectl-blame", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.1.1
+    sha256:
+      darwin/arm64: "a1c8d537c0d2b72f21fcd5b1d3edd33819490fd94dd51b0f05a61c71bdfaa28b"
+      darwin/amd64: "fd7539ee3c471f5ca3facf0b05787dd56e03da2b2b624a62cee84475834ca60a"
+      linux/arm64: "03f78d59ff898e2daace6ef1b232a3df77990cdacd440c11557a435257c5bf75"
+      linux/amd64: "e20fad89ac3faa4e7032aead252dc0666bccdf2033fd6964eda4b6803ac5a2d0"
