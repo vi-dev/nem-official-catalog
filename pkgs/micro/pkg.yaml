@@ -1,0 +1,28 @@
+schema: 2
+name: micro
+description: Terminal-based text editor
+homepage: https://micro-editor.github.io
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: micro-editor/micro
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/micro-editor/micro/releases/download/v{{.Version}}/micro-{{.Version}}-{{if eq .OS \"darwin\"}}{{if eq .Arch \"arm64\"}}macos-arm64{{else}}osx{{end}}{{else}}{{if eq .Arch \"arm64\"}}linux-arm64{{else}}linux64-static{{end}}{{end}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "micro", dst: "bin/micro", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.0.15
+    sha256:
+      darwin/arm64: "2ff285cc49f2ac3f7a6e9110e2dabd3c848b73eed56a8396d627c0af80a34624"
+      darwin/amd64: "d765b9bdd6478c4f5a3cbd5a93ebe7bab2b9cec30b5350016975cf1045855cee"
+      linux/arm64: "5ca127857bf5500be3879f1a70b27556e737a49da04a1be5334de9e8e8781ad9"
+      linux/amd64: "267d238eac1e26ed053d13d4d48bd421b87f9eb538b604f0b2f74a85598b6cc2"

@@ -1,0 +1,27 @@
+schema: 2
+name: nushell
+description: Shell with structured data pipelines
+homepage: https://www.nushell.sh
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: nushell/nushell
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/nushell/nushell/releases/download/{{.Version}}/nu-{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "nu", dst: "bin/nu", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.115.0
+    sha256:
+      darwin/arm64: "91f3c77e4f634b54029b07e3dc4e99ffec5fc0f98537f9b630bda32b4d06da5e"
+      darwin/amd64: "0bddb610efd2a3567076af9a337c6dd078582e8e9e9af76e0cc2204cbfe3e6d1"
+      linux/arm64: "508f00f858474e754335bea741c8f729b8ae526451aa01b9c1e36944311b846a"
+      linux/amd64: "da83cfe482060d2c34b6b9af829975a313bce6b92e0398c3b2a59cb38630c7b2"

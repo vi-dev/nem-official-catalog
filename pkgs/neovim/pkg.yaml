@@ -1,0 +1,27 @@
+schema: 2
+name: neovim
+description: Vim-fork focused on extensibility and usability
+homepage: https://neovim.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: neovim/neovim
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/neovim/neovim/releases/download/v{{.Version}}/nvim-{{replace .OS \"darwin\" \"macos\"}}-{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.12.4
+    sha256:
+      darwin/arm64: "51ab83afa66d663627c2ab1be43209b0f4e81360d4598b53efaa4d8195f24c89"
+      darwin/amd64: "03fe16f8dd9f1e9eaf52d5e294913a39917b9e2faea30d7fb0fb385fbd36fe59"
+      linux/arm64: "ceb7e88c6b681f0515d135dcdfad54f5eb4373b25ce6172197cd9a69c758063f"
+      linux/amd64: "012bf3fcac5ade43914df3f174668bf64d05e049a4f032a388c027b1ebd78628"

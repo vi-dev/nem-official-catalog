@@ -1,0 +1,32 @@
+schema: 2
+name: fish
+description: User-friendly command line shell
+homepage: https://fishshell.com
+license: GPL-2.0-only
+
+versionDiscovery:
+  github:
+    repo: fish-shell/fish-shell
+    filter: '^\d+\.\d+\.\d+$'
+
+# Linux gets a standalone tarball; macOS ships only the .app bundle (zip) and a
+# .pkg, so the binary is pulled out of the bundle payload.
+artifact:
+  url: "https://github.com/fish-shell/fish-shell/releases/download/{{.Version}}/{{if eq .OS \"darwin\"}}fish-{{.Version}}.app.zip{{else}}fish-{{.Version}}-linux-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}.tar.xz{{end}}"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "fish", dst: "bin/fish", mode: 0o755}
+    platforms: [linux/arm64, linux/amd64]
+  - copy: {src: "fish-{{.Version}}.app/Contents/Resources/base/usr/local/bin/fish", dst: "bin/fish", mode: 0o755}
+    platforms: [darwin/arm64, darwin/amd64]
+
+bins: ["bin"]
+
+versions:
+  - version: 4.8.1
+    sha256:
+      darwin/arm64: "aec7606269bbd0af8ac29f66d7f50f32f72b1d68d3b278227ae3e94cf501bb7f"
+      darwin/amd64: "aec7606269bbd0af8ac29f66d7f50f32f72b1d68d3b278227ae3e94cf501bb7f"
+      linux/arm64: "a03c8a445570a2a37e114cb13cebe41842cf17c4dd67a6530a57f742db04eee4"
+      linux/amd64: "39cab35242ab77bfdbce73b473000c3b045aaf2fe0951b042199bb7fdba3df78"
