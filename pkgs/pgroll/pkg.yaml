@@ -1,0 +1,27 @@
+schema: 2
+name: pgroll
+description: Zero-downtime, reversible schema migrations for Postgres
+homepage: https://pgroll.com
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: xataio/pgroll
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/xataio/pgroll/releases/download/v{{.Version}}/pgroll.{{replace .OS \"darwin\" \"macos\"}}.{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/pgroll", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.16.2
+    sha256:
+      darwin/arm64: "2cf36178b9e4fb1880425d78b0aebbd076ef309c61148e12eb29cc80d82be036"
+      darwin/amd64: "26cd2d297d02f377f9be2731647f63e66fe2d7df2bdf629a65f6d202a795996f"
+      linux/arm64: "08d00bf6ce267ade1e5e5b4f614de704e9c0d616f2e150aeeba50703a92a5262"
+      linux/amd64: "454ab2f6a9ddb36ad1d245121452bf26bf393065b38b4e0b1e155b67656cbd04"

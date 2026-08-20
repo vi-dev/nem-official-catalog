@@ -1,0 +1,28 @@
+schema: 2
+name: marmot
+description: Multi-writer replication layer for SQLite over NATS JetStream
+homepage: https://github.com/maxpert/marmot
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: maxpert/marmot
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/maxpert/marmot/releases/download/v{{.Version}}/marmot-v{{.Version}}-{{.OS}}-{{.Arch}}{{if eq .OS \"linux\"}}-static{{end}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "marmot", dst: "bin/marmot", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.8.0
+    sha256:
+      darwin/arm64: "06976f1d9e24b164265871e66c99d52d20d02767c85db6b80b31ec10ba14f05a"
+      darwin/amd64: "a466f4e6a3266437ce79111a65f28d8c53eee40d0b86c816b91cbfd9c02715bd"
+      linux/arm64: "14b1c0e4ac96cd1965705480c75a35f8ab1e2a21180114c5300b6928789ec253"
+      linux/amd64: "24b8b67d6347999c5dd4f6cc5cdecb05c90e4940e5974b69b7e8b526ad7cf1bd"

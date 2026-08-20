@@ -1,0 +1,28 @@
+schema: 2
+name: rainfrog
+description: Terminal UI for managing and querying Postgres databases
+homepage: https://github.com/achristmascarl/rainfrog
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: achristmascarl/rainfrog
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/achristmascarl/rainfrog/releases/download/v{{.Version}}/rainfrog-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "rainfrog", dst: "bin/rainfrog", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.4.4
+    sha256:
+      darwin/arm64: "29d1ddb19b4d2c3888c7abf61b0f6fe9c99e3df309418ca59e449fa11b0c1a9f"
+      darwin/amd64: "f7de36aa710608ba2c77831f21a57e24c5c500a7e87929fd221f86c97d2915e2"
+      linux/arm64: "8984b1d671529b9912233f36ed4bd178c6f5ca8b002897a61938b39c0d431f14"
+      linux/amd64: "84b7e39178cbefe6ce341830bf7c075e89ac2217d2be31e9ad88173b3db55ea8"

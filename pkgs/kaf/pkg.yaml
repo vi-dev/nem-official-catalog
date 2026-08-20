@@ -1,0 +1,28 @@
+schema: 2
+name: kaf
+description: Command-line client for Apache Kafka
+homepage: https://github.com/birdayz/kaf
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: birdayz/kaf
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/birdayz/kaf/releases/download/v{{.Version}}/kaf_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kaf", dst: "bin/kaf", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.2.14
+    sha256:
+      darwin/arm64: "8fd85282ace277a7bcc86914e2e026018cf168b6f8496b2ded38fc1525caa55c"
+      darwin/amd64: "8dd36860fd2ffa1b6c33d016070f1b0a2b211b7752fd1cabc92f8167e1fcfd4f"
+      linux/arm64: "8bcb6738652088f1b3d59ff4d244f5e5ce5ae0ae29c6e7caa6b255abd828d97d"
+      linux/amd64: "c2cc6e412d31f979242e3c7ca38f8474402c3722ef0ced22f842fe2a74818889"

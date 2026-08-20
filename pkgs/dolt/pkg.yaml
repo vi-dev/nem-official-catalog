@@ -1,0 +1,27 @@
+schema: 2
+name: dolt
+description: SQL database with Git-style version control
+homepage: https://github.com/dolthub/dolt
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: dolthub/dolt
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/dolthub/dolt/releases/download/v{{.Version}}/dolt-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.3.1
+    sha256:
+      darwin/arm64: "d738b9f523289e9c51dbe0e9f2623c8e032924c62fa72a443703020adf099d27"
+      darwin/amd64: "11897ef283112850dcd25f6498712291dd22be82f343c33944a97c6a1545ecbb"
+      linux/arm64: "33ce669f922a3424f271a9905b815ea442133a0504eea1f43b07cb5b1fef589e"
+      linux/amd64: "0a2a318f27c5e1088a2883038573c2054e00f356dc9752e74bca934f8321959a"

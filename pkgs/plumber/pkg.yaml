@@ -1,0 +1,30 @@
+schema: 2
+name: plumber
+description: CLI for reading and writing messages to Kafka, RabbitMQ, and more
+homepage: https://github.com/streamdal/plumber
+license: MIT
+
+platforms: [darwin/arm64, darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: streamdal/plumber
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+# Only the darwin/arm64 asset carries an arch suffix; the other two are
+# arch-less names that mean amd64.
+artifact:
+  url: "https://github.com/streamdal/plumber/releases/download/v{{.Version}}/plumber-{{.OS}}{{if eq .Arch \"arm64\"}}-arm64{{end}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/plumber", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.9.0
+    sha256:
+      darwin/arm64: "b0d7d8150001aa80ee9a8de3201619da7ea6ed3d00787df86e0cd12853582716"
+      darwin/amd64: "747f100dc54a8dec6cb3232b2eb8511fbeb6e8e2220ead21dd889a18e9705b37"
+      linux/amd64: "680938c65a75710b18e3d20dc71bc066bba8b9356df6cdd2aac132bbcb94b8a0"

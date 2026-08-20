@@ -1,0 +1,28 @@
+schema: 2
+name: lazysql
+description: Terminal UI for managing SQL databases
+homepage: https://github.com/jorgerojas26/lazysql
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: jorgerojas26/lazysql
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/jorgerojas26/lazysql/releases/download/v{{.Version}}/lazysql_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "lazysql", dst: "bin/lazysql", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.5.5
+    sha256:
+      darwin/arm64: "73bc35b72ecba85d3ea595a044db29600bb9313186c0bfaff5743474f8ea3416"
+      darwin/amd64: "714924dd54529723f5cd6c2f301b640716ddc0d5068f0b39306b22904abf12d8"
+      linux/arm64: "24287e6d958079b67062571c499e70d0610dcac743129e6e0fc6f0869a8b29fd"
+      linux/amd64: "aef71f67af3e085ef75bda1385fddbd0b0b8cba9fd6ab4f3f72a8605b68c3535"

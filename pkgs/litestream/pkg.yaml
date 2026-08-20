@@ -1,0 +1,28 @@
+schema: 2
+name: litestream
+description: Streaming replication for SQLite
+homepage: https://litestream.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: benbjohnson/litestream
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/benbjohnson/litestream/releases/download/v{{.Version}}/litestream-{{.Version}}-{{.OS}}-{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "litestream", dst: "bin/litestream", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.5.16
+    sha256:
+      darwin/arm64: "3e64028ff3522caca7a5ab67244e0373b25f3db68b6e25cac0056bf71c30c337"
+      darwin/amd64: "eb554b93c9e2833351b017707e9ba5ac97ffd91d07e8b8b836b3ca7661399c36"
+      linux/arm64: "678022e4103145302598e35d37f8718392d42e153feeb1e2d4a64dd0cd3aaf10"
+      linux/amd64: "9e29112380a942e4a62ee07773684396cb8b308dc4d67e130bef41f75e937f0a"

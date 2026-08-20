@@ -1,0 +1,28 @@
+schema: 2
+name: tbls
+description: CI-friendly tool for documenting a database schema
+homepage: https://github.com/k1LoW/tbls
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: k1LoW/tbls
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/k1LoW/tbls/releases/download/v{{.Version}}/tbls_v{{.Version}}_{{.OS}}_{{.Arch}}.{{if eq .OS \"darwin\"}}zip{{else}}tar.gz{{end}}"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "tbls", dst: "bin/tbls", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.95.0
+    sha256:
+      darwin/arm64: "1aa34bf1071dcfbd7052be09e2a69886613badcee1f64cb5500415419b9afcaa"
+      darwin/amd64: "713e5c73152b80985476f04a8960d23e4486ba3be400888b2659bba9e5f0f765"
+      linux/arm64: "a0ed19ba422101f0860b9e868186810461c9ac81dddb9688eb82689e686bea6b"
+      linux/amd64: "035110bb1b5bc1b918c375e5bd7c2b5922c5f517cc0886e5bf4f867dfa836259"

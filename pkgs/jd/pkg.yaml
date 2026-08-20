@@ -1,0 +1,27 @@
+schema: 2
+name: jd
+description: Diff and patch tool for JSON and YAML
+homepage: https://github.com/josephburnett/jd
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: josephburnett/jd
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/josephburnett/jd/releases/download/v{{.Version}}/jd-{{.Arch}}-{{.OS}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/jd", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.5.0
+    sha256:
+      darwin/arm64: "ff8d095f9b5cacfac2cf54c30b227b6535dabd1b6cc41dfe1a4bb4784136835c"
+      darwin/amd64: "8d9842a654c90842fca6f14fff18c29c9b28ca04867afce0f18ee390fa467c7e"
+      linux/arm64: "3c45a7b95a0fa7e0fd0dbeb65e02a40ba46078d9b27129b3455b8f7f650d3a80"
+      linux/amd64: "785dbbb8af613269539de952f7444f66f7cfbeb886c037495c4f0b2c3680db27"

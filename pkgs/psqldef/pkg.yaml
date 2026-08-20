@@ -1,0 +1,28 @@
+schema: 2
+name: psqldef
+description: Idempotent schema management for PostgreSQL
+homepage: https://sqldef.github.io
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: sqldef/sqldef
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/sqldef/sqldef/releases/download/v{{.Version}}/psqldef_{{.OS}}_{{.Arch}}.{{if eq .OS \"darwin\"}}zip{{else}}tar.gz{{end}}"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "psqldef", dst: "bin/psqldef", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.11.20
+    sha256:
+      darwin/arm64: "7b7163ff04db0c8bf1ce19ee90c6db71edad994ffa2d3797ea5d88e6bd2aa4f8"
+      darwin/amd64: "5fa7d23cc67390b1a41e8e7be1ac039c90e87c701315bd34c054652e1d37c723"
+      linux/arm64: "b9174e318c82037af377d153ee028f5007d0e2072b16bec291844668a3d60606"
+      linux/amd64: "c796aa577562d9fd1b68b3b852ab39661da753e2197ab3fca231bb07fe1d8807"

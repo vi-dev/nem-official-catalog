@@ -1,0 +1,28 @@
+schema: 2
+name: dblab
+description: Terminal UI database client for Postgres, MySQL, SQLite, and more
+homepage: https://github.com/danvergara/dblab
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: danvergara/dblab
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/danvergara/dblab/releases/download/v{{.Version}}/dblab_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "dblab", dst: "bin/dblab", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.48.1
+    sha256:
+      darwin/arm64: "9836e0bb0b8ce0f3387b89888810deec03031920c37e567be4faf335f9473746"
+      darwin/amd64: "9ace5666d73b071a052bdd77cd231bbaaf0cb749e35a227c2eee0b635ad578c9"
+      linux/arm64: "32e610756256a6183328b6abdc2f9a84f3678b71415ccbb17e174b694a931357"
+      linux/amd64: "d5032fdfe6ae46ba2ff73da17c7313235ba3478794109234c318d60337f64a4f"

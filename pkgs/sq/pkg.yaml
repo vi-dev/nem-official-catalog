@@ -1,0 +1,28 @@
+schema: 2
+name: sq
+description: Query and wrangle SQL databases and document formats
+homepage: https://sq.io
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: neilotoole/sq
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/neilotoole/sq/releases/download/v{{.Version}}/sq-{{.Version}}-{{replace .OS \"darwin\" \"macos\"}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "sq", dst: "bin/sq", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.54.1
+    sha256:
+      darwin/arm64: "fc9ce4a210593fc5a5fd398fb5d577d12bc59315baed157974d18d0839ce4035"
+      darwin/amd64: "755f228108e524004957af5bbf2db2ce7c026a86bb38393480829cfb6bd86845"
+      linux/arm64: "c01c1ce97ba44cea2715b03cbd90a9ad90ca68576eeedd023382847ab41c856b"
+      linux/amd64: "1b5b416a9a9675174bc8e4c136b5463e3101aa9cf5be716a1b846992790f0ce0"
