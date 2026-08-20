@@ -1,0 +1,28 @@
+schema: 2
+name: kube-score
+description: Static analysis of Kubernetes object definitions
+homepage: https://kube-score.com
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: zegl/kube-score
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/zegl/kube-score/releases/download/v{{.Version}}/kube-score_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kube-score", dst: "bin/kube-score", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.20.0
+    sha256:
+      darwin/arm64: "a4c8b63d03218653602ffd42f172865abcb1aa569e4ed730f3f2401bc0cc4a5a"
+      darwin/amd64: "0584a2b6654f7a46653b1b18e4077e4917210c84eaf2938ca00f6e6767ef29e1"
+      linux/arm64: "0fafe8a00cbc98935f0c0953ba91e83e199f65e56d6816e7b2d2af5da1862051"
+      linux/amd64: "ff777b4b3f45905b2d22c69e93c57a7a170e61529a79d54e59cb95cca4bc2a55"

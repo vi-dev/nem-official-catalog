@@ -1,0 +1,28 @@
+schema: 2
+name: grpcui
+description: Web UI for interacting with gRPC servers
+homepage: https://github.com/fullstorydev/grpcui
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: fullstorydev/grpcui
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/fullstorydev/grpcui/releases/download/v{{.Version}}/grpcui_{{.Version}}_{{replace .OS \"darwin\" \"osx\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "grpcui", dst: "bin/grpcui", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.5.2
+    sha256:
+      darwin/arm64: "e84ce9ddf5a09dfa47c32c9a36aadb20d5a56e6d7a8c676713fff3673818c06d"
+      darwin/amd64: "52301bbaf45bf2244577a7bdaed29660ab9ed66592e8d46b9441b012c3c23a62"
+      linux/arm64: "79ebb98b6833ffc46ffff04bc8125ea2e1870e6e34970b9a8b7c463b31da45aa"
+      linux/amd64: "a57acb97726c70ce2f323118ccbd1ac28fbe608d8af7e9037526aff16d7a0bc4"

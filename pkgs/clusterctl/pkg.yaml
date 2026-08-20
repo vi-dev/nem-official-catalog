@@ -1,0 +1,27 @@
+schema: 2
+name: clusterctl
+description: CLI for Cluster API lifecycle management
+homepage: https://cluster-api.sigs.k8s.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: kubernetes-sigs/cluster-api
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kubernetes-sigs/cluster-api/releases/download/v{{.Version}}/clusterctl-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/clusterctl", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.14.0
+    sha256:
+      darwin/arm64: "e9e7d54322c4ec6c8749d3315f461767618ee5591182ab7b625937cc9e813686"
+      darwin/amd64: "a62293c8336c47d0abb774ae0e4c866d385695ca4a34cce3baa32a2065416f6e"
+      linux/arm64: "78303f126d48b0356d3cbfb61acafcb961ee5792147b8593bd08bb9acb32efe0"
+      linux/amd64: "919ec7acb93ebdec9cde46727a1ddb8810ce55dd9ceef2d416ab65b6783bb58a"

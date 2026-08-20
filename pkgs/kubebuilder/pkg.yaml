@@ -1,0 +1,27 @@
+schema: 2
+name: kubebuilder
+description: SDK for building Kubernetes APIs and controllers
+homepage: https://kubebuilder.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: kubernetes-sigs/kubebuilder
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kubernetes-sigs/kubebuilder/releases/download/v{{.Version}}/kubebuilder_{{.OS}}_{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/kubebuilder", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 4.15.0
+    sha256:
+      darwin/arm64: "8a8b2806c352f3e0749d315ecea91a352b2ce9321af927fca823a1604bd3530a"
+      darwin/amd64: "c1e2fd86b7e2e392cd26b77a72bb9665511435ecdeefb16712820ba5da3e666b"
+      linux/arm64: "bd99723fc106502f64a3541b9c5b7079bc68961a76df4f465893e311b594d295"
+      linux/amd64: "9632ba818c35e10d9664f19090972ee5d667bdffbf4b83c34e8374c5e846afa2"

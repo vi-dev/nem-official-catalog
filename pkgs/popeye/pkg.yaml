@@ -1,0 +1,28 @@
+schema: 2
+name: popeye
+description: Kubernetes cluster resource sanitizer
+homepage: https://popeyecli.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: derailed/popeye
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/derailed/popeye/releases/download/v{{.Version}}/popeye_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "popeye", dst: "bin/popeye", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.22.1
+    sha256:
+      darwin/arm64: "71dc8b8dc7d7cad60f9c377d4bb22a0ef5bac189c617951ebc20343f83a6704d"
+      darwin/amd64: "3dafce865dd778e2501ccbfd53fcbeecfc3244a43d4d1b02446064e39ac58d4e"
+      linux/arm64: "5188b0b521966113580f0fef7769173af6303061dee10df247536f9bb55fe988"
+      linux/amd64: "d58a3c0ba45805d452c32628320eecdcb5172fd5f42c82e12aeecc7a17eb930b"

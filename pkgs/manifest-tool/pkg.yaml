@@ -1,0 +1,29 @@
+schema: 2
+name: manifest-tool
+description: Create and inspect multi-platform OCI image manifests
+homepage: https://github.com/estesp/manifest-tool
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: estesp/manifest-tool
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/estesp/manifest-tool/releases/download/v{{.Version}}/binaries-manifest-tool-{{.Version}}.tar.gz"
+
+install:
+  # one archive holds every platform binary
+  - extract: {strip: 0}
+  - copy: {src: "manifest-tool-{{.OS}}-{{.Arch}}", dst: "bin/manifest-tool", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.2.2
+    sha256:
+      darwin/arm64: "bdca525326694849594ab3ba63638fdb664690c9384df947bd3cff943d14736b"
+      darwin/amd64: "bdca525326694849594ab3ba63638fdb664690c9384df947bd3cff943d14736b"
+      linux/arm64: "bdca525326694849594ab3ba63638fdb664690c9384df947bd3cff943d14736b"
+      linux/amd64: "bdca525326694849594ab3ba63638fdb664690c9384df947bd3cff943d14736b"

@@ -1,0 +1,28 @@
+schema: 2
+name: apko
+description: Build OCI images from apk packages
+homepage: https://github.com/chainguard-dev/apko
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: chainguard-dev/apko
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/chainguard-dev/apko/releases/download/v{{.Version}}/apko_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "apko", dst: "bin/apko", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.2.39
+    sha256:
+      darwin/arm64: "8f8194a0eb24ce7efad0dff09ba890c1582f889979a68b9bcff0049774f4efa3"
+      darwin/amd64: "25a1524165092dd511a148993d86aebbec15d49b0fd99cd1d3a690ab9c8ea95b"
+      linux/arm64: "e792a42973766943d29ecb152ff17ea9ddb0fdd0c1ca9217c9c0f78b2b9aad13"
+      linux/amd64: "3afb7ff95c56dd7e7837478a431d92ec35ca567558123c051946469e7a1bc458"

@@ -1,0 +1,28 @@
+schema: 2
+name: usql
+description: Universal SQL client for many databases
+homepage: https://github.com/xo/usql
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: xo/usql
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/xo/usql/releases/download/v{{.Version}}/usql-{{.Version}}-{{.OS}}-{{.Arch}}.tar.bz2"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "usql", dst: "bin/usql", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.21.4
+    sha256:
+      darwin/arm64: "cee9fd2117c17fd622fe0df37b334c356b80cf48d6e9bb164084830ae4ce6d05"
+      darwin/amd64: "60feb0d73b2e29e4ecf6b36bf34b23c230d8233c778893b0b56811036d16d17e"
+      linux/arm64: "ccad89d6f4c67a9bf595df0aa8a550e0a9e3d6a6f9356356ba1e164e311335e4"
+      linux/amd64: "78bd9b221e223d7a954d41f51e9eca98bdd94b401618367ba0f3887abebd44fc"

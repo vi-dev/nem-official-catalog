@@ -1,0 +1,30 @@
+schema: 2
+name: colima
+description: Container runtimes on macOS and Linux via Lima
+homepage: https://github.com/abiosoft/colima
+license: MIT
+
+deps:
+  - lima
+
+versionDiscovery:
+  github:
+    repo: abiosoft/colima
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/abiosoft/colima/releases/download/v{{.Version}}/colima-{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}-{{if eq .OS \"darwin\"}}{{replace .Arch \"amd64\" \"x86_64\"}}{{else}}{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}{{end}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/colima", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.10.3
+    sha256:
+      darwin/arm64: "980ad8bf61a4ca370243f4cb41401a61276dcd2c2502bee7b9b86f9250169f34"
+      darwin/amd64: "3082737fe8a98afda11cba7d9a20b6e56fe80c6153464beda04bec630758770b"
+      linux/arm64: "ebb69208007484ac36b8a6ba72a797189b0daa88f8b31bc2b563e82b9c91cb70"
+      linux/amd64: "54ea35f4847815d0a1445dbc2bc3dd6469518a38a9e960449e96b044d248d00d"

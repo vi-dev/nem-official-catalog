@@ -1,0 +1,27 @@
+schema: 2
+name: kwokctl
+description: Simulate Kubernetes clusters with KWOK
+homepage: https://kwok.sigs.k8s.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: kubernetes-sigs/kwok
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kubernetes-sigs/kwok/releases/download/v{{.Version}}/kwokctl-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/kwokctl", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.8.0
+    sha256:
+      darwin/arm64: "9323a59adb9c27854bd2a76652ad00258bcbb68acc40aba0dc21e362b67b7d6a"
+      darwin/amd64: "16bccb569c36ac6b124b2521cfe71c4e4133cf22159c82d4698a3412646e9789"
+      linux/arm64: "5a642b27d3e975f36040d215640cd90fb4a63cb6fca0ad5865a61bcd9c81051b"
+      linux/amd64: "d5743166c657283d6e827c7c4c20cacfd9009fd94830f06718ca7b2c7099461f"

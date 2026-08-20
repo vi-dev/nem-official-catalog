@@ -1,0 +1,27 @@
+schema: 2
+name: atmos
+description: Orchestrate Terraform and Helmfile stacks
+homepage: https://atmos.tools
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: cloudposse/atmos
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/cloudposse/atmos/releases/download/v{{.Version}}/atmos_{{.Version}}_{{.OS}}_{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/atmos", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.226.0
+    sha256:
+      darwin/arm64: "56d07a38423f01f880f96bdbf251c60bf5c7a70b36ff65e0019463b7af5d95a2"
+      darwin/amd64: "79cf2c93e7891d9a8cace2f5f8f96a739119a9e0e0744646ab4c6395bf08530e"
+      linux/arm64: "fa4f340767ab4080c1e3606e7306799488ce23a53230bfeffb4c4db4c61f21dc"
+      linux/amd64: "7dea111ca81b17208abc68b092732adc1a45b19fcc4cff2579f1851fe148c9dd"

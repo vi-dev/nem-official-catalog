@@ -1,0 +1,27 @@
+schema: 2
+name: operator-sdk
+description: SDK for building Kubernetes operators
+homepage: https://sdk.operatorframework.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: operator-framework/operator-sdk
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/operator-framework/operator-sdk/releases/download/v{{.Version}}/operator-sdk_{{.OS}}_{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/operator-sdk", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.42.3
+    sha256:
+      darwin/arm64: "098ae8b9dbe7dfd557e8e7ed0f1996736922dd4b984621df2aa033f225cae161"
+      darwin/amd64: "7cb0f24bb63b6383a117291ee4c808953c5dd789d5877da98051aa68b41f40ac"
+      linux/arm64: "6db93cd821b429f0bb514cea4bbb5553827d273fc8aa211f13e14798599d31cd"
+      linux/amd64: "887a3bb0d63ccc4ca47a522d0c8ffac56d9d5246f6a2bd886b4ed23eb2e2672f"

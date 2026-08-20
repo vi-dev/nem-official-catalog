@@ -1,0 +1,27 @@
+schema: 2
+name: talosctl
+description: CLI for Talos Linux Kubernetes clusters
+homepage: https://www.talos.dev
+license: MPL-2.0
+
+versionDiscovery:
+  github:
+    repo: siderolabs/talos
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/siderolabs/talos/releases/download/v{{.Version}}/talosctl-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/talosctl", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.13.9
+    sha256:
+      darwin/arm64: "ab4c27a959ff6c52f62c6cc2af07b22ca86ed27f1a138ed57582fa67f7b50f98"
+      darwin/amd64: "55902fec33e93d11b64e5e01ddd9dde7ae50679328b8f3556e6d86a51dbce866"
+      linux/arm64: "51caed158eda73d2888cbf2df2d67551f9c9f8229aa42d3725e481d073e76f0b"
+      linux/amd64: "7e1d4b7d5846964bdcf63a794e3c8161bb6ef2983d5ace58ea5322f3bf32a27e"

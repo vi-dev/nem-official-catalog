@@ -1,0 +1,28 @@
+schema: 2
+name: s5cmd
+description: Fast and parallel S3 client
+homepage: https://github.com/peak/s5cmd
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: peak/s5cmd
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/peak/s5cmd/releases/download/v{{.Version}}/s5cmd_{{.Version}}_{{replace (replace .OS \"darwin\" \"macOS\") \"linux\" \"Linux\"}}-{{replace .Arch \"amd64\" \"64bit\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "s5cmd", dst: "bin/s5cmd", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.3.0
+    sha256:
+      darwin/arm64: "ae007bc96276f498ae3c1fb017e57630cf93ef260cfe7e97b365522e240c973f"
+      darwin/amd64: "df6f76f6d317c4d051ad083219ed36eb8d8e5ebc55ceeeb91f5e66cdc3ac71fb"
+      linux/arm64: "1439f0d00ecedcd2a2f1f2c6749bbb0152b2257bf5086f29646ec8ae38798e24"
+      linux/amd64: "de0fdbfa3aceae55e069ba81a0fc17b2026567637603734a387b2fca06c299b4"

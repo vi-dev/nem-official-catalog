@@ -1,0 +1,27 @@
+schema: 2
+name: kompose
+description: Convert docker-compose files to Kubernetes manifests
+homepage: https://kompose.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: kubernetes/kompose
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kubernetes/kompose/releases/download/v{{.Version}}/kompose-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/kompose", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.38.0
+    sha256:
+      darwin/arm64: "5687d79633854d5fc8151a0148fd6045b643e3f745f7413106c807fe63fe97eb"
+      darwin/amd64: "a6c663df22610dec6b005e7c93b66bb46e33161707b7bb1cbee3bcdbf09cbb34"
+      linux/arm64: "24faf6212ec34d325e4724118098d34b9dd321cda2d9ca22efa0f04cdb909894"
+      linux/amd64: "65a6a720605bead3964e8b22d423a0763de451a236fe03de902e366cf3d9c147"

@@ -1,0 +1,28 @@
+schema: 2
+name: steampipe
+description: Query cloud APIs with SQL
+homepage: https://steampipe.io
+license: AGPL-3.0-only
+
+versionDiscovery:
+  github:
+    repo: turbot/steampipe
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/turbot/steampipe/releases/download/v{{.Version}}/steampipe_{{.OS}}_{{.Arch}}.{{if eq .OS \"darwin\"}}zip{{else}}tar.gz{{end}}"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "steampipe", dst: "bin/steampipe", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.4.5
+    sha256:
+      darwin/arm64: "5243916020b81d5b54be22e53e86e11a58870ed9382ceea58ffb69484cda75ae"
+      darwin/amd64: "c1e75bdec42c25ab5826385fb7f45f855f7d44276ff9fb6d4de0de5d0b04ec9a"
+      linux/arm64: "ef88f61c1cf3ed4cd5f9d229f5132337c5e714821ebe020acb7cfba83bc26c4c"
+      linux/amd64: "d68f31a7ec0950fa37e58b47797f9b85823be24464dcb4f6d409fe205612ea3e"

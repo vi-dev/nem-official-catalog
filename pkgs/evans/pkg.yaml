@@ -1,0 +1,28 @@
+schema: 2
+name: evans
+description: Expressive gRPC client with REPL
+homepage: https://github.com/ktr0731/evans
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: ktr0731/evans
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/ktr0731/evans/releases/download/v{{.Version}}/evans_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "evans", dst: "bin/evans", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.10.11
+    sha256:
+      darwin/arm64: "c3d29409b1b4dbc86960a737f24f6acdc12bf175ea428dba24d59e1a10e5bcf9"
+      darwin/amd64: "4f687cf3497cabc6f68d40cf8e4f9819cda109aa3c3d8ca992ce4f3c082f0f54"
+      linux/arm64: "fb90b5eefd300dc63ca768930db074b24df61d8b878c2c5997d6c912c0953cbd"
+      linux/amd64: "0535a4161c6d5b9ff5dbe144e6b9e1c95f41b3078c993d1f04fcf0b699e997e6"

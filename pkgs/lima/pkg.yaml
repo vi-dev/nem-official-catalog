@@ -1,0 +1,28 @@
+schema: 2
+name: lima
+description: Linux virtual machines, with macOS integration
+homepage: https://lima-vm.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: lima-vm/lima
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/lima-vm/lima/releases/download/v{{.Version}}/lima-{{.Version}}-{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}-{{if eq .OS \"darwin\"}}{{replace .Arch \"amd64\" \"x86_64\"}}{{else}}{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}{{end}}.tar.gz"
+
+install:
+  # the tarball lays out bin/, libexec/, and share/ used at runtime
+  - extract: {strip: 0}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.2.0
+    sha256:
+      darwin/arm64: "bbdef91774885a0d05f7b048c4eb89ae2bcf3a0c252ae7ca7934e63df76d93c3"
+      darwin/amd64: "0d6f99c19f6e4bc3c92730c4c29d929e6927f0cb0a0ba1a84383367135a8ff31"
+      linux/arm64: "7c6a09c6844f55f811e9b7b2b60a6070a512c696c8ec752dfdb3c8ed50ed0364"
+      linux/amd64: "a0ea1ccf6b7335a900adb5f8d2b8384457965fecb1ba72f09b4e3e46d12f424a"

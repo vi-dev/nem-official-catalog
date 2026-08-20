@@ -1,0 +1,28 @@
+schema: 2
+name: saml2aws
+description: Get AWS credentials via SAML identity providers
+homepage: https://github.com/Versent/saml2aws
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: Versent/saml2aws
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/Versent/saml2aws/releases/download/v{{.Version}}/saml2aws_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "saml2aws", dst: "bin/saml2aws", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.36.19
+    sha256:
+      darwin/arm64: "a243b1453c41930b0083b5841658ab8b4186dfa5a0e71a724159884634d79644"
+      darwin/amd64: "95ea25517e283397009ffb512b0d72b65e11aa7fc18cc0c4558f09d29224caf9"
+      linux/arm64: "b62424836c8ebd41dca312f3385a7ed552b48dafd4c49d47f62bbef428633255"
+      linux/amd64: "891f7d0eb89bb3000aca72f70ef244ea5f24894f33b24143203caa528555ad7f"

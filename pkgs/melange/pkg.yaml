@@ -1,0 +1,28 @@
+schema: 2
+name: melange
+description: Build apk packages from declarative pipelines
+homepage: https://github.com/chainguard-dev/melange
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: chainguard-dev/melange
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/chainguard-dev/melange/releases/download/v{{.Version}}/melange_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "melange", dst: "bin/melange", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.59.1
+    sha256:
+      darwin/arm64: "6485fcff49ca60fc3f75a773eb1f7f81562cf394b86cc9fe8371f7d55e8f9b98"
+      darwin/amd64: "0a1080caa973c9a10b9e331542e927531710810647c4f3b9ec9e53bf22f2e960"
+      linux/arm64: "aa5d221f92a248ba9aa490d1441c733417ad4c02f32fa9a13b8800acb42946f9"
+      linux/amd64: "90f76f3e5fcb90ddc4c932ad352982bda98d58001d2bcccb982dd7fb2e608a1f"

@@ -1,0 +1,28 @@
+schema: 2
+name: infracost
+description: Cloud cost estimates for Terraform
+homepage: https://www.infracost.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: infracost/infracost
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/infracost/infracost/releases/download/v{{.Version}}/infracost-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "infracost-{{.OS}}-{{.Arch}}", dst: "bin/infracost", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.10.45
+    sha256:
+      darwin/arm64: "98b134ca825d292a34a410cdbfa0cfa0d3c9ec2b576710de0d051be6d9002771"
+      darwin/amd64: "b2202262267b704b95e786acfeb09c1f86e384e896ea42edb4de3f91a338a637"
+      linux/arm64: "b9946cf42b9ed58184bd646484f63e0ecf430caca5978e0611302a1545c36262"
+      linux/amd64: "e2f527d8391a87ac00bfc55237ff875107861715e234bbbeb9b6015aba576c77"

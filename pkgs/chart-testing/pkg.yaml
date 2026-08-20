@@ -1,0 +1,29 @@
+schema: 2
+name: chart-testing
+description: Lint and test Helm charts (ct)
+homepage: https://github.com/helm/chart-testing
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: helm/chart-testing
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/helm/chart-testing/releases/download/v{{.Version}}/chart-testing_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  # etc/ holds the default lint schemas; kept beside bin/
+  - extract: {strip: 0}
+  - copy: {src: "ct", dst: "bin/ct", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.14.0
+    sha256:
+      darwin/arm64: "db10dbbb42b110c7a5da5a3202908f32ad2ca6ad600d423426dc7886d09aad07"
+      darwin/amd64: "6dbad5d05a357f6837764c0620c84e707c81189d6f5e9946643276848f5f7116"
+      linux/arm64: "7b035bbbd0768fba33983e81c15445e33e9c8281d329100852a342ecfd0b16b7"
+      linux/amd64: "d16f0583616885423826241164ce1f6589c6fe5332fa74f374ebd2bd3cb3fe1f"
