@@ -1,0 +1,28 @@
+schema: 2
+name: gojq
+description: Pure Go implementation of jq
+homepage: https://github.com/itchyny/gojq
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: itchyny/gojq
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/itchyny/gojq/releases/download/v{{.Version}}/gojq_v{{.Version}}_{{.OS}}_{{.Arch}}.{{if eq .OS \"darwin\"}}zip{{else}}tar.gz{{end}}"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "gojq", dst: "bin/gojq", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.12.19
+    sha256:
+      darwin/arm64: "40208d4c385c5cebe3798f9d5a30ff1123537d66e171f2450a110347933482f7"
+      darwin/amd64: "e8816cd2e1a276a03ed8f902475d2ed641043295f420aadc623929d717cd4314"
+      linux/arm64: "b22794b4bebad11c42af52550bda317c5cd7ee79aaa729eb6ec91a63f623d8b5"
+      linux/amd64: "bdfaf9acbe088973c549dadbf299c06dc9a84f1ca38c731ca04a08a901077f64"

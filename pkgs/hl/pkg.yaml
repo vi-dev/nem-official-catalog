@@ -1,0 +1,28 @@
+schema: 2
+name: hl
+description: Log viewer that renders JSON and logfmt logs as human-readable text
+homepage: https://github.com/pamburus/hl
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: pamburus/hl
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/pamburus/hl/releases/download/v{{.Version}}/hl-{{replace .OS \"darwin\" \"macos\"}}-{{replace .Arch \"amd64\" \"x86_64\"}}{{if eq .OS \"linux\"}}-gnu{{end}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "hl", dst: "bin/hl", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.36.3
+    sha256:
+      darwin/arm64: "613a787040fcf77026b9a0c49b9873a2f8466bf8dd40b098bd3333918d26b6b5"
+      darwin/amd64: "fadaf64345f0967e241ff3016058c04b5021fe0d37e053078ceb87a4e2f9a859"
+      linux/arm64: "dabffd22a0ea80b149ae6c500a9eb5b7112c280a305172e9cc3879a29bd03f65"
+      linux/amd64: "b8e9de61f003a8879d619adce5b3253021678888ee4b616b7cda756c4d4c84b2"

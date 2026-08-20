@@ -1,0 +1,28 @@
+schema: 2
+name: jqp
+description: TUI playground to experiment with jq
+homepage: https://github.com/noahgorstein/jqp
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: noahgorstein/jqp
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/noahgorstein/jqp/releases/download/v{{.Version}}/jqp_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "jqp", dst: "bin/jqp", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.8.0
+    sha256:
+      darwin/arm64: "aa53c1fa492c3cd26258391c312a152a0768b578b7ac0074ffb1daf0b3d6046d"
+      darwin/amd64: "8af39481eb9ccc2c69665bb89b8ee8fa3558acbc58f65be293832e69dc865c99"
+      linux/arm64: "178a3d5ad64aefcabb0cf69435b70b23b13618ea71b829148223179b80ac101b"
+      linux/amd64: "66b2a100ff114a8bbe45a8e6052269fb2f4c61de4edd5ea57b763bf2ec7c6593"

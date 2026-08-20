@@ -1,0 +1,28 @@
+schema: 2
+name: pastel
+description: Generate, analyze, convert and manipulate colors
+homepage: https://github.com/sharkdp/pastel
+license: MIT OR Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: sharkdp/pastel
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/sharkdp/pastel/releases/download/v{{.Version}}/pastel-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "pastel", dst: "bin/pastel", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.12.0
+    sha256:
+      darwin/arm64: "7fd81518fac1dab7bd60e4759194a942c51bb911ef5de4513f4a9e3fb4b8ac1c"
+      darwin/amd64: "ea941d276c41285b188cd51ff497145a348fa0f0e955e7c2ddd4ea7ca42e712c"
+      linux/arm64: "f437e19974399ab7ae99fa52b76a2cdfad4fafafde3b48243100d371894935ba"
+      linux/amd64: "72ca1db49696701a53fd8a2dff4c8b167c31c1ac4fa5acbd1ba8fc062d1b1e3e"

@@ -1,0 +1,28 @@
+schema: 2
+name: htmlq
+description: Extract content from HTML using CSS selectors
+homepage: https://github.com/mgdm/htmlq
+license: MIT
+
+platforms: [darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: mgdm/htmlq
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/mgdm/htmlq/releases/download/v{{.Version}}/htmlq-{{replace .Arch \"amd64\" \"x86_64\"}}-{{.OS}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "htmlq", dst: "bin/htmlq", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.4.0
+    sha256:
+      darwin/amd64: "2df22ac78faa315388855b1341974f84265f283ef409d2b40ce04f222513addf"
+      linux/amd64: "4f63c8d9d835aa1f18f472da2eb5fc88295ede6aebcc7949fd428403707fc74a"

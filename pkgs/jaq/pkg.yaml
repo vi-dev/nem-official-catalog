@@ -1,0 +1,27 @@
+schema: 2
+name: jaq
+description: jq clone focussed on correctness, speed, and simplicity
+homepage: https://github.com/01mf02/jaq
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: 01mf02/jaq
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/01mf02/jaq/releases/download/v{{.Version}}/jaq-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/jaq", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.1.1
+    sha256:
+      darwin/arm64: "b1a2e63384e156d90bbf61a1142302aa59bfebd8c89e24dfc9b5747618880fcd"
+      darwin/amd64: "34b1a9495dbd28df09ad83c832a2ae4be60657d8c24e72f28565cd19b98ed0af"
+      linux/arm64: "bdda42d5a8c060a2c7916b287a227e7750d5fccbd4c37aacf0ab863010921829"
+      linux/amd64: "5922c7b67d9bd6841d6676d1f954410c6bf04b47203dcb661c4f052dfef7f454"

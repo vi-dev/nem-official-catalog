@@ -1,0 +1,27 @@
+schema: 2
+name: minijinja-cli
+description: Command line renderer for Jinja2 templates
+homepage: https://github.com/mitsuhiko/minijinja
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: mitsuhiko/minijinja
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/mitsuhiko/minijinja/releases/download/{{.Version}}/minijinja-cli-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.xz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "minijinja-cli", dst: "bin/minijinja-cli", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.24.0
+    sha256:
+      darwin/arm64: "a0f1525bcac485a80313cec7e835ed03335bd55bc14dc5cf070c7eb9789d9905"
+      darwin/amd64: "283d3e54ed52ff0f97bc4e8b736fa67d5f1bc55b47457ffc8e9310a5fe555997"
+      linux/arm64: "5fd4d0ca9a37973564a9ba3d4444466dbca46c4737840b772ba64729cac4277b"
+      linux/amd64: "40a7b36eb04075d54f0e079cbf632d2fcf9cc32721539f6b799341632d16f50e"

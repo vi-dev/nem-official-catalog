@@ -1,0 +1,29 @@
+schema: 2
+name: jc
+description: Convert command output and common file formats to JSON
+homepage: https://github.com/kellyjonbrazil/jc
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: kellyjonbrazil/jc
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kellyjonbrazil/jc/releases/download/v{{.Version}}/jc-{{.Version}}-{{.OS}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "jc", dst: "bin/jc", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.25.7
+    sha256:
+      darwin/arm64: "21d1775a186ddcd8b84e18d7d1774cd5c68f6056e5c770f80918fd2dbe293747"
+      linux/arm64: "f1f15f9204c19ae70d50ca9b047de86bc00a1c9941b486a15f8586790d0ea323"
+      linux/amd64: "5b7ab595bfbaa70f07a15136bbc3c09d6dbf65891248bf1f060ec3da29608a2c"
