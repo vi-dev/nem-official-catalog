@@ -1,0 +1,30 @@
+schema: 2
+name: rust-analyzer
+description: Rust compiler front-end for IDEs
+homepage: https://rust-analyzer.github.io
+license: MIT OR Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: rust-lang/rust-analyzer
+    filter: '^\d{4}-\d{2}-\d{2}(\.\d+)?$'
+
+# The standalone assets are bare gzipped binaries, not tars, so the VS Code
+# extension package (a zip) is the only extractable asset shipping the server.
+artifact:
+  url: "https://github.com/rust-lang/rust-analyzer/releases/download/{{.Version}}/rust-analyzer-{{.OS}}-{{replace .Arch \"amd64\" \"x64\"}}.vsix"
+
+install:
+  - extract: {strip: 1}
+  - mkdir: bin
+  - move: {src: "server/rust-analyzer", dst: "bin/rust-analyzer"}
+
+bins: ["bin"]
+
+versions:
+  - version: 2026-08-17.4
+    sha256:
+      darwin/arm64: "cbc342413b39041ea64a2bc16e072106e6d1b3f72ff3d92c8b7790649df8a3df"
+      darwin/amd64: "6f0469ff1229d0f9034e708c75f52d3f67ca9b1b5382e35c6a42c2169e0d09dc"
+      linux/arm64: "355a68d0719f6d6b221af8e8907ea510467cae6078f44e353038210a60779901"
+      linux/amd64: "8c025a5b56c32163776ed4d1030db9a8e5e4b28c2941fcd9643b8479a8b296b6"

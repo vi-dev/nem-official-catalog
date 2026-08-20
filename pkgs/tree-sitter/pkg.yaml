@@ -1,0 +1,30 @@
+schema: 2
+name: tree-sitter
+description: Incremental parsing system for programming tools
+homepage: https://tree-sitter.github.io
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: tree-sitter/tree-sitter
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+# The tree-sitter-<os>-<arch> assets are bare gzipped binaries, not tars; the
+# tree-sitter-cli zips carry the same binary in an extractable form.
+artifact:
+  url: "https://github.com/tree-sitter/tree-sitter/releases/download/v{{.Version}}/tree-sitter-cli-{{replace .OS \"darwin\" \"macos\"}}-{{replace .Arch \"amd64\" \"x64\"}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "tree-sitter", dst: "bin/tree-sitter", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.26.12
+    sha256:
+      darwin/arm64: "3ca18160518d0ac8f631448c771ac102748482af518992adcb09f96423ba153f"
+      darwin/amd64: "37102afe56fbcc6975c9f8e76a7bfbd383f28484e9a34e3acfeaf280a7f8c8c9"
+      linux/arm64: "be970bfad7b557ffc62b1a7b4c92341a9c6e16d619e9880e43f07c4a4e6eb52a"
+      linux/amd64: "c33ace12fa7a94d09c97054da621bf7a6a3159f765b1839a898232de283d641d"

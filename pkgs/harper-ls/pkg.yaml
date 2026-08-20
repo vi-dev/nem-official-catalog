@@ -1,0 +1,28 @@
+schema: 2
+name: harper-ls
+description: Language server for the Harper grammar checker
+homepage: https://writewithharper.com
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: Automattic/harper
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/Automattic/harper/releases/download/v{{.Version}}/harper-ls-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "harper-ls", dst: "bin/harper-ls", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.8.0
+    sha256:
+      darwin/arm64: "98fe862ff3d468f14ac009509ebff07b9362f83ffc742407f64573fc2a519d03"
+      darwin/amd64: "6fd18f3e7de08c518afdfbb7c49362159e6f938801955aad9e55008c945d684a"
+      linux/arm64: "57069a5f239f290cb4d293137af6997bd48b919ba2add3ff8401059a3388ff9b"
+      linux/amd64: "07cd5b5d603b95bc2148fcec4434d39061b777aa518bbff024fa4bbfa3ae77c5"

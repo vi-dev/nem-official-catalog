@@ -1,0 +1,27 @@
+schema: 2
+name: zls
+description: Language server for Zig
+homepage: https://zigtools.org
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: zigtools/zls
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/zigtools/zls/releases/download/{{.Version}}/zls-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace .OS \"darwin\" \"macos\"}}.tar.xz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "zls", dst: "bin/zls", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.16.0
+    sha256:
+      darwin/arm64: "b93ec549f8558a7e85984a840e9276d274f1059b54ade4254296ef4982958359"
+      darwin/amd64: "49f716ea96c1aadaecaa5d9c0a50874cbcf443dc42b825f1e7ee35499ad3eb96"
+      linux/arm64: "430cd293d201eb70ae2519dbc96c854bf8791b8df7fc9392e8d2dc9680a2bed7"
+      linux/amd64: "ded6d562a0b86ee878b1ddf70ffab2797ce3cdca3b02d6077548f9d56dff96b6"
