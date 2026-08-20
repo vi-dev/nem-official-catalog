@@ -1,0 +1,28 @@
+schema: 2
+name: zk
+description: Plain text note-taking assistant
+homepage: https://github.com/zk-org/zk
+license: GPL-3.0
+
+versionDiscovery:
+  github:
+    repo: zk-org/zk
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/zk-org/zk/releases/download/v{{.Version}}/zk-v{{.Version}}-{{if eq .OS \"darwin\"}}macos-{{replace .Arch \"amd64\" \"x86_64\"}}{{else}}linux-{{.Arch}}{{end}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "zk", dst: "bin/zk", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.15.6
+    sha256:
+      darwin/arm64: "0b9fd1a774ecd0a943659e4abf701e9f126777cc53e19d5b840e610ea44bf47d"
+      darwin/amd64: "b316dd3eafd7883d2e48af9c2991200e2a97bfdad5f04f800eaa6aaacc31e828"
+      linux/arm64: "80550e5ab50b826fef660e72fc6c7c8c872ad8673ffb798dabc32c714f63fdd5"
+      linux/amd64: "50b2f0a8c533d607e5a8a1f478fe78d5585317178bd86456659c049965a8945d"

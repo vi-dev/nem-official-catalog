@@ -1,0 +1,28 @@
+schema: 2
+name: vhs
+description: Terminal GIF recorder driven by a script file
+homepage: https://github.com/charmbracelet/vhs
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: charmbracelet/vhs
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/charmbracelet/vhs/releases/download/v{{.Version}}/vhs_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "vhs", dst: "bin/vhs", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.11.0
+    sha256:
+      darwin/arm64: "eec91ee450ba50b6d4fce2800593b2ac5fdd88a73056367d2c3b870ee44de3f7"
+      darwin/amd64: "dd5c86c1cec1cf9ebd5ac6cf8119efcb731f055bbe7c7010408c741ee7770f64"
+      linux/arm64: "af782cddbf844a377df6ea41c0e72339393fa021be3f6cb70a2f47d48675d92b"
+      linux/amd64: "99cb634587eaae0473c1ea377db80c3a048c27f99fe0a7febb1a1e8cb7ee5009"

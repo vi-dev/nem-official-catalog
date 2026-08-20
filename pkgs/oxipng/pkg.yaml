@@ -1,0 +1,28 @@
+schema: 2
+name: oxipng
+description: Multithreaded PNG optimizer
+homepage: https://github.com/oxipng/oxipng
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: oxipng/oxipng
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/oxipng/oxipng/releases/download/v{{.Version}}/oxipng-{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "oxipng", dst: "bin/oxipng", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 10.2.0
+    sha256:
+      darwin/arm64: "9aad3927d095b6ade2aacb92b89ebaca442483c1f7cde5d7a2486b283c2ed5f9"
+      darwin/amd64: "c45acf40a70cc02539c55555ac240bf5ef24544b7ea9959d22da19f606cec205"
+      linux/arm64: "6475c5bdba472e00dddff8da22081e6a9ed28ecfd838451d9f05e22f568787ee"
+      linux/amd64: "a27ecb29faab9da1549f4a243bab12f1e43e4ed8ae6a2a2186a543dc9ffd3956"

@@ -1,0 +1,30 @@
+schema: 2
+name: marp
+description: Command line converter for Marp and Marpit slide decks
+homepage: https://marp.app
+license: MIT
+
+# The single macOS asset is an arm64-only build, so darwin/amd64 is unsupported.
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: marp-team/marp-cli
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/marp-team/marp-cli/releases/download/v{{.Version}}/marp-cli-v{{.Version}}-{{if eq .OS \"darwin\"}}mac{{else}}linux{{if eq .Arch \"arm64\"}}-arm64{{end}}{{end}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "marp", dst: "bin/marp", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 4.5.0
+    sha256:
+      darwin/arm64: "f4a0f1e6948aa1c6b71d5e4036b6b96cdfbb24e4090e310d4858aad857199a28"
+      linux/arm64: "809cae4a67c6f22236c20c978dffc585673f4a6d427503abc73e0c9d92ed421c"
+      linux/amd64: "ae46ff054919dccd20f2402fd1747a2363ab2dc5a652f2d589df211ed5e26d88"

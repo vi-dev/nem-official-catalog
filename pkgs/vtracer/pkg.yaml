@@ -1,0 +1,27 @@
+schema: 2
+name: vtracer
+description: Convert raster images to vector graphics
+homepage: https://github.com/visioncortex/vtracer
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: visioncortex/vtracer
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/visioncortex/vtracer/releases/download/{{.Version}}/vtracer-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "vtracer", dst: "bin/vtracer", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.6.4
+    sha256:
+      darwin/arm64: "4a597fd2df8b961d60620df40a7436109427d86e5c028758e6e8796b02d3d996"
+      darwin/amd64: "f0d755292c2602d772d63d658a3498b23eca8b5620d4b92a991bd035d5abed16"
+      linux/arm64: "cbd05ad4f491d12dd139ada61485ca1d24db9f981cbe1658632a083cd0ac1a71"
+      linux/amd64: "9290ba0c90e224d6d212836dff5491407c1718bcb72f80b2b5a4a01816df5e40"

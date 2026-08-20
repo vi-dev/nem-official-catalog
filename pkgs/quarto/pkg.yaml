@@ -1,0 +1,32 @@
+schema: 2
+name: quarto
+description: Scientific and technical publishing system built on Pandoc
+homepage: https://quarto.org
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: quarto-dev/quarto-cli
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/quarto-dev/quarto-cli/releases/download/v{{.Version}}/quarto-{{.Version}}-{{if eq .OS \"darwin\"}}macos{{else}}linux-{{.Arch}}{{end}}.tar.gz"
+
+# The macOS asset is a universal build whose tree sits at the archive root;
+# the Linux assets wrap the same tree in a quarto-<version>/ directory.
+install:
+  - extract: {strip: 0}
+    platforms: [darwin]
+  - extract: {strip: 1}
+    platforms: [linux]
+
+bins: ["bin"]
+
+versions:
+  - version: 1.10.18
+    sha256:
+      darwin/arm64: "ddd6a71a9e0448ab15fb655bc589e11cb6589a248ec35ccd7f7f44137531688e"
+      darwin/amd64: "ddd6a71a9e0448ab15fb655bc589e11cb6589a248ec35ccd7f7f44137531688e"
+      linux/arm64: "f6a07df68e25330b5df34f65d3df66bca605acce3b830c593a58e91884d4cf6c"
+      linux/amd64: "afad071b5bd22c02f2d300695743189d3650e0537a53073e654b630cff2b0c73"

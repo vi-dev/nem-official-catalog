@@ -1,0 +1,27 @@
+schema: 2
+name: asciinema
+description: Terminal session recorder, streamer and player
+homepage: https://asciinema.org
+license: GPL-3.0
+
+versionDiscovery:
+  github:
+    repo: asciinema/asciinema
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/asciinema/asciinema/releases/download/v{{.Version}}/asciinema-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/asciinema", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.2.1
+    sha256:
+      darwin/arm64: "1f0c76da7855601df93e5dccdf69b7c683b81beff1411e38b3802de1f5fc7a1c"
+      darwin/amd64: "1b388af0e1566ab19deea663b0ce64730ad46ade2825fadd43cc88f0bd28140a"
+      linux/arm64: "b516a6d896844c0ffbc96e0a55afe4cbcc79216abde0fc64fdda4e39bee421ea"
+      linux/amd64: "1b405bbda565b33c3c4718de67fedc3535580603c0694b1ff3fb04f363430a20"

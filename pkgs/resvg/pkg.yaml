@@ -1,0 +1,29 @@
+schema: 2
+name: resvg
+description: Render SVG files to PNG
+homepage: https://github.com/linebender/resvg
+license: Apache-2.0
+
+platforms: [darwin/arm64, darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: linebender/resvg
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/linebender/resvg/releases/download/v{{.Version}}/resvg-{{if eq .OS \"darwin\"}}macos-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}.zip{{else}}linux-x86_64.tar.gz{{end}}"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "resvg", dst: "bin/resvg", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.48.1
+    sha256:
+      darwin/arm64: "06440eb5aa14a28cbfc7e40ae39e1ffa71adc051b89fbaa913b4f1d9b905d09f"
+      darwin/amd64: "0135923e443863db251a26bd78eabc6efb4b59d67b8cdc5469e3e1da26bc0ce2"
+      linux/amd64: "fa8c26495a187e592c501db15bf9e8a9fdc051d4b2b336b39703d5b59f912b9d"

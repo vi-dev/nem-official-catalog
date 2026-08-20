@@ -1,0 +1,28 @@
+schema: 2
+name: presenterm
+description: Markdown terminal slideshow tool
+homepage: https://github.com/mfontanini/presenterm
+license: BSD-2-Clause
+
+versionDiscovery:
+  github:
+    repo: mfontanini/presenterm
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/mfontanini/presenterm/releases/download/v{{.Version}}/presenterm-{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "presenterm", dst: "bin/presenterm", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.16.1
+    sha256:
+      darwin/arm64: "56f8b25c24f9c37b06ac4b3004a2c70a2c03d81ddf7a8aa8766ae8997eeb4573"
+      darwin/amd64: "7f923d83349654c560e64dc6d0a4b6ab31d885e8f07e1732d0f60fc9f606e895"
+      linux/arm64: "c03c3744609d61587aac9dda4f431912748bd70d88d4fa6c0440b079001c64c3"
+      linux/amd64: "87512d7c88c3d961c7687aca3519f83c2b7611a550cf769c67c6f7948e8b8f54"

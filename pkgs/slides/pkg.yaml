@@ -1,0 +1,28 @@
+schema: 2
+name: slides
+description: Terminal based presentation tool
+homepage: https://github.com/maaslalani/slides
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: maaslalani/slides
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/maaslalani/slides/releases/download/v{{.Version}}/slides_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "slides", dst: "bin/slides", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.9.0
+    sha256:
+      darwin/arm64: "fdbecb4f6066dfed2c5ab076ccaf692a4cd7bb4bb6db31a77a7cb81f0eb6ab32"
+      darwin/amd64: "033467b54bc3b1630b2e95bbfb7c0d168e162255e1c343df72744bc95369547c"
+      linux/arm64: "00a84b2ccd12554bd27983ba46dbdab3542d4af6e4858e1929c7f93785880768"
+      linux/amd64: "3ceccd36310d6f9e0db4983acff5248c7a03d168c6ff7d90dee89448d9083235"

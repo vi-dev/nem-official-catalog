@@ -1,0 +1,28 @@
+schema: 2
+name: dnote
+description: Command line notebook for capturing notes
+homepage: https://github.com/dnote/dnote
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: dnote/dnote
+    filter: '^cli-v\d+\.\d+\.\d+$'
+    prefix: "cli-v"
+
+artifact:
+  url: "https://github.com/dnote/dnote/releases/download/cli-v{{.Version}}/dnote_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "dnote", dst: "bin/dnote", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.16.0
+    sha256:
+      darwin/arm64: "bc263c0dd15416323e85c10c4b7a2543138279982cd9ddeed0744569ccaaec71"
+      darwin/amd64: "893531d29a401443e3660efb59b96302904fa158ba0f5fc92906f6f174424f1e"
+      linux/arm64: "8f56d2a9c93e9dcd2f4b9f8a3f747f9689983abb4ba7ba331d364f8fca1d6680"
+      linux/amd64: "a81ce7c5d8aface2272ceded700ba8524bc5c2e7457d751b5aa5a831611075d6"

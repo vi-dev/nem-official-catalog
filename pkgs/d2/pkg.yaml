@@ -1,0 +1,27 @@
+schema: 2
+name: d2
+description: Diagram scripting language that turns text into diagrams
+homepage: https://d2lang.com
+license: MPL-2.0
+
+versionDiscovery:
+  github:
+    repo: d2lang/d2
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/d2lang/d2/releases/download/v{{.Version}}/d2-v{{.Version}}-{{replace .OS \"darwin\" \"macos\"}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.7.1
+    sha256:
+      darwin/arm64: "80de85f3b0ac7d9569acac0780ed65dd994ea78969b6b230c58bbb2c6113465b"
+      darwin/amd64: "b0178e8fdae72194d5a23aa6effd323378cc58ccd3b08d175ab80371c14e106f"
+      linux/arm64: "ce3a0b985a8f91335a826c254b3a88736fd81afcdd08b58f6c749d2add6864b0"
+      linux/amd64: "eb172adf59f38d1e5a70ab177591356754ffaf9bebb84e0ca8b767dfb421dad7"
