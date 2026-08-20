@@ -1,0 +1,28 @@
+schema: 2
+name: git-bug
+description: Distributed, offline-first bug tracker embedded in git
+homepage: https://github.com/git-bug/git-bug
+license: GPL-3.0
+
+platforms: [darwin/arm64, darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: git-bug/git-bug
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/git-bug/git-bug/releases/download/v{{.Version}}/git-bug_{{.OS}}_{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/git-bug", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.10.1
+    sha256:
+      darwin/arm64: "b4d1532d36fc1ba0bc9c40d45e496e73d73f3a0b15c4f3a92930bfef5eca32a2"
+      darwin/amd64: "5e70f02eefffc0aa9c3280985a5dda1dc15374c18f065b3bb3b386174ca92e03"
+      linux/amd64: "3ba2f8b41e526fef1b6e825d5030823be65bb6521a287b1139bd609fed0d54a1"

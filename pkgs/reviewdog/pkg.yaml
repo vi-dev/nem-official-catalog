@@ -1,0 +1,28 @@
+schema: 2
+name: reviewdog
+description: Post code analysis results as pull request review comments
+homepage: https://github.com/reviewdog/reviewdog
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: reviewdog/reviewdog
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/reviewdog/reviewdog/releases/download/v{{.Version}}/reviewdog_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "reviewdog", dst: "bin/reviewdog", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.21.0
+    sha256:
+      darwin/arm64: "c28def83af6c5aa8728d6d18160546afd3e5a219117715a2c6c023bd16f14d10"
+      darwin/amd64: "9baadb110c87f22c55688cf4a966acce3006c7a4a962732d6c8b45234c454c6e"
+      linux/arm64: "b6aff657b39e9267a258e8fa66d616f7221aec5975d0251dac76043bad0fa177"
+      linux/amd64: "ad5ce7d5ffa52aaa7ec8710a8fa764181b6cecaab843cc791e1cce1680381569"

@@ -1,0 +1,28 @@
+schema: 2
+name: gitql
+description: Query git repositories with an SQL-like language
+homepage: https://github.com/filhodanuvem/gitql
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: filhodanuvem/gitql
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/filhodanuvem/gitql/releases/download/v{{.Version}}/gitql_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "gitql", dst: "bin/gitql", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.3.1
+    sha256:
+      darwin/arm64: "a2e8b00011d93f101b49c01fbd6ee8cd268136c064b1207cd3924533306ce1c1"
+      darwin/amd64: "23fb23b422d015c3dadd034548f81646cde1bbd3e13057741f9cd95c0d877a76"
+      linux/arm64: "abbc017a7aa90cce15bb73f52e620561f604052154c5068c407550204c93e859"
+      linux/amd64: "d3700db2fcdf7a2d392ee015a74c8c70edc2fd148505343aea251c353d6c1790"

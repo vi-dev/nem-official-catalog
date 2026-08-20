@@ -1,0 +1,28 @@
+schema: 2
+name: jjui
+description: Terminal UI for the Jujutsu version control system
+homepage: https://github.com/idursun/jjui
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: idursun/jjui
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/idursun/jjui/releases/download/v{{.Version}}/jjui-{{.Version}}-{{.OS}}-{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "jjui-{{.Version}}-{{.OS}}-{{.Arch}}", dst: "bin/jjui", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.10.9
+    sha256:
+      darwin/arm64: "563dd71a0748fe91baae7a31ff42173df1ac82d566dbb6a8ccc3c10e4f739e80"
+      darwin/amd64: "67ad87b81a4756f123bf691f96c88526d74c7d115eb972099f3a754ae0e12025"
+      linux/arm64: "3b5ace0cc6d592f1e0651dce8ee2bd7c257f453bde6d5c43c8ba719bd7899cf2"
+      linux/amd64: "625732e25be958d21fc740b71b378524cd11b8b64bd705872b6dc5a77ea531e3"

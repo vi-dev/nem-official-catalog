@@ -1,0 +1,28 @@
+schema: 2
+name: prek
+description: Drop-in pre-commit replacement written in Rust
+homepage: https://prek.j178.dev
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: j178/prek
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/j178/prek/releases/download/v{{.Version}}/prek-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "prek", dst: "bin/prek", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.4.14
+    sha256:
+      darwin/arm64: "87f7fb2b99871820eb352d9a2327461d25affe354d6d48c4edf3a34f360c6be8"
+      darwin/amd64: "59073820f5145cea2fa91b7e4256bbab6ed44de364d4b6809311d7ee9653d3b7"
+      linux/arm64: "27a873abf78df8ec842829f6def4356f1f10c8ddf1741c6b2b3ba0c1e1e93f95"
+      linux/amd64: "388f2e5216684c22e635dc1bde1bac5bd008a5dfc21c754ced382d19ff31413b"

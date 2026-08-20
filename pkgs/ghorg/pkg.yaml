@@ -1,0 +1,28 @@
+schema: 2
+name: ghorg
+description: Clone every repository of a GitHub, GitLab, or Bitbucket org
+homepage: https://github.com/gabrie30/ghorg
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: gabrie30/ghorg
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/gabrie30/ghorg/releases/download/v{{.Version}}/ghorg_{{.Version}}_{{replace (replace .OS \"darwin\" \"Darwin\") \"linux\" \"Linux\"}}_{{replace .Arch \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "ghorg", dst: "bin/ghorg", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.11.14
+    sha256:
+      darwin/arm64: "9d678e2e6e17668f9ea9a6bfb8a3d6aa3e3f26f4b28d3317bb234bf3732cb1b7"
+      darwin/amd64: "83b58e58966a2d3e770a5b5edf7d29592fddb6fa3105018838cd5f7761eade3e"
+      linux/arm64: "fc8a4f06d9cf5a7115c8fcd0346c5d4f5c8091a2863020854f2fd9287ee83b5c"
+      linux/amd64: "9a4f50e50f8c7309253b4c79b8102154dbc81158b159dc8488313fcc75e583e2"

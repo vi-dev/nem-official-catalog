@@ -1,0 +1,29 @@
+schema: 2
+name: gitu
+description: TUI Git client inspired by Magit
+homepage: https://github.com/altsem/gitu
+license: MIT
+
+platforms: [darwin/arm64, darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: altsem/gitu
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/altsem/gitu/releases/download/v{{.Version}}/gitu-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.zip"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "gitu", dst: "bin/gitu", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.43.0
+    sha256:
+      darwin/arm64: "19fa3fbaf79736f07eefc1fd9b163a47f40111ba4f6fe256796006cc62cdd70f"
+      darwin/amd64: "abf5ae48f991c3d8ae1dc98ba03bb8d5827b954ff56352008cf90b1c5eeac6d0"
+      linux/amd64: "52c39e94e232d126d1ed37943de943b7e91df5f3749a2f86253e467d226d3741"

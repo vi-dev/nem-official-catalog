@@ -1,0 +1,27 @@
+schema: 2
+name: gh-dash
+description: Terminal UI dashboard for GitHub pull requests and issues
+homepage: https://gh-dash.dev
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: dlvhdr/gh-dash
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/dlvhdr/gh-dash/releases/download/v{{.Version}}/gh-dash_v{{.Version}}_{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/gh-dash", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 4.25.2
+    sha256:
+      darwin/arm64: "a0e787ef5679e45e08c69edb34f25ed811aefc14157dd08f5721edcb5a3ec671"
+      darwin/amd64: "ced29d14d9cf4a7508ca3a7466f0a6867fe9694fc8c65cd354bc842f7f32c18a"
+      linux/arm64: "4fe4fc59b9847030653fbc1268f156e13db3218ece63f0eebbb2115aa3c3366d"
+      linux/amd64: "1546f8ceb193d0bed2d4ee4470e0a8a789f4ce5c75383b0037305c125f5bbce5"

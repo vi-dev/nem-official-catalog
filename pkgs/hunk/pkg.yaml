@@ -1,0 +1,28 @@
+schema: 2
+name: hunk
+description: Terminal diff viewer built around code review
+homepage: https://github.com/modem-dev/hunk
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: modem-dev/hunk
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/modem-dev/hunk/releases/download/v{{.Version}}/hunkdiff-{{.OS}}-{{replace .Arch \"amd64\" \"x64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "hunk", dst: "bin/hunk", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.19.0
+    sha256:
+      darwin/arm64: "7eece6982cb1461c0c22f9d70a41b0fb8094d965ef02dc22f838abc0de71a429"
+      darwin/amd64: "e379460cd0ecccbd0f109b98bdedca129055cfffa000bc68dd8255531616db31"
+      linux/arm64: "2f5dc255fbf47d594ed31afdec088f02831e442281d55405930163c8e20a5edf"
+      linux/amd64: "d4d942fedc05b8bb5173e2913e545406a5d9412ba0ddb88f8e7f4dcd77fd0602"

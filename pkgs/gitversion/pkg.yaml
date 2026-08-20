@@ -1,0 +1,27 @@
+schema: 2
+name: gitversion
+description: Semantic version calculator driven by git history
+homepage: https://gitversion.net
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: GitTools/GitVersion
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/GitTools/GitVersion/releases/download/{{.Version}}/gitversion-{{replace .OS \"darwin\" \"osx\"}}-{{replace .Arch \"amd64\" \"x64\"}}-{{.Version}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "gitversion", dst: "bin/gitversion", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 6.8.2
+    sha256:
+      darwin/arm64: "02eb6ec6f65a0661bf5f0d0b12a503762372db6bf7e28bc2657015aaf1e0c38f"
+      darwin/amd64: "34b79fa8dc9ee659dc4a7c57f8e3a89ff25fd3959f555d00c8d0d6ad9cb01a01"
+      linux/arm64: "1b51227f88ddf705fc01a3b04ca15eb50fe76baf78013f99c731a2fac729dd8e"
+      linux/amd64: "4b9c361952a7bd8230e3dfeb68189ac99fc3059b561b186d8c1fce22a2287dc2"

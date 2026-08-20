@@ -1,0 +1,29 @@
+schema: 2
+name: git-sizer
+description: Compute size metrics for a Git repository
+homepage: https://github.com/github/git-sizer
+license: MIT
+
+platforms: [darwin/arm64, darwin/amd64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: github/git-sizer
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/github/git-sizer/releases/download/v{{.Version}}/git-sizer-{{.Version}}-{{.OS}}-{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "git-sizer", dst: "bin/git-sizer", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.5.0
+    sha256:
+      darwin/arm64: "7d1e8a6e1218d4640eebcca54c78b855055eb387eac34647b4928f072ffb8805"
+      darwin/amd64: "f491edfb6e6552ecec401cd6a2b57b6790c9110b34286a01a0d315f65530de50"
+      linux/amd64: "a166f7692a02ba68239cb014386f0263ec15525a36928784482644423aae2395"

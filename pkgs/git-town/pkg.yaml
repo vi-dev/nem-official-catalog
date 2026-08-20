@@ -1,0 +1,28 @@
+schema: 2
+name: git-town
+description: Git workflow automation for branch-based development
+homepage: https://www.git-town.com
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: git-town/git-town
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/git-town/git-town/releases/download/v{{.Version}}/git-town_{{replace .OS \"darwin\" \"macos\"}}_{{replace (replace .Arch \"arm64\" \"arm_64\") \"amd64\" \"intel_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "git-town", dst: "bin/git-town", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 24.0.0
+    sha256:
+      darwin/arm64: "0de42d52bad34316413c9d0ba0052d09d4ba8746930aa2cc6eaa5931562a91b2"
+      darwin/amd64: "ef0ba7ef0526a4ad414d9a3e8507b2eaa6e08edb6dd67ffff0ee244222c84cd4"
+      linux/arm64: "967d8014a43a7ad6cf9760b7cb70f79dc423c2b550ec934ad71b0513fbad9427"
+      linux/amd64: "0ed4936f010b42db2ef573e4b2abd951289f4980d95b8236a619429e2501cbc7"

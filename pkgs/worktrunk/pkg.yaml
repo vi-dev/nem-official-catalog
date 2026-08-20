@@ -1,0 +1,30 @@
+schema: 2
+name: worktrunk
+description: Git worktree manager for parallel agent workflows
+homepage: https://github.com/max-sixty/worktrunk
+license: MIT OR Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: max-sixty/worktrunk
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/max-sixty/worktrunk/releases/download/v{{.Version}}/worktrunk-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.xz"
+
+install:
+  - extract: {strip: 1}
+  # Upstream names the CLI "wt"; "git-wt" backs the "git wt" subcommand.
+  - copy: {src: "wt", dst: "bin/wt", mode: 0o755}
+  - copy: {src: "git-wt", dst: "bin/git-wt", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.74.0
+    sha256:
+      darwin/arm64: "d5ac03b8f3df0d144a2c052274b70a6f750a8c1e82b1b2ba348257749fda5ae3"
+      darwin/amd64: "5de8006b67fc04c2dfdeb3c5bc49479607aaff7e63ab3d47b4f21404cbe5375d"
+      linux/arm64: "24ad091af9fa3020b54101a4e0dc4ba17870d7e3da11d20f543b1ebd87c730ce"
+      linux/amd64: "28392033912ab0a9027192d9975284787b29f080b4f2fd6298c89fffecf34c1f"
