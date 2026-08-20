@@ -1,0 +1,26 @@
+schema: 2
+name: pandoc
+description: Universal markup document converter
+homepage: https://pandoc.org
+license: GPL-2.0
+
+versionDiscovery:
+  github:
+    repo: jgm/pandoc
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/jgm/pandoc/releases/download/{{.Version}}/pandoc-{{.Version}}-{{if eq .OS \"darwin\"}}{{replace .Arch \"amd64\" \"x86_64\"}}-macOS.zip{{else}}linux-{{.Arch}}.tar.gz{{end}}"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.10.2
+    sha256:
+      darwin/arm64: "a30bd546062f0b29c25f45a71f951b7a1cf4f998d5b43974ea2c2416133f2e99"
+      darwin/amd64: "437d378af72e9648f6fb42c170031218a3c2f31cf5089234cf2d0413f91481d0"
+      linux/arm64: "1c4d69f2a092bd47cb180e58a4aab7b9637101ced928252458c7d41a7f7fa71d"
+      linux/amd64: "c7edd535941c48be6a362081a748272837de81ae11777202d9c341d3d8261c9a"

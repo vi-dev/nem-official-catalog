@@ -1,0 +1,28 @@
+schema: 2
+name: binaryen
+description: Optimizer and compiler toolchain library for WebAssembly
+homepage: https://github.com/WebAssembly/binaryen
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: WebAssembly/binaryen
+    filter: '^version_\d+$'
+    prefix: "version_"
+
+artifact:
+  url: "https://github.com/WebAssembly/binaryen/releases/download/version_{{.Version}}/binaryen-version_{{.Version}}-{{if eq .OS \"darwin\"}}{{replace .Arch \"amd64\" \"x86_64\"}}-macos{{else}}{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-linux{{end}}.tar.gz"
+
+# bin/ tools load libbinaryen from the sibling lib/, so the tree is kept whole.
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 132
+    sha256:
+      darwin/arm64: "98aad827847af7ef990ed7098d885725c8e5b5aae75073403635617ae4e259aa"
+      darwin/amd64: "40c3de90bb3766bd0282a895e139a6f50253dba49b4f5bb89e66faca162d832e"
+      linux/arm64: "c58562417836c5d0493d89bdefc434933bdc097db641b483df86bcfa557a107f"
+      linux/amd64: "195ddc94f9bc89f45abdabb0b9eea86023d727ba90eac8b35b80f2544fc30572"

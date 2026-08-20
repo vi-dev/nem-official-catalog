@@ -1,0 +1,28 @@
+schema: 2
+name: aptly
+description: Debian repository management tool
+homepage: https://www.aptly.info
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: aptly-dev/aptly
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/aptly-dev/aptly/releases/download/v{{.Version}}/aptly_{{.Version}}_{{.OS}}_{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "aptly", dst: "bin/aptly", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.6.3
+    sha256:
+      darwin/arm64: "02c738b21ecd1e844189aef0542d3a9a6f0b01caa85ca76bcb265111df80b3ad"
+      darwin/amd64: "ad9909dacd9de6a1e289197d0d6e6445c47deae90d845bff7fd833ed90eeed4e"
+      linux/arm64: "dd0988ebe8bfd547482e55de83f178c14e95d5d829d956ce683e0ca045cdb86c"
+      linux/amd64: "535ed24eb706bc25a316b59d709a7e74e10165f2ffab8552097ba7e4816a3e7e"

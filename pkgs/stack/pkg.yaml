@@ -1,0 +1,28 @@
+schema: 2
+name: stack
+description: Build tool for Haskell projects
+homepage: https://haskellstack.org
+license: BSD-3-Clause
+
+versionDiscovery:
+  github:
+    repo: commercialhaskell/stack
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/commercialhaskell/stack/releases/download/v{{.Version}}/stack-{{.Version}}-{{replace .OS \"darwin\" \"osx\"}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "stack", dst: "bin/stack", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.11.1
+    sha256:
+      darwin/arm64: "652572ddf74616a7975892de9c61a9e5e6b5979db4f9b00fcd659ac6a15d7330"
+      darwin/amd64: "603db63eef6246b02dd042e446686f61e3410ee9ef73cb3838314e24468fb290"
+      linux/arm64: "1617ae9976a5cd38ad4daec583b026b589eb45d5482afb045cd4ca8c8d0de6d0"
+      linux/amd64: "1fda71e657cd8d355625cc66b61b352699279dfee2664c014a392163bd19a952"

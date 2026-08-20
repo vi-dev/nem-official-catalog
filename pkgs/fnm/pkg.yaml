@@ -1,0 +1,28 @@
+schema: 2
+name: fnm
+description: Node.js version manager written in Rust
+homepage: https://github.com/Schniz/fnm
+license: GPL-3.0
+
+versionDiscovery:
+  github:
+    repo: Schniz/fnm
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/Schniz/fnm/releases/download/v{{.Version}}/fnm-{{if eq .OS \"darwin\"}}macos{{else if eq .Arch \"arm64\"}}arm64{{else}}linux{{end}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "fnm", dst: "bin/fnm", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.39.0
+    sha256:
+      darwin/arm64: "f046483e85c53b3278efe49a3620c8680f22efa58a8dabfd03eafc6b59b31a25"
+      darwin/amd64: "f046483e85c53b3278efe49a3620c8680f22efa58a8dabfd03eafc6b59b31a25"
+      linux/arm64: "4eaff58b2c5bf30d0934027572dd0b5bbb60d2a1af309230b53662d4b1d45599"
+      linux/amd64: "7807664f39d39fc518da1c35ba0181e4b3267603c4b1dedeb4b5fc6ae440a224"

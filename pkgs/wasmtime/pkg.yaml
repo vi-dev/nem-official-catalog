@@ -1,0 +1,28 @@
+schema: 2
+name: wasmtime
+description: Standalone runtime for WebAssembly and WASI
+homepage: https://wasmtime.dev
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: bytecodealliance/wasmtime
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/bytecodealliance/wasmtime/releases/download/v{{.Version}}/wasmtime-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace .OS \"darwin\" \"macos\"}}.tar.xz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "wasmtime", dst: "bin/wasmtime", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 47.0.3
+    sha256:
+      darwin/arm64: "c2684249e5d9ef9351942cf2d315982cf201fe0300f05d63bc1527446f0cd37f"
+      darwin/amd64: "424a50f76a9dcf4d02dab326b2374be1ad404030576ee915866e4af106058b35"
+      linux/arm64: "497b518db00ae585f04390758eaa99ad555bee50612dce7d102602778fb46ff0"
+      linux/amd64: "ca1fc56d1afc40c8782e96c297fd182a0da162f9a8f52a1e7b094e1dd648e178"

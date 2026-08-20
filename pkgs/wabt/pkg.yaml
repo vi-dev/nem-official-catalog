@@ -1,0 +1,27 @@
+schema: 2
+name: wabt
+description: WebAssembly binary toolkit
+homepage: https://github.com/WebAssembly/wabt
+license: Apache-2.0
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: WebAssembly/wabt
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/WebAssembly/wabt/releases/download/{{.Version}}/wabt-{{.Version}}-{{replace .OS \"darwin\" \"macos\"}}-{{replace .Arch \"amd64\" \"x64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.0.41
+    sha256:
+      darwin/arm64: "e5269d6bbe05dfeb179e4f21111b3a641d6ccaa38b0b21d472ae5c65f8c4ff5d"
+      linux/arm64: "5e35416ee8725dc7cc0572e4392a8117cbf008b0e34c0db65c75506b0299cdbf"
+      linux/amd64: "83f8122e924745fcd70636e3594bc01c4c47f2d4c8f3c63b5d70d3f83a482677"

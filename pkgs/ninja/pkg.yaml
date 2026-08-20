@@ -1,0 +1,28 @@
+schema: 2
+name: ninja
+description: Small build system focused on speed
+homepage: https://ninja-build.org
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: ninja-build/ninja
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/ninja-build/ninja/releases/download/v{{.Version}}/ninja-{{if eq .OS \"darwin\"}}mac{{else}}linux{{if eq .Arch \"arm64\"}}-aarch64{{end}}{{end}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "ninja", dst: "bin/ninja", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.13.2
+    sha256:
+      darwin/arm64: "c99048673aa765960a99cf10c6ddb9f1fad506099ff0a0e137ad8960a88f321b"
+      darwin/amd64: "c99048673aa765960a99cf10c6ddb9f1fad506099ff0a0e137ad8960a88f321b"
+      linux/arm64: "fd2cacc8050a7f12a16a2e48f9e06fca5c14fc4c2bee2babb67b58be17a607fc"
+      linux/amd64: "5749cbc4e668273514150a80e387a957f933c6ed3f5f11e03fb30955e2bbead6"

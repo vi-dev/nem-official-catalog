@@ -1,0 +1,28 @@
+schema: 2
+name: kcl
+description: Command line interface for the KCL configuration language
+homepage: https://kcl-lang.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: kcl-lang/cli
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/kcl-lang/cli/releases/download/v{{.Version}}/kcl-v{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kcl", dst: "bin/kcl", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.12.8
+    sha256:
+      darwin/arm64: "1d338f3eec00bb75ee1af505ed843dacffbc197bddc4c6476a84783b4d6dd172"
+      darwin/amd64: "98d22a5670169c2f20dd20af1aa82df1252c087771e98011680e13ff9038a575"
+      linux/arm64: "0e7a67486cdcfec7c810fe6f107cad5da1a46deb0c17826aa010b06197661369"
+      linux/amd64: "8b663e88a9f679e129e4e60dd7dcd0641a1c8dd679adfcc24120f8fa5ef1cbb3"

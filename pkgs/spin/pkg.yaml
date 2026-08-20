@@ -1,0 +1,28 @@
+schema: 2
+name: spin
+description: Developer tool for serverless WebAssembly applications
+homepage: https://spinframework.dev
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: spinframework/spin
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/spinframework/spin/releases/download/v{{.Version}}/spin-v{{.Version}}-{{replace .OS \"darwin\" \"macos\"}}-{{replace .Arch \"arm64\" \"aarch64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "spin", dst: "bin/spin", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 4.0.2
+    sha256:
+      darwin/arm64: "d16a438d9261c3f8c1e791b9214760bf039a625a91098e62b64e6c563a20627e"
+      darwin/amd64: "5ff1e5fef22c7a99bf8dfeacad26229ba51ccb74cdd1742074e96e7a9e8e86bc"
+      linux/arm64: "f3811212aaf4ec9c6a731c515ab5052a64be52fc2cdd1b15b42f44817a82a9dc"
+      linux/amd64: "79523cfc93424d555b3493c7ea07e0fb482e1fd9972f29a83bea0ba7d764bf00"

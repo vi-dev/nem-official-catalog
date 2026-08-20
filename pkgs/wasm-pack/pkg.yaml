@@ -1,0 +1,28 @@
+schema: 2
+name: wasm-pack
+description: Build, test, and publish Rust-generated WebAssembly
+homepage: https://rustwasm.github.io/wasm-pack/
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: wasm-bindgen/wasm-pack
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/wasm-bindgen/wasm-pack/releases/download/v{{.Version}}/wasm-pack-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "wasm-pack", dst: "bin/wasm-pack", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.15.0
+    sha256:
+      darwin/arm64: "0abff4a03d670b6c00ea31d0e1608a72407e355f3d3765e9c30eb45cd5b7e318"
+      darwin/amd64: "d3f1a4a33e95f8f0d7801b024e08624c479999ac96aa150908b2394015cd0363"
+      linux/arm64: "e17ef0806381c3a0acb9c9ddad643a49facaa5a2ecf657a421d4d8f3357a24b7"
+      linux/amd64: "c09f971ecaed9a2efc80fdcea7a00ef6b53c7fadc8c57d1f61b53a6aa66b668a"

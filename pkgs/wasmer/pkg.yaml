@@ -1,0 +1,28 @@
+schema: 2
+name: wasmer
+description: WebAssembly runtime supporting WASI and Emscripten
+homepage: https://wasmer.io
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: wasmerio/wasmer
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/wasmerio/wasmer/releases/download/v{{.Version}}/wasmer-{{.OS}}-{{if eq .OS \"linux\"}}{{replace .Arch \"arm64\" \"aarch64\"}}{{else}}{{.Arch}}{{end}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+
+bins: ["bin"]
+
+versions:
+  - version: 7.2.1
+    sha256:
+      darwin/arm64: "5d6b3ecc2d54568f34e150ea94997b5ac8901ea72ed9e1533b6c2bf7f69d6722"
+      linux/arm64: "5a434db36f96d483e9967aa1b3ffd129f5b8781ea58faf1b80aeee6f5fb91f63"
+      linux/amd64: "c46d6ff34a12b40d2e57bfc2ccbb8b9e209b0987ab305233619798b264a6bae5"

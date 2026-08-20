@@ -1,0 +1,28 @@
+schema: 2
+name: gleam
+description: Type-safe language for the Erlang and JavaScript runtimes
+homepage: https://gleam.run
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: gleam-lang/gleam
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/gleam-lang/gleam/releases/download/v{{.Version}}/gleam-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "gleam", dst: "bin/gleam", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.18.1
+    sha256:
+      darwin/arm64: "1aae21fd5c70b89e0972427934a13b33886efa7f08bf428e1baee5ebd10d1753"
+      darwin/amd64: "bd5017621ad5b7509568d5d004a2c1d5fb8f70e7555b1abdb62f35908c0ee1b6"
+      linux/arm64: "ea08a64846677f36da7f2e9163c4393dd9a9dee814d13a8fb28fbe7dcbf32f6d"
+      linux/amd64: "4955a38c2e8c99457458e2471472ccd5ee3c45bd7637a315ce33bccf0dd75d9e"

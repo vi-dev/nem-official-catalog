@@ -1,0 +1,32 @@
+schema: 2
+name: cmake
+description: Cross-platform build system generator
+homepage: https://cmake.org
+license: BSD-3-Clause
+
+versionDiscovery:
+  github:
+    repo: Kitware/CMake
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/Kitware/CMake/releases/download/v{{.Version}}/cmake-{{.Version}}-{{if eq .OS \"darwin\"}}macos-universal{{else}}linux-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}{{end}}.tar.gz"
+
+# Linux ships bin/ and share/ under a single version dir; the macOS archive
+# nests the same tree under CMake.app/Contents, one extra level down.
+install:
+  - platforms: [linux]
+    extract: {strip: 1}
+  - platforms: [darwin]
+    extract: {strip: 3}
+
+bins: ["bin"]
+
+versions:
+  - version: 4.4.2
+    sha256:
+      darwin/arm64: "800fc86838e913fff969b499886c80baeb4ccfd00f0e39906b34aa334f39ab6c"
+      darwin/amd64: "800fc86838e913fff969b499886c80baeb4ccfd00f0e39906b34aa334f39ab6c"
+      linux/arm64: "9ca1aadb4451c5dcbdc67f9b4aff42dab52abbaebd8db9e2900026502dbed671"
+      linux/amd64: "3ada9a3f5d8a85413579bdd0ea6aa8e8da86efdd6d15c91a1afa517f2021956c"

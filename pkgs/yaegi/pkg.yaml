@@ -1,0 +1,28 @@
+schema: 2
+name: yaegi
+description: Go interpreter and REPL
+homepage: https://github.com/traefik/yaegi
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: traefik/yaegi
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/traefik/yaegi/releases/download/v{{.Version}}/yaegi_v{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "yaegi", dst: "bin/yaegi", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.16.1
+    sha256:
+      darwin/arm64: "8715a544ca6286008f91076fe8f08928ae5cfa5ea497f3f24e0ba5ffb31225f4"
+      darwin/amd64: "824946d3205b69e7d1aa790d9ba72cb700af9c0381da7f9334696629445cd5b6"
+      linux/arm64: "8bdde9618d063b16c7f9f43a7895935c589e741d7428fcabed1e7870dbb28038"
+      linux/amd64: "396e30227c21172324147a3c603a044a0cc0ed8bbda490fd34831905ff977f96"

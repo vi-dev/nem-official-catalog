@@ -1,0 +1,28 @@
+schema: 2
+name: sccache
+description: Compiler cache with local and cloud storage backends
+homepage: https://github.com/mozilla/sccache
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: mozilla/sccache
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/mozilla/sccache/releases/download/v{{.Version}}/sccache-v{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-musl\"}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "sccache", dst: "bin/sccache", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.17.0
+    sha256:
+      darwin/arm64: "0c560bfba31aef5bdfb4fb3d2677f6e61d71c5c00952f2a83344f47aa31f00f1"
+      darwin/amd64: "c2144cafbfe3d22e34ae637f9974ce53613543ac19477fdb287df22ea3668261"
+      linux/arm64: "821a86343191aa1cbab74bd42f9e93c9a63bf85e4742945f40d3ae84193c1c77"
+      linux/amd64: "67c4a96dd237c1f518f6b36083f270f9976d516f1e57fce891755ea782e50006"
