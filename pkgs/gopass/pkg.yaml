@@ -1,0 +1,28 @@
+schema: 2
+name: gopass
+description: Command-line password manager for teams
+homepage: https://www.gopass.pw/
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: gopasspw/gopass
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/gopasspw/gopass/releases/download/v{{.Version}}/gopass-{{.Version}}-{{.OS}}-{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "gopass", dst: "bin/gopass", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.16.1
+    sha256:
+      darwin/arm64: "d741dca382ff740527d4777dc62a5a50a3b153dd99c7503a5b432b6adbff6bbb"
+      darwin/amd64: "0f60a7f5ccb117a71c8c1cce124d16acbbfe6e06704b115b52f60bf0f944c4f2"
+      linux/arm64: "99d66e7cd937f47bf858c238c2cb912a36beb7312b6c52fa65f8a29278dd800d"
+      linux/amd64: "be77309ba4491cedfb847155380fc04c3f356231d368721ee3c69b77ab0c0eb7"

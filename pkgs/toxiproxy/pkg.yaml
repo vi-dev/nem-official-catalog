@@ -1,0 +1,29 @@
+schema: 2
+name: toxiproxy
+description: TCP proxy for simulating network and system conditions
+homepage: https://github.com/Shopify/toxiproxy
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: Shopify/toxiproxy
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/Shopify/toxiproxy/releases/download/v{{.Version}}/toxiproxy_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "toxiproxy-server", dst: "bin/toxiproxy-server", mode: 0o755}
+  - copy: {src: "toxiproxy-cli", dst: "bin/toxiproxy-cli", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.12.0
+    sha256:
+      darwin/arm64: "cece3905c06ad84d6b3bb4cd024c344e6466736b2a8cbaf9ef4fe45e62aba9b2"
+      darwin/amd64: "52ac1f99d7204b4b523f910b791bc86318b50ef94822c79a6157606704003ced"
+      linux/arm64: "ab417dafc77ae8b54ec8461cc5da5180d0465a61dcbda86c72da72ee4ab843b7"
+      linux/amd64: "65e042d3fc2290c099527bc506446a6fd863a09f113b8944b636ece70221c2b3"

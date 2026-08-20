@@ -1,0 +1,28 @@
+schema: 2
+name: openbao
+description: Secrets and identity management server, a fork of Vault
+homepage: https://openbao.org
+license: MPL-2.0
+
+versionDiscovery:
+  github:
+    repo: openbao/openbao
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/openbao/openbao/releases/download/v{{.Version}}/openbao_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "bao", dst: "bin/bao", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.6.2
+    sha256:
+      darwin/arm64: "4e495376174accc0e014d31e9901f518a974f966850c839f626347eaac05fd52"
+      darwin/amd64: "64fdf1ce8f410bbc1531d2f0ea142d21b4e755b986542025a00294999a8cfaa5"
+      linux/arm64: "1b408e01f3565ac0cbcb88d637dca271d0515148fb72efdeff4473a34fa50c4e"
+      linux/amd64: "8dc11cc5fca0b539a9e352727dacb4e2d304daffcf9a66e0718ac325a20d05aa"

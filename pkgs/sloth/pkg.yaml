@@ -1,0 +1,27 @@
+schema: 2
+name: sloth
+description: Prometheus SLO and alerting rule generator
+homepage: https://sloth.dev
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: slok/sloth
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/slok/sloth/releases/download/v{{.Version}}/sloth-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/sloth", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.16.0
+    sha256:
+      darwin/arm64: "d9ee5967fd412f6592a0c5aec35f7f9f1fc4a2726eb25414a11815ca78185aa9"
+      darwin/amd64: "c62623ea730818ef611c82fd1318d9741cfde4717a6179ebd9e3649a3b8b6017"
+      linux/arm64: "7b570c465df3cc997e744dfcfcea83c3559bba6b12f4d6165994925419cbb41c"
+      linux/amd64: "1cecaa50853abbb3669a928612b523df8174d258ea6f2a3c8f048e5fc5af90b2"

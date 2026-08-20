@@ -1,0 +1,27 @@
+schema: 2
+name: gokey
+description: Vaultless password manager deriving passwords on demand
+homepage: https://github.com/cloudflare/gokey
+license: BSD-3-Clause
+
+versionDiscovery:
+  github:
+    repo: cloudflare/gokey
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/cloudflare/gokey/releases/download/v{{.Version}}/gokey-v{{.Version}}-{{.OS}}-{{.Arch}}"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/gokey", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.2.1
+    sha256:
+      darwin/arm64: "5f212c76c7e07de57738d3ef7246cb44feba87fa3ce588f6027b87eac48cee68"
+      darwin/amd64: "07d514b8330b0930791fa61f182a21000693280361f7ef55a7fa34c4b1163e7e"
+      linux/arm64: "6d0b2c3905719b9508560f2da56219261df7a224aa720f265adb5bc5a5ce9826"
+      linux/amd64: "d64dcabf00ec417b152a239e4e5e28ab02b7a7b4a00d398b30738dd2bc39fd3d"

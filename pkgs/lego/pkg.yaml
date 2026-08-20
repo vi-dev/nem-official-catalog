@@ -1,0 +1,28 @@
+schema: 2
+name: lego
+description: ACME client and library for Let's Encrypt certificates
+homepage: https://go-acme.github.io/lego/
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: go-acme/lego
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/go-acme/lego/releases/download/v{{.Version}}/lego_v{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "lego", dst: "bin/lego", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 5.3.1
+    sha256:
+      darwin/arm64: "8b0669aaaeb0fceaec99406780bb6f274e67b0cf743cfd53d9e5c6535f250963"
+      darwin/amd64: "97516d24b7c7858918b3b6cdab6a73c0197fb73cd02b6c354bb48b7f0518e252"
+      linux/arm64: "58db563a2b97c2259516fa9910b4a9e1634a0737723d0381a65af1bf93a4b433"
+      linux/amd64: "b3c71b122ee1947eacfe0b809b955647f6377239fe4bfc49f73b1a091ae1252a"

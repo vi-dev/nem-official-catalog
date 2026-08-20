@@ -1,0 +1,28 @@
+schema: 2
+name: ffuf
+description: Web fuzzer for content and parameter discovery
+homepage: https://github.com/ffuf/ffuf
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: ffuf/ffuf
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/ffuf/ffuf/releases/download/v{{.Version}}/ffuf_{{.Version}}_{{replace .OS \"darwin\" \"macOS\"}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "ffuf", dst: "bin/ffuf", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.2.1
+    sha256:
+      darwin/arm64: "b0e9c14a8083fa2e2b52a9a4e004dc132c61347fcda9b4c714fb275ed47c18db"
+      darwin/amd64: "ad3c0a141c78213a78ce71a8cd0f2d140d9d9785b9cd44b8fac0d206d65dbb75"
+      linux/arm64: "89ad4f50345e6a9a48ecc8d241811d582cedf96279276b48d666b12b31260484"
+      linux/amd64: "86307885810d3c36ba4a3e9ba5178c2d9027bba0dd7f4ea39e39e7c972b62396"

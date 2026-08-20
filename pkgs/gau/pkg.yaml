@@ -1,0 +1,28 @@
+schema: 2
+name: gau
+description: Fetch known URLs from Wayback Machine, OTX, and Common Crawl
+homepage: https://github.com/lc/gau
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: lc/gau
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/lc/gau/releases/download/v{{.Version}}/gau_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "gau", dst: "bin/gau", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.2.4
+    sha256:
+      darwin/arm64: "228b149beaa115f4bccff872bb85c01b7a2a740a01a4cdfb5a2c28950f806ab1"
+      darwin/amd64: "03431aaa60e3efcd75235fcfa00f410088dfbf9fcc1eacdf39fa5a585090ee39"
+      linux/arm64: "c194992df360d3a24e021c6dc5a5a0576cfd769be1d19cccb29adc1d3759637d"
+      linux/amd64: "10e2e248c37cafb0be3f6d2931125296b95cd4186066d596d47fa417237529a9"

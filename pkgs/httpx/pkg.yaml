@@ -1,0 +1,28 @@
+schema: 2
+name: httpx
+description: Multi-purpose HTTP toolkit for probing web servers
+homepage: https://github.com/projectdiscovery/httpx
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: projectdiscovery/httpx
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/projectdiscovery/httpx/releases/download/v{{.Version}}/httpx_{{.Version}}_{{replace .OS \"darwin\" \"macOS\"}}_{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "httpx", dst: "bin/httpx", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.10.0
+    sha256:
+      darwin/arm64: "5c4a57c465ff3235bd997d92a43e488b027bce1ddbc71fe171949cd8398cf0f4"
+      darwin/amd64: "10cf5787279d5e2560732417ac2ed347eca73513aee107e6f79f3f79ff85bbe5"
+      linux/arm64: "7f3eaf5a6839504f5e2ce29c3ce94aa2ddeeaa7619d9a497e017232c6dc49b1c"
+      linux/amd64: "63eac4dcd6e5c9867c94765fdaaf66e7b4eeae3474a1f06e600e266a1c81a53e"

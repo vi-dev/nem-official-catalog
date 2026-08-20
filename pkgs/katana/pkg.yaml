@@ -1,0 +1,28 @@
+schema: 2
+name: katana
+description: Web crawling and spidering framework
+homepage: https://github.com/projectdiscovery/katana
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: projectdiscovery/katana
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/projectdiscovery/katana/releases/download/v{{.Version}}/katana_{{.Version}}_{{replace .OS \"darwin\" \"macOS\"}}_{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "katana", dst: "bin/katana", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.7.0
+    sha256:
+      darwin/arm64: "609bff6752de7d0ebad6ba4d1f90fffe60f2052fa345d5890c60f3d928b7460a"
+      darwin/amd64: "9f31528eb3e1745d5fc1b99c8ec7420ff47e1b00ec637ced3e92dd82f5541816"
+      linux/arm64: "9a6885fe9fda850129b110e0f079d42529b0693dd81b59c316f04084935300f0"
+      linux/amd64: "fe1142d92f418549338ea46d67a472124878482e225d279e9a42700c75d76a4d"

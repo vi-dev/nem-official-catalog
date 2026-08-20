@@ -1,0 +1,28 @@
+schema: 2
+name: step-ca
+description: Private certificate authority and ACME server
+homepage: https://smallstep.com/docs/step-ca
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: smallstep/certificates
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/smallstep/certificates/releases/download/v{{.Version}}/step-ca_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+  - copy: {src: "step-ca", dst: "bin/step-ca", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.30.2
+    sha256:
+      darwin/arm64: "3614d1a38fb373b5940a26f409597bfe7cca8bb70bb69c5d8e43087582fbd39e"
+      darwin/amd64: "8accd887df4e0596e70f75c328707396366b49a7df2b867cad24871ca1958b91"
+      linux/arm64: "d47988711e4aba07d882e6b90248372354925b90cf10ec3afbd479e441a000ad"
+      linux/amd64: "1726ee7b6a24c67abb8c9e96ad671623b29b3d34f6a712f7087495f31331e54b"

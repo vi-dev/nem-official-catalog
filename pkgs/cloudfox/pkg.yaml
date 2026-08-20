@@ -1,0 +1,27 @@
+schema: 2
+name: cloudfox
+description: Situational awareness tool for cloud penetration tests
+homepage: https://github.com/BishopFox/cloudfox
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: BishopFox/cloudfox
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/BishopFox/cloudfox/releases/download/v{{.Version}}/cloudfox-{{replace .OS \"darwin\" \"macos\"}}-{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["."]
+
+versions:
+  - version: 2.0.5
+    sha256:
+      darwin/arm64: "04c13e576953d46501ad20885c109a740014391baa40c168703a0e7cc470d060"
+      darwin/amd64: "2da1e1f925094f882abc8777c365bbc9189179c2048d1d236f019b731bbb13a0"
+      linux/arm64: "fcebd90329a8bb2f61c00cfb131572a44483251da532f1363a0ceb56541cd4ca"
+      linux/amd64: "3cdc5a1a94ff14eb8df04d3dc8f9eca7db232a1315ceb8a7de26e4cb13e32fd5"

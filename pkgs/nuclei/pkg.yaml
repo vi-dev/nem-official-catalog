@@ -1,0 +1,28 @@
+schema: 2
+name: nuclei
+description: Vulnerability scanner driven by YAML templates
+homepage: https://github.com/projectdiscovery/nuclei
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: projectdiscovery/nuclei
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/projectdiscovery/nuclei/releases/download/v{{.Version}}/nuclei_{{.Version}}_{{replace .OS \"darwin\" \"macOS\"}}_{{.Arch}}.zip"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "nuclei", dst: "bin/nuclei", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 3.11.1
+    sha256:
+      darwin/arm64: "7d7e291addd1fc29a9bf8d089afe878a9799b20229cbea2fb1693fc40fd4c5f0"
+      darwin/amd64: "75c47ce11e9dbd4288a1c895ed85e3c4df9f4acb8237d6d178da6dccd1628f2a"
+      linux/arm64: "8044e3d9768ba0a744b2872c1a87e813006f013da97ca9f50f7661a4203bec07"
+      linux/amd64: "ea63d4ae232808cd7c6bc00d0142428e231fab59dae01042246097d195835ab6"

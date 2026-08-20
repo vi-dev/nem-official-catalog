@@ -1,0 +1,27 @@
+schema: 2
+name: step
+description: CLI for X509, SSH, JWT and OAuth credentials
+homepage: https://smallstep.com/docs/step-cli
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: smallstep/cli
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/smallstep/cli/releases/download/v{{.Version}}/step_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.30.6
+    sha256:
+      darwin/arm64: "ae4016bd7da2d00db4e370fa918e94f144ddce7610fb46c2ec0d6dd00e153238"
+      darwin/amd64: "320e9fd1efbaeb49ae015fd3a03ccce7743dd76cd909ec2b9ecd9b7bee30609b"
+      linux/arm64: "24e0980e0478466f8d53e5fd0a7919e65c180351814da26995df4439e1504103"
+      linux/amd64: "f9ebb5a078c713abe286a02e64ad9b78197c5bda3e729a8de44f739c5cb3c0ac"

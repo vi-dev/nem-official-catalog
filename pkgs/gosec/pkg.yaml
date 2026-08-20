@@ -1,0 +1,28 @@
+schema: 2
+name: gosec
+description: Static analyzer for security problems in Go source
+homepage: https://github.com/securego/gosec
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: securego/gosec
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/securego/gosec/releases/download/v{{.Version}}/gosec_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "gosec", dst: "bin/gosec", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.28.0
+    sha256:
+      darwin/arm64: "6c4993a0ab5e3007d66c87cbcb4e3948f8000971f8eeaf3ac269cbc87a603ba4"
+      darwin/amd64: "ad23af3a6bfef8112a2da386acd61ede1374c8d022c06d8ef130ccf9748311d4"
+      linux/arm64: "63259681b6e4b9e7a24d4e187b485e75d3844d28d512b0c97dc831e51d374720"
+      linux/amd64: "d7882e505b1ff345d458bf0e893eec8019bc849f861ad73a212869540dd505ff"
