@@ -21,6 +21,11 @@ deps:
 bins: [bin]
 libs: [lib]
 
+versionDiscovery:
+  http:
+    url: https://gnupg.org/ftp/gcrypt/gpgme/
+    filter: 'gpgme-(\d+\.\d+\.\d+)\.tar\.bz2'
+
 artifact:
   oci: ":{{.Version}}"
 

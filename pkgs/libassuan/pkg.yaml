@@ -16,6 +16,11 @@ deps:
 
 libs: [lib]
 
+versionDiscovery:
+  http:
+    url: https://gnupg.org/ftp/gcrypt/libassuan/
+    filter: 'libassuan-(\d+\.\d+\.\d+)\.tar\.bz2'
+
 artifact:
   oci: ":{{.Version}}"
 

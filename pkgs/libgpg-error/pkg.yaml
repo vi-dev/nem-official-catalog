@@ -9,6 +9,11 @@ platforms: [darwin/arm64, linux/arm64, linux/amd64]
 
 libs: [lib]
 
+versionDiscovery:
+  http:
+    url: https://gnupg.org/ftp/gcrypt/libgpg-error/
+    filter: 'libgpg-error-(\d+\.\d+)\.tar\.bz2'
+
 artifact:
   oci: ":{{.Version}}"
 
