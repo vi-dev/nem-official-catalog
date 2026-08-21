@@ -23,7 +23,8 @@ set -uo pipefail
 failed=()
 
 reset_state() {
-  rm -rf "$NEM_HOME/nem.toml" "$NEM_HOME/nem.lock" "$NEM_HOME/packages" "$NEM_HOME/tmp"
+  nem clean --all --yes
+  rm -f "$NEM_HOME/nem.toml" "$NEM_HOME/nem.lock"
 }
 
 flush() {
