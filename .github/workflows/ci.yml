@@ -61,6 +61,8 @@ jobs:
         entry: ${{ fromJSON(needs.changes.outputs.source) }}
         runner: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
     runs-on: ${{ matrix.runner }}
+    # macOS runners cannot run job containers; an empty string means none.
+    container: ${{ matrix.runner != 'macos-latest' && 'ghcr.io/vi-dev/nem-cli:unstable' || '' }}
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -81,21 +83,34 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        runner: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
+        # macOS runners cannot run containers; that leg alone uses runner-side nem.
+        include:
+          - runner: ubuntu-latest
+            script: .github/scripts/install-rootless.sh
+            install: "false"
+          - runner: ubuntu-24.04-arm
+            script: .github/scripts/install-rootless.sh
+            install: "false"
+          - runner: macos-latest
+            script: .github/scripts/install-each.sh
+            install: "true"
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 60
+    env:
+      CATALOG_REF: .
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-nem
         with:
-          catalog: .
+          install: ${{ matrix.install }}
+          catalog: ${{ matrix.install == 'true' && env.CATALOG_REF || '' }}
       - name: Install from the PR's dir catalog
         shell: bash
         env:
           PREBUILT: ${{ needs.changes.outputs.prebuilt }}
         run: |
           jq -r '.[] | .package + "@" + .version' <<< "$PREBUILT" \
-            | .github/scripts/install-each.sh
+            | ${{ matrix.script }}
 
   # Stable check name for branch protection.
   ci-ok:
