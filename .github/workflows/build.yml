@@ -85,6 +85,7 @@ jobs:
     needs: plan
     if: ${{ needs.plan.outputs.linux_amd64 != '[]' }}
     runs-on: ubuntu-latest
+    container: ghcr.io/vi-dev/nem-cli:unstable
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -111,6 +112,7 @@ jobs:
     needs: [plan, build-linux-amd64]
     if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.linux_arm64 != '[]' }}
     runs-on: ubuntu-24.04-arm
+    container: ghcr.io/vi-dev/nem-cli:unstable
     timeout-minutes: 60
     strategy:
       fail-fast: false

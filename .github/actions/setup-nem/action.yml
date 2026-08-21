@@ -7,12 +7,21 @@ inputs:
   ghcr-token:
     description: Token written to ~/.docker/config.json for ghcr.io (empty = anonymous)
     default: ""
+  install:
+    description: Install nem onto the runner ("false" for jobs that only need the credentials file)
+    default: "true"
 runs:
   using: composite
   steps:
     - name: Install nem
+      if: inputs.install == 'true'
       shell: bash
       run: |
+        # Job containers built from ghcr.io/vi-dev/nem-cli ship nem already.
+        if command -v nem >/dev/null; then
+          nem version
+          exit 0
+        fi
         curl -fsSL https://raw.githubusercontent.com/vi-dev/nem-cli/main/install.sh \
           | NEM_VERSION=unstable bash
         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
@@ -32,13 +41,4 @@ runs:
       shell: bash
       env:
         CATALOG_REF: ${{ inputs.catalog }}
-      run: |
-        # nem's first run writes a default `official` entry; replace it so the
-        # job resolves against exactly the requested ref, and nothing else.
-        nem catalog remove official 2>/dev/null || true
-        nem catalog add official "$CATALOG_REF"
-        # Dir catalogs have no OCI mirror to sync.
-        case "$CATALOG_REF" in
-          /*|./*|../*|.) ;;
-          *) nem catalog update ;;
-        esac
+      run: .github/scripts/configure-catalog.sh
