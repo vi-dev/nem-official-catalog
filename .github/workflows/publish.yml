@@ -159,7 +159,7 @@ jobs:
       matrix:
         runner: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 30
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-nem
@@ -171,11 +171,7 @@ jobs:
         env:
           ENTRIES: ${{ needs.plan.outputs.smoke }}
         run: |
-          # macOS runners ship bash 3.2: no readarray.
-          while IFS= read -r e; do
-            nem use -g "$e"
-          done < <(jq -r '.[]' <<< "$ENTRIES")
-          nem status -g
+          jq -r '.[]' <<< "$ENTRIES" | .github/scripts/install-each.sh
 
   promote:
     needs: [stage, smoke]

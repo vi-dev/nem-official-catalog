@@ -16,7 +16,7 @@ jobs:
       matrix:
         runner: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 30
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-nem
@@ -26,7 +26,5 @@ jobs:
       - name: Install every package at latest
         shell: bash
         run: |
-          pkgs=()
-          for d in pkgs/*/; do pkgs+=("$(basename "$d")"); done
-          nem use -g "${pkgs[@]}"
-          nem status -g
+          for d in pkgs/*/; do basename "$d"; done \
+            | .github/scripts/install-each.sh

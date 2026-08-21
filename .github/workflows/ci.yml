@@ -87,11 +87,15 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-nem
+        with:
+          catalog: .
       - name: Install from the PR's dir catalog
         shell: bash
         env:
           PREBUILT: ${{ needs.changes.outputs.prebuilt }}
-        run: .github/workflows/install-check.sh
+        run: |
+          jq -r '.[] | .package + "@" + .version' <<< "$PREBUILT" \
+            | .github/scripts/install-each.sh
 
   # Stable check name for branch protection.
   ci-ok:
