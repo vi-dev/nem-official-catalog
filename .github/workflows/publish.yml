@@ -65,6 +65,7 @@ jobs:
     needs: plan
     if: ${{ needs.plan.outputs.linux_amd64 != '[]' }}
     runs-on: ubuntu-latest
+    container: ghcr.io/vi-dev/nem-cli:unstable
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -87,6 +88,7 @@ jobs:
     needs: [plan, build-linux-amd64]
     if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.linux_arm64 != '[]' }}
     runs-on: ubuntu-24.04-arm
+    container: ghcr.io/vi-dev/nem-cli:unstable
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -157,21 +159,34 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        runner: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
+        # macOS runners cannot run containers; that leg alone uses runner-side nem.
+        include:
+          - runner: ubuntu-latest
+            script: .github/scripts/install-rootless.sh
+            install: "false"
+          - runner: ubuntu-24.04-arm
+            script: .github/scripts/install-rootless.sh
+            install: "false"
+          - runner: macos-latest
+            script: .github/scripts/install-each.sh
+            install: "true"
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 90
+    env:
+      CATALOG_REF: ghcr.io/vi-dev/nem-official-catalog:v2-staging
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-nem
         with:
-          catalog: ghcr.io/vi-dev/nem-official-catalog:v2-staging
+          install: ${{ matrix.install }}
+          catalog: ${{ matrix.install == 'true' && env.CATALOG_REF || '' }}
           ghcr-token: ${{ github.token }}
       - name: Install changed versions
         shell: bash
         env:
           ENTRIES: ${{ needs.plan.outputs.smoke }}
         run: |
-          jq -r '.[]' <<< "$ENTRIES" | .github/scripts/install-each.sh
+          jq -r '.[]' <<< "$ENTRIES" | ${{ matrix.script }}
 
   promote:
     needs: [stage, smoke]
