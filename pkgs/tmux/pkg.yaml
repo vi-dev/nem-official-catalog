@@ -1,0 +1,67 @@
+schema: 2
+
+name: tmux
+description: Terminal multiplexer
+homepage: https://tmux.github.io
+license: ISC
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: libevent
+    kind: link
+    compat: "2"
+  - name: ncurses
+    kind: link
+    compat: "6"
+  - name: utf8proc
+    kind: link
+    compat: "2"
+  - name: jemalloc
+    kind: link
+    compat: "5"
+
+bins: [bin]
+
+versionDiscovery:
+  github:
+    repo: tmux/tmux
+    filter: '^\d+\.\d+[a-z]?$'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 3.7c
+    sourceSha256: "7c60cae9a0e25288e2e24750aafc9e8800fc7fd4555e447e1b29ee4201cfb3bf"
+
+build:
+  deps:
+    - pkgconf
+    - name: libevent
+      kind: link
+      compat: "2"
+    - name: ncurses
+      kind: link
+      compat: "6"
+    - name: utf8proc
+      kind: link
+      compat: "2"
+    - name: jemalloc
+      kind: link
+      compat: "5"
+  source:
+    url: 'https://github.com/tmux/tmux/releases/download/{{.Version}}/tmux-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --disable-dependency-tracking --enable-utf8proc --enable-jemalloc
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
