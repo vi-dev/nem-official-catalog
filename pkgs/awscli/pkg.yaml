@@ -20,6 +20,14 @@ install:
 bins: [bin]
 
 versions:
+  - version: 2.36.29
+    sourceSha256: "4970bec7094595367f847f0010fa79743c269c7750112d91cca93a9c1f76cada"
+  - version: 2.36.28
+    sourceSha256: "559dd065f5c388553cbc200d20f23be6f922c08e81a1526d1a43c427a5815a45"
+  - version: 2.36.27
+    sourceSha256: "2c99a8fb3eac3392b9dc785b6e8f0fc387b10ef6886dffffb5492238d1580764"
+  - version: 2.36.26
+    sourceSha256: "02f9a588349aa4560c15cfbcd417d5dbc38c9208ecae2c3ad240e26b81f51ff3"
   - version: 2.36.25
     sourceSha256: "d631d8f046e9f85abdcec3b0b9aecd939a1918f830ff12e26ea732543dc75bc8"
   - version: 2.36.24
