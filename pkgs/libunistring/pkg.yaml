@@ -1,0 +1,42 @@
+schema: 2
+
+name: libunistring
+description: GNU Unicode string library
+homepage: https://www.gnu.org/software/libunistring/
+license: LGPL-3.0-or-later OR GPL-2.0-or-later
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+# compat "1" floats within 1.x; published versions share the libunistring.5 soname.
+libs: [lib]
+
+versionDiscovery:
+  http:
+    url: https://ftp.gnu.org/gnu/libunistring/
+    filter: 'libunistring-(\d+\.\d+(?:\.\d+)?)\.tar\.gz'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 1.4.2
+    sourceSha256: "e82664b170064e62331962126b259d452d53b227bb4a93ab20040d846fec01d8"
+
+build:
+  source:
+    url: 'https://ftp.gnu.org/gnu/libunistring/libunistring-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --disable-static --disable-dependency-tracking
+        # The gnulib test suite is slow and its parallel build is flaky.
+        make -C lib -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make -C lib install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la

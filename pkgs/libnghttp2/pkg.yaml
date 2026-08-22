@@ -1,0 +1,41 @@
+schema: 2
+
+name: libnghttp2
+description: HTTP/2 C library from the nghttp2 project
+homepage: https://nghttp2.org
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+libs: [lib]
+
+versionDiscovery:
+  github:
+    repo: nghttp2/nghttp2
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 1.70.0
+    sourceSha256: "aa317e2cf9dca6afa0aed68f8fad6ff303ec6982e25a78c75c0b65e2b9b3ded5"
+
+build:
+  source:
+    url: 'https://github.com/nghttp2/nghttp2/releases/download/v{{.Version}}/nghttp2-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --enable-lib-only --disable-static --disable-dependency-tracking
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la

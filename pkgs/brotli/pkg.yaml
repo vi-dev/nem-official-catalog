@@ -1,0 +1,45 @@
+schema: 2
+
+name: brotli
+description: Brotli lossless compression — CLI and libbrotli
+homepage: https://github.com/google/brotli
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: google/brotli
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+bins: [bin]
+libs: [lib]
+
+versions:
+  - version: 1.2.0
+    sourceSha256: "816c96e8e8f193b40151dad7e8ff37b1221d019dbcb9c35cd3fadbfe6477dfec"
+
+build:
+  deps:
+    - cmake
+  source:
+    url: 'https://github.com/google/brotli/archive/refs/tags/v{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # GNUInstallDirs remaps a bare "/" prefix onto /usr; absolute dirs
+        # keep bin/ and lib/ at the archive root.
+        cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/ \
+          -DCMAKE_INSTALL_BINDIR=/bin -DCMAKE_INSTALL_LIBDIR=/lib \
+          -DCMAKE_INSTALL_INCLUDEDIR=/include -DCMAKE_INSTALL_DATAROOTDIR=/share \
+          -DBUILD_SHARED_LIBS=ON -DBROTLI_DISABLE_TESTS=ON
+        cmake --build build -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        DESTDIR="$NEM_OUTPUT" cmake --install build
