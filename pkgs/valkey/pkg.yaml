@@ -1,0 +1,50 @@
+schema: 2
+
+name: valkey
+description: Valkey in-memory data store — server, CLI, and benchmark tools
+homepage: https://valkey.io
+license: BSD-3-Clause
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: openssl
+    kind: link
+    compat: "4"
+
+bins: [bin]
+
+versionDiscovery:
+  github:
+    repo: valkey-io/valkey
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 9.1.1
+    sourceSha256: "7d7232acd1b8a49b4e05d07a00b3ca8c801ae06ab633ca6a3423bc5f385ab7ee"
+
+build:
+  deps:
+    - pkgconf
+    - name: openssl
+      kind: link
+      compat: "4"
+  source:
+    url: 'https://github.com/valkey-io/valkey/archive/refs/tags/{{.Version}}.tar.gz'
+  output: out
+  steps:
+    # Inherited CFLAGS/LDFLAGS skew the deps settings hash and a nested make
+    # re-cleans the bundled libraries mid-build. GTEST_LIBS placates a
+    # parse-time error in the unit-test Makefile; tests are not built.
+    - run: |
+        set -e
+        openssl_prefix=$(pkg-config --variable=prefix openssl)
+        unset CFLAGS CPPFLAGS LDFLAGS
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)" BUILD_TLS=yes OPENSSL_PREFIX="$openssl_prefix" GTEST_LIBS=unused
+        make install PREFIX="$NEM_OUTPUT" BUILD_TLS=yes OPENSSL_PREFIX="$openssl_prefix" GTEST_LIBS=unused

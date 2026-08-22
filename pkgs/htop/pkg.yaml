@@ -1,0 +1,49 @@
+schema: 2
+
+name: htop
+description: Interactive process viewer
+homepage: https://htop.dev
+license: GPL-2.0-or-later
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: ncurses
+    kind: link
+    compat: "6"
+
+bins: [bin]
+
+versionDiscovery:
+  github:
+    repo: htop-dev/htop
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 3.5.3
+    sourceSha256: "a8b164386494cb85bb255a415a3f5f80afe7a0c4491da5d113b3a0f951087e65"
+
+build:
+  deps:
+    - pkgconf
+    - name: ncurses
+      kind: link
+      compat: "6"
+  source:
+    url: 'https://github.com/htop-dev/htop/releases/download/{{.Version}}/htop-{{.Version}}.tar.xz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --disable-dependency-tracking
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
