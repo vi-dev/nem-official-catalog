@@ -1,0 +1,118 @@
+schema: 2
+
+name: gnupg
+description: GNU Privacy Guard — OpenPGP encryption and signing suite
+homepage: https://gnupg.org
+license: GPL-3.0-or-later
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: libgpg-error
+    kind: link
+    compat: "1"
+  - name: libgcrypt
+    kind: link
+    compat: "1"
+  - name: libksba
+    kind: link
+    compat: "1"
+  - name: libassuan
+    kind: link
+    compat: "3"
+  - name: npth
+    kind: link
+    compat: "1"
+  - name: zlib
+    kind: link
+    compat: "1"
+  - name: sqlite
+    kind: link
+    compat: "3"
+  - name: readline
+    kind: link
+    compat: "8"
+  - name: ncurses
+    kind: link
+    compat: "6"
+
+bins: [bin]
+libs: [lib]
+
+# gpgconf.ctl re-roots the baked component paths to the install dir; active
+# only inside a nem env. GNUPG_BUILD_ROOT is gnupg's only self-location on
+# darwin (no /proc).
+env:
+  - name: GPGCONF_CTL_ENABLE
+    value: "yes"
+  - name: GPGCONF_CTL_ROOTDIR
+    value: "{{.InstallDir}}"
+  - name: GNUPG_BUILD_ROOT
+    value: "{{.InstallDir}}"
+    platforms: [darwin/arm64]
+
+versionDiscovery:
+  http:
+    url: https://gnupg.org/ftp/gcrypt/gnupg/
+    filter: 'gnupg-(\d+\.\d+\.\d+)\.tar\.bz2'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 2.5.21
+    sourceSha256: "e3af2c8caa46a66a9329fa7c6880af260451914d819595beabc2c26597b31352"
+
+build:
+  deps:
+    - pkgconf
+    - name: libgpg-error
+      kind: link
+      compat: "1"
+    - name: libgcrypt
+      kind: link
+      compat: "1"
+    - name: libksba
+      kind: link
+      compat: "1"
+    - name: libassuan
+      kind: link
+      compat: "3"
+    - name: npth
+      kind: link
+      compat: "1"
+    - name: zlib
+      kind: link
+      compat: "1"
+    - name: sqlite
+      kind: link
+      compat: "3"
+    - name: readline
+      kind: link
+      compat: "8"
+    - name: ncurses
+      kind: link
+      compat: "6"
+    # bzip2 ships a static lib only: build dep, no runtime entry.
+    - name: bzip2
+      kind: link
+      compat: "1"
+  source:
+    url: 'https://gnupg.org/ftp/gcrypt/gnupg/gnupg-{{.Version}}.tar.bz2'
+  output: out
+  steps:
+    # The bare pinentry name keeps the agent's lookup on PATH, not a baked path.
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --disable-dependency-tracking \
+          --disable-doc --disable-tests --disable-ldap \
+          --with-pinentry-pgm=pinentry
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        printf '.enable = ${GPGCONF_CTL_ENABLE}\nrootdir = ${GPGCONF_CTL_ROOTDIR}\n' > "$NEM_OUTPUT/bin/gpgconf.ctl"
