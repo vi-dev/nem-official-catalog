@@ -7,6 +7,14 @@ license: blessing
 
 platforms: [darwin/arm64, linux/arm64, linux/amd64]
 
+deps:
+  - name: readline
+    kind: link
+    compat: "8"
+  - name: ncurses
+    kind: link
+    compat: "6"
+
 bins: [bin]
 libs: [lib]
 
@@ -28,12 +36,22 @@ versions:
 
 # Canonical source; the build generates the amalgamation via bundled Jim-TCL.
 build:
+  deps:
+    - pkgconf
+    - name: readline
+      kind: link
+      compat: "8"
+    - name: ncurses
+      kind: link
+      compat: "6"
   source:
     url: 'https://github.com/sqlite/sqlite/archive/refs/tags/version-{{.Version}}.tar.gz'
   output: out
   steps:
     - run: |
         set -e
-        ./configure --prefix=/ --libdir=/lib
+        ./configure --prefix=/ --libdir=/lib \
+          --with-readline-cflags="$(pkg-config --cflags readline)" \
+          --with-readline-ldflags="$(pkg-config --libs readline)"
         make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
         make install DESTDIR="$NEM_OUTPUT"
