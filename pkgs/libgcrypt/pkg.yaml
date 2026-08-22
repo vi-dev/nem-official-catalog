@@ -1,0 +1,51 @@
+schema: 2
+
+name: libgcrypt
+description: GnuPG cryptographic library
+homepage: https://gnupg.org/software/libgcrypt/
+license: LGPL-2.1-or-later
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+# compat "1" floats within 1.x; all versions share the libgcrypt.20 soname.
+deps:
+  - name: libgpg-error
+    kind: link
+    compat: "1"
+
+bins: [bin]
+libs: [lib]
+
+versionDiscovery:
+  http:
+    url: https://gnupg.org/ftp/gcrypt/libgcrypt/
+    filter: 'libgcrypt-(\d+\.\d+\.\d+)\.tar\.bz2'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 1.12.2
+    sourceSha256: "7ce33c2492221a0436f96a8500215e9f3e3dcb5fd26a757cd415e7a843babd5e"
+
+build:
+  deps:
+    - name: libgpg-error
+      kind: link
+      compat: "1"
+  source:
+    url: 'https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-{{.Version}}.tar.bz2'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --disable-static --disable-dependency-tracking --disable-doc
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la

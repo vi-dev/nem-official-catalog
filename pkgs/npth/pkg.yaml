@@ -1,0 +1,41 @@
+schema: 2
+
+name: npth
+description: New GnuPG portable threads library
+homepage: https://gnupg.org/software/npth/
+license: LGPL-2.1-or-later
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+# compat "1" floats within 1.x; all versions share the libnpth.0 soname.
+libs: [lib]
+
+versionDiscovery:
+  http:
+    url: https://gnupg.org/ftp/gcrypt/npth/
+    filter: 'npth-(\d+\.\d+(?:\.\d+)?)\.tar\.bz2'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 1.8
+    sourceSha256: "8bd24b4f23a3065d6e5b26e98aba9ce783ea4fd781069c1b35d149694e90ca3e"
+
+build:
+  source:
+    url: 'https://gnupg.org/ftp/gcrypt/npth/npth-{{.Version}}.tar.bz2'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --disable-static --disable-dependency-tracking
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la
