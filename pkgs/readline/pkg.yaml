@@ -1,0 +1,51 @@
+schema: 2
+
+name: readline
+description: GNU readline line-editing library
+homepage: https://tiswww.case.edu/php/chet/readline/rltop.html
+license: GPL-3.0-or-later
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+# compat "8" floats within 8.x; all versions share the libreadline.8 soname.
+deps:
+  - name: ncurses
+    kind: link
+    compat: "6"
+
+libs: [lib]
+
+versionDiscovery:
+  http:
+    url: https://ftp.gnu.org/gnu/readline/
+    filter: 'readline-(\d+\.\d+(?:\.\d+)?)\.tar\.gz'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 8.3
+    sourceSha256: "fe5383204467828cd495ee8d1d3c037a7eba1389c22bc6a041f627976f9061cc"
+
+build:
+  deps:
+    - name: ncurses
+      kind: link
+      compat: "6"
+  source:
+    url: 'https://ftp.gnu.org/gnu/readline/readline-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    # SHLIB_LIBS makes the shared library link ncursesw itself; without it
+    # libreadline leaves tgetent undefined, which fails to link on darwin.
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --with-curses --disable-static --disable-install-examples
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)" SHLIB_LIBS=-lncursesw
+        make install DESTDIR="$NEM_OUTPUT" SHLIB_LIBS=-lncursesw
