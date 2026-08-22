@@ -1,0 +1,54 @@
+schema: 2
+
+name: libevent
+description: Asynchronous event notification library
+homepage: https://libevent.org
+license: BSD-3-Clause
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+# compat "2" floats within 2.x; 2.1.x versions share the libevent-2.1.7 soname.
+deps:
+  - name: openssl
+    kind: link
+    compat: "4"
+
+libs: [lib]
+
+versionDiscovery:
+  github:
+    repo: libevent/libevent
+    filter: '^release-\d+\.\d+\.\d+-stable$'
+    prefix: "release-"
+    suffix: "-stable"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 2.1.13
+    sourceSha256: "f7e9383b8c0baa81b687e5b5eecc01beefaf1b19b64151d95ed61647fe7a315c"
+
+build:
+  deps:
+    - pkgconf
+    - name: openssl
+      kind: link
+      compat: "4"
+  source:
+    url: 'https://github.com/libevent/libevent/releases/download/release-{{.Version}}-stable/libevent-{{.Version}}-stable.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --disable-static --disable-dependency-tracking \
+          --disable-libevent-regress --disable-samples
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la
