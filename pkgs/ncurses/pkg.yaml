@@ -53,10 +53,12 @@ build:
         make install DESTDIR="$NEM_OUTPUT"
         # Archive extraction rejects the absolute lib/terminfo symlink target.
         ln -sfn ../share/terminfo "$NEM_OUTPUT/lib/terminfo"
-        # Unsuffixed aliases so -lncurses/-lform/... resolve to the widec libs.
+        # Unsuffixed aliases so -lncurses/-lform/... and pkg-config queries
+        # against the plain names resolve to the widec build.
         cd "$NEM_OUTPUT/lib"
         for l in ncurses form panel menu; do
           for f in lib${l}w.*; do
             ln -sf "$f" "$(printf %s "$f" | sed "s/${l}w/${l}/")"
           done
+          [ -f "pkgconfig/${l}w.pc" ] && ln -sf "${l}w.pc" "pkgconfig/${l}.pc"
         done
