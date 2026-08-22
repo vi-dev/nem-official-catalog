@@ -1,0 +1,34 @@
+schema: 2
+
+name: utf8proc
+description: Unicode processing library
+homepage: https://juliastrings.github.io/utf8proc/
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+# compat "2" floats within 2.x; all versions share the libutf8proc.3 soname.
+libs: [lib]
+
+versionDiscovery:
+  github:
+    repo: JuliaStrings/utf8proc
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 2.11.3
+    sourceSha256: "415189fd2c85cd6ee5ff26af500fa387de9ada1e3e316e93f7338551481d557d"
+
+build:
+  source:
+    url: 'https://github.com/JuliaStrings/utf8proc/releases/download/v{{.Version}}/utf8proc-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)" prefix=/ install DESTDIR="$NEM_OUTPUT"
