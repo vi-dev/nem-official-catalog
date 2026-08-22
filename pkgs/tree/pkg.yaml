@@ -1,0 +1,32 @@
+schema: 2
+
+name: tree
+description: Recursive directory listing in a tree-like format
+homepage: https://oldmanprogrammer.net/source.php?tag=tree
+license: GPL-2.0-or-later
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: Old-Man-Programmer/tree
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+bins: [bin]
+
+versions:
+  - version: 2.3.2
+    sourceSha256: "22cf32e84e3eb508d97a9e991c2c3cc006b9dcf4afed201d96311c5c57d08fcf"
+
+build:
+  source:
+    url: 'https://github.com/Old-Man-Programmer/tree/archive/refs/tags/{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)" && mkdir -p "$NEM_OUTPUT/bin" && cp tree "$NEM_OUTPUT/bin/tree"
