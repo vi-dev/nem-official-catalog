@@ -1,0 +1,40 @@
+schema: 2
+
+name: bzip2
+description: bzip2 block-sorting compression CLI and static libbz2
+homepage: https://sourceware.org/bzip2/
+license: bzip2-1.0.6
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+bins: [bin]
+# Static libbz2 only; declared so the build scaffold wires -I/-L for dependents.
+libs: [lib]
+
+versionDiscovery:
+  http:
+    url: https://sourceware.org/pub/bzip2/
+    filter: 'bzip2-(\d+\.\d+\.\d+)\.tar\.gz'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 1.0.8
+    sourceSha256: "ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269"
+
+build:
+  source:
+    url: 'https://sourceware.org/pub/bzip2/bzip2-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)" install PREFIX="$NEM_OUTPUT"
+        # make install writes absolute build-tree symlink targets; relink relative.
+        for l in "$NEM_OUTPUT"/bin/*; do
+          [ -L "$l" ] && ln -sf "$(basename "$(readlink "$l")")" "$l" || true
+        done
