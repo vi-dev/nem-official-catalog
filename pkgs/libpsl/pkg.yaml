@@ -1,0 +1,66 @@
+schema: 2
+
+name: libpsl
+description: Public Suffix List library and psl CLI
+homepage: https://rockdaboot.github.io/libpsl/
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+# libunistring is direct, not only transitive via libidn2, so the loader
+# path is complete.
+deps:
+  - name: libidn2
+    kind: link
+    compat: "2"
+  - name: libunistring
+    kind: link
+    compat: "1"
+
+bins: [bin]
+libs: [lib]
+
+versionDiscovery:
+  github:
+    repo: rockdaboot/libpsl
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 0.23.3
+    sourceSha256: "93941f85a1e7bd593fa94f299233cb5dfc91cd144fd9a78a6ceb75001c5b03be"
+
+build:
+  deps:
+    - pkgconf
+    - python
+    - name: libidn2
+      kind: link
+      compat: "2"
+    - name: libunistring
+      kind: link
+      compat: "1"
+  source:
+    url: 'https://github.com/rockdaboot/libpsl/releases/download/{{.Version}}/libpsl-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    # python renders the bundled Public Suffix List into the built-in dafsa;
+    # --enable-runtime=libidn2 keeps IDNA off the builder's ICU.
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        # macOS's system iconv fails gnulib's "working iconv" run-test;
+        # without the preset configure refuses the libidn2 runtime.
+        ./configure --prefix=/ --libdir=/lib --disable-static --disable-dependency-tracking \
+          --enable-runtime=libidn2 --enable-builtin --disable-rpath \
+          am_cv_func_iconv_works=yes
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la
