@@ -1,0 +1,54 @@
+schema: 2
+
+name: lua
+description: The Lua programming language — interpreter and compiler
+homepage: https://www.lua.org
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+# ncurses is transitive via readline; listed so the loader path is complete.
+deps:
+  - name: readline
+    kind: link
+    compat: "8"
+  - name: ncurses
+    kind: link
+    compat: "6"
+
+bins: [bin]
+# Static liblua only; declared so the build scaffold wires -I/-L for dependents.
+libs: [lib]
+
+versionDiscovery:
+  http:
+    url: https://www.lua.org/ftp/
+    filter: 'lua-(\d+\.\d+\.\d+)\.tar\.gz'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 5.5.1
+    sourceSha256: "1c4b4068d67061f2a2231ad2b5422e77acea1487ea9890f6320af614f4373dce"
+
+build:
+  deps:
+    - name: readline
+      kind: link
+      compat: "8"
+    - name: ncurses
+      kind: link
+      compat: "6"
+  source:
+    url: 'https://www.lua.org/ftp/lua-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        case "$NEM_OS" in darwin) t=macosx ;; *) t=linux-readline ;; esac
+        make $t MYCFLAGS="$CPPFLAGS" MYLDFLAGS="$LDFLAGS"
+        make install INSTALL_TOP="$NEM_OUTPUT"

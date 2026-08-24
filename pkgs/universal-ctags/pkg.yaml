@@ -1,0 +1,75 @@
+schema: 2
+
+name: universal-ctags
+description: Maintained ctags implementation generating source code tag files
+homepage: https://ctags.io
+license: GPL-2.0-or-later
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: jansson
+    kind: link
+    compat: "2"
+  - name: libyaml
+    kind: link
+    compat: "0"
+  - name: libxml2
+    kind: link
+    compat: "2"
+  - name: pcre2
+    kind: link
+    compat: "10"
+
+bins: [bin]
+
+versionDiscovery:
+  github:
+    repo: universal-ctags/ctags
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 6.2.1
+    sourceSha256: "2c63efe9e0e083dc50e6fdd8c5414781cc8873d8c8940cf553c01870ed962f8c"
+
+build:
+  deps:
+    - pkgconf
+    - name: jansson
+      kind: link
+      compat: "2"
+    - name: libyaml
+      kind: link
+      compat: "0"
+    - name: libxml2
+      kind: link
+      compat: "2"
+    - name: pcre2
+      kind: link
+      compat: "10"
+  source:
+    url: 'https://github.com/universal-ctags/ctags/releases/download/v{{.Version}}/universal-ctags-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        # Differing --build/--host skip configure's dep-linked run probes
+        # (the libxml2 CRLF check), which cannot run against staged deps.
+        build_triple="$(sh ./config.guess)"
+        case "$NEM_OS" in
+          darwin) host_triple=$(printf %s "$build_triple" | sed 's/darwin[0-9.]*$/darwin/') ;;
+          *)      host_triple=$(printf %s "$build_triple" | sed 's/^\([^-]*\)-[^-]*-/\1-nem-/') ;;
+        esac
+        ./configure --build="$build_triple" --host="$host_triple" --prefix=/ --disable-dependency-tracking
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"

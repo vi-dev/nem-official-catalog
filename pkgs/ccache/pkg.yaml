@@ -1,0 +1,53 @@
+schema: 2
+
+name: ccache
+description: Compiler cache speeding up recompilation
+homepage: https://ccache.dev
+license: GPL-3.0-or-later
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: zstd
+    kind: link
+    compat: "1"
+
+bins: [bin]
+
+versionDiscovery:
+  github:
+    repo: ccache/ccache
+    filter: '^v\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 4.14
+    sourceSha256: "fca63f36a83fb2f4b3cc4c01b2c7a1cd6e3629e7f7bd1e01a2eb8810f947c5ab"
+
+build:
+  deps:
+    - cmake
+    - pkgconf
+    - name: zstd
+      kind: link
+      compat: "1"
+  source:
+    url: 'https://github.com/ccache/ccache/releases/download/v{{.Version}}/ccache-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    # GNUInstallDirs remaps a bare "/" prefix onto /usr; DEPS=DOWNLOAD
+    # fetches ccache's pinned copies of its unvendored fmt/xxhash.
+    - run: |
+        set -e
+        cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/ \
+          -DCMAKE_INSTALL_BINDIR=/bin -DCMAKE_INSTALL_LIBDIR=/lib \
+          -DCMAKE_INSTALL_DATAROOTDIR=/share \
+          -DREDIS_STORAGE_BACKEND=OFF -DENABLE_TESTING=OFF -DENABLE_DOCUMENTATION=OFF -DDEPS=DOWNLOAD
+        cmake --build build -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        DESTDIR="$NEM_OUTPUT" cmake --install build
