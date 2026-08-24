@@ -1,0 +1,55 @@
+schema: 2
+
+name: pass
+description: Standard Unix password manager
+homepage: https://www.passwordstore.org
+license: GPL-2.0-or-later
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: gnupg
+    kind: run
+  - name: tree
+    kind: run
+  # darwin's system getopt lacks long options.
+  - name: gnu-getopt
+    kind: run
+    platforms: [darwin/arm64]
+
+bins: [bin]
+
+versionDiscovery:
+  http:
+    url: https://git.zx2c4.com/password-store/refs/
+    filter: 'password-store-(\d+\.\d+\.\d+)\.tar\.xz'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 1.7.4
+    sourceSha256: "4c2d0a8b99df8915a87099607a8d912fd05d30651b6f014745c14e4ca8dbbfb7"
+
+build:
+  source:
+    url: 'https://git.zx2c4.com/password-store/snapshot/password-store-{{.Version}}.tar.xz'
+  output: out
+  steps:
+    # make install bakes absolute platform.sh/extension paths into the
+    # script; point them at the script's own package instead.
+    - run: |
+        set -e
+        make install PREFIX=/ DESTDIR="$NEM_OUTPUT"
+        sed -i.bak 's|"//*lib/password-store|"${0%/*}/../lib/password-store|g' "$NEM_OUTPUT/bin/pass"
+        # The darwin platform file probes brew/port paths for GNU getopt
+        # (resolve from PATH — the gnu-getopt run dep), pipes through
+        # "openssl base64" (modern macOS base64 handles -d), and shreds with
+        # the long-removed srm (tmpfiles live on a ramdisk anyway).
+        if [ -f "$NEM_OUTPUT/lib/password-store/platform.sh" ]; then
+          sed -i.bak -e 's|^GETOPT=.*|GETOPT="getopt"|' -e 's|^BASE64=.*|BASE64="base64"|' -e 's|^SHRED=.*|SHRED="rm -f"|' "$NEM_OUTPUT/lib/password-store/platform.sh"
+        fi
+        rm -f "$NEM_OUTPUT/bin/pass.bak" "$NEM_OUTPUT/lib/password-store/platform.sh.bak"
