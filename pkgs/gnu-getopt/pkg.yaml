@@ -1,0 +1,43 @@
+schema: 2
+
+name: gnu-getopt
+description: GNU getopt from util-linux, for platforms whose system getopt lacks long options
+homepage: https://github.com/util-linux/util-linux
+license: GPL-2.0-or-later
+
+platforms: [darwin/arm64]
+
+bins: [bin]
+
+# The url's major directory must track version bumps.
+versionDiscovery:
+  http:
+    url: https://www.kernel.org/pub/linux/utils/util-linux/v2.42/
+    filter: 'util-linux-(\d+\.\d+(?:\.\d+)?)\.tar\.gz'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 2.42.2
+    sourceSha256: "e73fe91d9b536c6e3548132c1e327843b0bac3c94be9f158ce112eb989d25fc7"
+
+build:
+  source:
+    url: 'https://www.kernel.org/pub/linux/utils/util-linux/v2.42/util-linux-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        # --disable-all-programs starves the getopt target of sources; run a
+        # default configure and build only the getopt target.
+        ./configure --prefix=/ --disable-dependency-tracking --disable-nls --disable-liblastlog2
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)" getopt
+        mkdir -p "$NEM_OUTPUT/bin"
+        cp getopt "$NEM_OUTPUT/bin/getopt"
