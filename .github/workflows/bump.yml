@@ -20,30 +20,34 @@ jobs:
   bump:
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    env:
-      GH_TOKEN: ${{ secrets.BUMP_PAT }}
     steps:
-      - name: Require BUMP_PAT
+      - name: Require app credentials
         shell: bash
         env:
-          HAVE_PAT: ${{ secrets.BUMP_PAT != '' }}
+          HAVE_APP: ${{ secrets.BUMP_APP_CLIENT_ID != '' && secrets.BUMP_APP_PRIVATE_KEY != '' }}
         run: |
-          if [ "$HAVE_PAT" != "true" ]; then
-            echo "::error::BUMP_PAT secret is missing; bump PRs need a PAT so pull_request CI runs on them"
+          if [ "$HAVE_APP" != "true" ]; then
+            echo "::error::BUMP_APP_CLIENT_ID and BUMP_APP_PRIVATE_KEY are missing; GitHub signs API commits only for app tokens, and a non-Actions token is what makes pull_request CI run on bump PRs"
             exit 1
           fi
+      - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: app-token
+        with:
+          client-id: ${{ secrets.BUMP_APP_CLIENT_ID }}
+          private-key: ${{ secrets.BUMP_APP_PRIVATE_KEY }}
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          token: ${{ secrets.BUMP_PAT }}
+          token: ${{ steps.app-token.outputs.token }}
       - uses: ./.github/actions/setup-nem
       - name: Open bump PRs
         shell: bash
         env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           PACKAGES: ${{ inputs.packages }}
         run: |
           warn() { echo "WARN: $*" >> "$GITHUB_STEP_SUMMARY"; }
 
-          # main rejects unsigned commits; the API signs what it creates.
+          # main rejects unsigned commits; GitHub signs API commits from a bot token.
           commit_signed() {
             local name=$1 path=$2 head=$3 base blob
             base=$(git rev-parse origin/main)
