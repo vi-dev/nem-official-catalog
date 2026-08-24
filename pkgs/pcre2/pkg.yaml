@@ -1,0 +1,43 @@
+schema: 2
+
+name: pcre2
+description: Perl-compatible regular expression library with JIT
+homepage: https://github.com/PCRE2Project/pcre2
+license: BSD-3-Clause
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+bins: [bin]
+libs: [lib]
+
+versionDiscovery:
+  github:
+    repo: PCRE2Project/pcre2
+    filter: '^pcre2-\d+\.\d+$'
+    prefix: "pcre2-"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 10.47
+    sourceSha256: "c08ae2388ef333e8403e670ad70c0a11f1eed021fd88308d7e02f596fcd9dc16"
+
+build:
+  source:
+    url: 'https://github.com/PCRE2Project/pcre2/releases/download/pcre2-{{.Version}}/pcre2-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --disable-static --disable-dependency-tracking \
+          --enable-jit --enable-pcre2-16 --enable-pcre2-32
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la
