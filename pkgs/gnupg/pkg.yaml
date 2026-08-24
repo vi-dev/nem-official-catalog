@@ -35,6 +35,9 @@ deps:
   - name: ncurses
     kind: link
     compat: "6"
+  # The agent execs the bare name "pinentry" from PATH.
+  - name: pinentry
+    kind: run
 
 bins: [bin]
 libs: [lib]
