@@ -1,0 +1,41 @@
+schema: 2
+
+name: jansson
+description: C library for JSON encoding and decoding
+homepage: https://github.com/akheron/jansson
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+libs: [lib]
+
+versionDiscovery:
+  github:
+    repo: akheron/jansson
+    filter: '^v\d+\.\d+(\.\d+)?$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 2.15.1
+    sourceSha256: "f9aa4b3ec8496fee69db94f06f3d76fd4a26b012ee9bf1e917078c2cd2841881"
+
+build:
+  source:
+    url: 'https://github.com/akheron/jansson/releases/download/v{{.Version}}/jansson-{{.Version}}.tar.bz2'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --disable-static --disable-dependency-tracking
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la

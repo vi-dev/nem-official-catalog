@@ -1,0 +1,59 @@
+schema: 2
+
+name: libxml2
+description: XML parsing library and xmllint tool
+homepage: https://gitlab.gnome.org/GNOME/libxml2
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: zlib
+    kind: link
+    compat: "1"
+  - name: xz
+    kind: link
+    compat: "5"
+
+bins: [bin]
+libs: [lib]
+
+# The url and discovery dir track the major.minor series; bumps update both.
+versionDiscovery:
+  http:
+    url: https://download.gnome.org/sources/libxml2/2.15/
+    filter: 'libxml2-(\d+\.\d+\.\d+)\.tar\.xz'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 2.15.3
+    sourceSha256: "78262a6e7ac170d6528ebfe2efccdf220191a5af6a6cd61ea4a9a9a5042c7a07"
+
+build:
+  deps:
+    - pkgconf
+    - name: zlib
+      kind: link
+      compat: "1"
+    - name: xz
+      kind: link
+      compat: "5"
+  source:
+    url: 'https://download.gnome.org/sources/libxml2/2.15/libxml2-{{.Version}}.tar.xz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --disable-static --disable-dependency-tracking \
+          --without-python --without-icu --with-zlib --with-lzma
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la
