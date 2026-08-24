@@ -1,0 +1,33 @@
+schema: 2
+
+name: rust
+description: Rust toolchain — rustc, cargo, and the standard library
+homepage: https://www.rust-lang.org
+license: Apache-2.0 OR MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+versionDiscovery:
+  github:
+    repo: rust-lang/rust
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://static.rust-lang.org/dist/rust-{{.Version}}-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}.tar.gz"
+
+# The dist tarball holds per-component trees; rustc's rustlib has only bin/
+# and rust-std's only lib/, so one move assembles the sysroot.
+install:
+  - extract: {strip: 1}
+  - move:
+      src: "rust-std-{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}/lib/rustlib/{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}/lib"
+      dst: "rustc/lib/rustlib/{{replace (replace .Arch \"arm64\" \"aarch64\") \"amd64\" \"x86_64\"}}-{{replace (replace .OS \"darwin\" \"apple-darwin\") \"linux\" \"unknown-linux-gnu\"}}/lib"
+
+bins: ["rustc/bin", "cargo/bin"]
+
+versions:
+  - version: 1.98.0
+    sha256:
+      darwin/arm64: "026ec75bec81fb8c10b11df98f1336ee39f4bc11e04d6745dffe9fca81e5c0b5"
+      linux/arm64: "5fbb4282403046d52a4672765c6761a809bf9f33e699b17e6eb7a93ab7770cc3"
+      linux/amd64: "aa30409afa67bd1ada244cefd82c7980e6a65bc113bb978e934b2413c75e3900"
