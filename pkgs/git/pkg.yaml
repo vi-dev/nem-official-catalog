@@ -1,0 +1,73 @@
+schema: 2
+
+name: git
+description: Distributed version control system
+homepage: https://git-scm.com
+license: GPL-2.0-only
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: zlib
+    kind: link
+    compat: "1"
+  - name: curl
+    kind: link
+    compat: "8"
+  - name: expat
+    kind: link
+    compat: "2"
+  - name: openssl
+    kind: link
+    compat: "4"
+
+bins: [bin]
+
+versionDiscovery:
+  http:
+    url: https://www.kernel.org/pub/software/scm/git/
+    filter: 'git-(\d+\.\d+\.\d+)\.tar\.gz'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 2.55.0
+    sourceSha256: "0842dc384a23ac33ba3e570c4f3a8ded85963ee4713b1cd21153c3db41813d1e"
+
+build:
+  deps:
+    - pkgconf
+    - name: zlib
+      kind: link
+      compat: "1"
+    - name: curl
+      kind: link
+      compat: "8"
+    - name: expat
+      kind: link
+      compat: "2"
+    - name: openssl
+      kind: link
+      compat: "4"
+  source:
+    url: 'https://www.kernel.org/pub/software/scm/git/git-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    # RUNTIME_PREFIX makes git compute its prefix from the executable's
+    # location, so gitexecdir and templates resolve after relocation.
+    # NO_RUST: the builders carry no cargo toolchain. CC_LD_DYNPATH=-L stops
+    # CURLDIR/EXPATDIR from baking absolute rpaths.
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        opts="prefix=/ RUNTIME_PREFIX=YesPlease gitexecdir=libexec/git-core template_dir=share/git-core/templates sysconfdir=etc CURLDIR=$(pkg-config --variable=prefix libcurl) EXPATDIR=$(pkg-config --variable=prefix expat) NO_GETTEXT=1 NO_TCLTK=1 NO_INSTALL_HARDLINKS=1 NO_RUST=1 CC_LD_DYNPATH=-L PERL_PATH=/usr/bin/perl"
+        # git's Makefile assigns CFLAGS/LDFLAGS, discarding the scaffold env;
+        # re-inject them as command-line vars.
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)" $opts CFLAGS="-O2 $CFLAGS" LDFLAGS="$LDFLAGS" all
+        make $opts CFLAGS="-O2 $CFLAGS" LDFLAGS="$LDFLAGS" install DESTDIR="$NEM_OUTPUT"
