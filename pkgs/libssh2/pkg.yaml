@@ -1,0 +1,58 @@
+schema: 2
+
+name: libssh2
+description: Client-side SSH2 protocol library
+homepage: https://libssh2.org
+license: BSD-3-Clause
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: openssl
+    kind: link
+    compat: "4"
+  - name: zlib
+    kind: link
+    compat: "1"
+
+libs: [lib]
+
+versionDiscovery:
+  github:
+    repo: libssh2/libssh2
+    filter: '^libssh2-\d+\.\d+\.\d+$'
+    prefix: "libssh2-"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 1.11.1
+    sourceSha256: "d9ec76cbe34db98eec3539fe2c899d26b0c837cb3eb466a56b0f109cabf658f7"
+
+build:
+  deps:
+    - pkgconf
+    - name: openssl
+      kind: link
+      compat: "4"
+    - name: zlib
+      kind: link
+      compat: "1"
+  source:
+    url: 'https://github.com/libssh2/libssh2/releases/download/libssh2-{{.Version}}/libssh2-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --disable-static --disable-dependency-tracking \
+          --with-crypto=openssl --with-libz --disable-examples-build --disable-rpath
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la

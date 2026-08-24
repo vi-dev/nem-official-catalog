@@ -1,0 +1,41 @@
+schema: 2
+
+name: libnghttp3
+description: HTTP/3 C library from the nghttp3 project
+homepage: https://nghttp2.org/nghttp3/
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+libs: [lib]
+
+versionDiscovery:
+  github:
+    repo: ngtcp2/nghttp3
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 1.18.0
+    sourceSha256: "2812e9c06583fa24c8dc46bdb5291310a69196352ceaca8fbe98106ff36ae7d8"
+
+build:
+  source:
+    url: 'https://github.com/ngtcp2/nghttp3/releases/download/v{{.Version}}/nghttp3-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --enable-lib-only --disable-static --disable-dependency-tracking
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la

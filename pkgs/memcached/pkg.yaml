@@ -1,0 +1,54 @@
+schema: 2
+
+name: memcached
+description: High-performance in-memory key-value cache daemon
+homepage: https://memcached.org
+license: BSD-3-Clause
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: libevent
+    kind: link
+    compat: "2"
+
+bins: [bin]
+
+versionDiscovery:
+  http:
+    url: https://memcached.org/downloads
+    filter: 'memcached-(\d+\.\d+\.\d+)\.tar\.gz'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 1.6.45
+    sourceSha256: "d362c64e6d8d5287153501eabf7c85b4a761432fbf53f5d7b085d0bb1653c1dd"
+
+build:
+  deps:
+    - pkgconf
+    - name: libevent
+      kind: link
+      compat: "2"
+  source:
+    url: 'https://memcached.org/files/memcached-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        # configure's libevent probe is a run-test needing --with-libevent's
+        # absolute rpath; strip that flag before the real build so only the
+        # scaffold's relative rpath reaches the binary.
+        ./configure --prefix=/ --disable-dependency-tracking \
+          --with-libevent="$(pkg-config --variable=prefix libevent_core)"
+        sed -i.bak 's|-Wl,-rpath,[^ ]*||g' Makefile
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"

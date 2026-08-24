@@ -1,0 +1,51 @@
+schema: 2
+
+name: libngtcp2
+description: QUIC protocol C library from the ngtcp2 project
+homepage: https://nghttp2.org/ngtcp2/
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: openssl
+    kind: link
+    compat: "4"
+
+libs: [lib]
+
+versionDiscovery:
+  github:
+    repo: ngtcp2/ngtcp2
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 1.25.0
+    sourceSha256: "1c0843076528a87b65e9a9d455100941f4cb65d44f96c5da6ae56df146043955"
+
+build:
+  deps:
+    - pkgconf
+    - name: openssl
+      kind: link
+      compat: "4"
+  source:
+    url: 'https://github.com/ngtcp2/ngtcp2/releases/download/v{{.Version}}/ngtcp2-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --enable-lib-only --disable-static --disable-dependency-tracking
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la
