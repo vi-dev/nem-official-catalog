@@ -43,8 +43,24 @@ jobs:
         run: |
           warn() { echo "WARN: $*" >> "$GITHUB_STEP_SUMMARY"; }
 
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # main rejects unsigned commits; the API signs what it creates.
+          commit_signed() {
+            local name=$1 path=$2 head=$3 base blob
+            base=$(git rev-parse origin/main)
+            gh api --method PATCH "repos/$GITHUB_REPOSITORY/git/refs/heads/bump/$name" \
+              -f sha="$base" -F force=true >/dev/null 2>&1 \
+              || gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" \
+                   -f ref="refs/heads/bump/$name" -f sha="$base" >/dev/null \
+              || return 1
+            blob=$(gh api "repos/$GITHUB_REPOSITORY/contents/$path?ref=bump/$name" --jq .sha) \
+              || return 1
+            gh api --method PUT "repos/$GITHUB_REPOSITORY/contents/$path" \
+              -f branch="bump/$name" \
+              -f message="feat: bump $name to $head" \
+              -f sha="$blob" \
+              -f content="$(base64 -w0 "$path")" >/dev/null
+          }
+
           git fetch origin 'refs/heads/bump/*:refs/remotes/origin/bump/*'
 
           nem catalog outdated . --json > /tmp/outdated.json
@@ -72,17 +88,26 @@ jobs:
             fi
             head=$(yq -r '.versions[0].version // .versions[0]' "$path")
             current=$(jq -r --arg n "$name" '.[] | select(.name == $n) | .current' /tmp/outdated.json)
-            git add "$path"
-            if ! git commit --quiet -m "feat: bump $name to $head"; then
-              warn "commit failed for $name"
+            if git diff --quiet HEAD -- "$path"; then
+              warn "bump produced no change for $name"
               continue
             fi
 
+            # An unsigned tip needs rewriting even when the content matches.
+            fresh=false
             if git rev-parse --verify --quiet "origin/bump/$name" >/dev/null \
-              && git diff --quiet "origin/bump/$name" HEAD -- "$path"; then
-              echo "bump/$name already up to date; not re-pushing"
-            elif ! git push --force origin "bump/$name"; then
-              warn "push failed for $name; next scheduled run retries"
+              && git diff --quiet "origin/bump/$name" -- "$path"; then
+              verified=$(gh api "repos/$GITHUB_REPOSITORY/commits/bump/$name" \
+                --jq '.commit.verification.verified' 2>/dev/null) || verified=false
+              if [ "$verified" = "true" ]; then
+                fresh=true
+              fi
+            fi
+
+            if [ "$fresh" = true ]; then
+              echo "bump/$name already up to date; not re-committing"
+            elif ! commit_signed "$name" "$path" "$head"; then
+              warn "commit failed for $name; next scheduled run retries"
               continue
             fi
 
