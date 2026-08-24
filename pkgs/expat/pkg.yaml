@@ -1,0 +1,43 @@
+schema: 2
+
+name: expat
+description: Stream-oriented XML parser library and xmlwf tool
+homepage: https://libexpat.github.io
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+bins: [bin]
+libs: [lib]
+
+# Tags use R_x_y_z; the release feed titles carry the bare version.
+versionDiscovery:
+  http:
+    url: https://github.com/libexpat/libexpat/releases.atom
+    filter: '<title>(\d+\.\d+\.\d+)</title>'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 2.8.3
+    sourceSha256: "22920a86c83f32300b11463635b71f11137a917975af297725e55525027d4e50"
+
+build:
+  source:
+    url: 'https://github.com/libexpat/libexpat/releases/download/R_{{replace .Version "." "_"}}/expat-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --disable-static --disable-dependency-tracking \
+          --without-docbook --without-examples --without-tests
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la
