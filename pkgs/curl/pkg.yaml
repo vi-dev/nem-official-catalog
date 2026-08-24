@@ -35,6 +35,15 @@ deps:
   - name: libunistring
     kind: link
     compat: "1"
+  - name: libssh2
+    kind: link
+    compat: "1"
+  - name: libnghttp3
+    kind: link
+    compat: "1"
+  - name: libngtcp2
+    kind: link
+    compat: "1"
 
 bins: [bin]
 libs: [lib]
@@ -81,6 +90,15 @@ build:
     - name: libunistring
       kind: link
       compat: "1"
+    - name: libssh2
+      kind: link
+      compat: "1"
+    - name: libnghttp3
+      kind: link
+      compat: "1"
+    - name: libngtcp2
+      kind: link
+      compat: "1"
   source:
     url: 'https://curl.se/download/curl-{{.Version}}.tar.gz'
   output: out
@@ -97,6 +115,7 @@ build:
         ./configure --build="$build_triple" --host="$host_triple" --prefix=/ --libdir=/lib --disable-static --disable-dependency-tracking \
           --with-openssl --with-ca-fallback --with-zlib \
           --with-nghttp2 --with-brotli --with-zstd --with-libidn2 --with-libpsl \
+          --with-libssh2 --with-nghttp3 --with-ngtcp2 \
           --disable-ldap --disable-ldaps $sectrust
         make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
         make install DESTDIR="$NEM_OUTPUT"
