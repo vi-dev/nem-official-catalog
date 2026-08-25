@@ -1,0 +1,54 @@
+schema: 2
+
+name: libseccomp
+description: Interface to the Linux kernel syscall filtering mechanism
+homepage: https://github.com/seccomp/libseccomp
+license: LGPL-2.1-only
+
+platforms: [linux/arm64, linux/amd64]
+
+# compat "2" floats within 2.x; all versions share the libseccomp.so.2 soname.
+bins: [bin]
+libs: [lib]
+
+versionDiscovery:
+  github:
+    repo: seccomp/libseccomp
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 2.6.1
+    sourceSha256: "501f66c667225d53791b97e1d7cf85ab764c297d04881f60f38f451c4b0ee1be"
+
+build:
+  source:
+    url: 'https://github.com/seccomp/libseccomp/releases/download/v{{.Version}}/libseccomp-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --disable-static --disable-dependency-tracking
+        make -j"$(nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la
+
+test:
+  - run: |
+      set -e
+      [ -f "$NEM_PREFIX/include/seccomp.h" ]
+      ls "$NEM_PREFIX"/lib/libseccomp.so.2* >/dev/null
+  # The resolver links the library and queries its syscall tables.
+  - run: |
+      set -e
+      [ "$(scmp_sys_resolver read)" -ge 0 ]
+      [ "$(scmp_sys_resolver -t 9999999)" = "UNKNOWN" ] || true
