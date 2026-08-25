@@ -50,9 +50,15 @@ test:
   - run: |
       set -e
       grep -q "Version: $NEM_VERSION" "$NEM_PREFIX/lib/pkgconfig/json-c.pc"
-  # Linking alone would pass on a library the loader cannot map, so run it.
+      # json-c installs the library 0644 by default, which the loader cannot
+      # map; assert the bit here since runtime images have no compiler.
+      lib=$(ls "$NEM_PREFIX"/lib/libjson-c.so.[0-9]* "$NEM_PREFIX"/lib/libjson-c.[0-9]*.dylib 2>/dev/null | head -1)
+      [ -n "$lib" ]
+      [ -x "$lib" ]
+  # Loading it outright needs a toolchain, which only build hosts carry.
   - run: |
       set -e
+      command -v cc >/dev/null || exit 0
       printf '%s\n' '#include <json-c/json.h>' '#include <stdio.h>' \
         'int main(void) {' \
         '  struct json_object *o = json_tokener_parse("{\"n\":42}");' \
