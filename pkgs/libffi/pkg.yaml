@@ -1,0 +1,48 @@
+schema: 2
+
+name: libffi
+description: Foreign function interface library for calling code across languages
+homepage: https://sourceware.org/libffi/
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+# compat "3" floats within 3.x; releases share the libffi.8 soname.
+libs: [lib]
+
+versionDiscovery:
+  github:
+    repo: libffi/libffi
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 3.8.0
+    sourceSha256: "7da3e2d9a171eb0a038f592ecad3ff2bb2550f3496d87b3b29ad0cf4430c0db4"
+
+build:
+  source:
+    url: 'https://github.com/libffi/libffi/releases/download/v{{.Version}}/libffi-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; one shared stamp stops make regenerating
+        # pregenerated files.
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --disable-static --disable-dependency-tracking --disable-docs
+        make -j"$(nproc 2>/dev/null || sysctl -n hw.ncpu || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la
+
+test:
+  - run: |
+      set -e
+      [ -f "$NEM_PREFIX/include/ffi.h" ]
+      grep -q "Version: $NEM_VERSION" "$NEM_PREFIX/lib/pkgconfig/libffi.pc"
