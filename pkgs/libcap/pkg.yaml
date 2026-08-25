@@ -1,0 +1,47 @@
+schema: 2
+
+name: libcap
+description: POSIX capabilities library and the capsh, getcap, setcap tools
+homepage: https://sites.google.com/site/fullycapable/
+license: BSD-3-Clause OR GPL-2.0-only
+
+platforms: [linux/arm64, linux/amd64]
+
+# compat "2" floats within 2.x; all versions share the libcap.so.2 soname.
+bins: [sbin]
+libs: [lib]
+
+versionDiscovery:
+  http:
+    url: https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/
+    filter: 'libcap-(\d+\.\d+)\.tar\.gz'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 2.78
+    sourceSha256: "2a2c705e382c413643a458b837575c0eb0989477ab6fb99c87adbe9a259612ad"
+
+build:
+  source:
+    url: 'https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2/libcap-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    # The tree has no configure; prefix and lib dir come in as make vars.
+    # PAM support needs libpam headers the builder lacks.
+    - run: |
+        set -e
+        make -j"$(nproc || echo 4)" prefix=/ lib=lib PAM_CAP=no
+        make install DESTDIR="$NEM_OUTPUT" prefix=/ lib=lib PAM_CAP=no RAISE_SETFCAP=no
+
+test:
+  - run: |
+      set -e
+      [ -f "$NEM_PREFIX/include/sys/capability.h" ]
+      ls "$NEM_PREFIX"/lib/libcap.so.2* >/dev/null
+  # capsh --print reads the current process capabilities through the library.
+  - run: capsh --print | grep -q '^Current:'

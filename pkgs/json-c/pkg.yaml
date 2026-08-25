@@ -1,0 +1,64 @@
+schema: 2
+
+name: json-c
+description: JSON parsing and serialization library for C
+homepage: https://github.com/json-c/json-c
+license: MIT
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+# compat "0" floats within 0.x; releases share the libjson-c.5 soname.
+libs: [lib]
+
+# Release titles carry either "json-c 0.19" or "json-c-0.18-20240915".
+versionDiscovery:
+  http:
+    url: https://github.com/json-c/json-c/releases.atom
+    filter: 'json-c[ -](\d+\.\d+)'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 0.19
+    sourceSha256: "37ad0249902e301bd9052bf712e511fcc6acff4ecaad4b5900aad9ce564e26de"
+
+build:
+  deps:
+    - cmake
+  source:
+    url: 'https://s3.amazonaws.com/json-c_releases/releases/json-c-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    # GNUInstallDirs remaps a bare "/" prefix onto /usr; absolute dirs keep
+    # lib/ and include/ at the archive root.
+    - run: |
+        set -e
+        cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/ \
+          -DCMAKE_INSTALL_LIBDIR=/lib -DCMAKE_INSTALL_INCLUDEDIR=/include \
+          -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=OFF -DBUILD_TESTING=OFF -DDISABLE_WERROR=ON
+        cmake --build build -j"$(nproc 2>/dev/null || sysctl -n hw.ncpu || echo 4)"
+        DESTDIR="$NEM_OUTPUT" cmake --install build
+        # json-c installs its shared library 0644; the loader needs it
+        # executable to map the file.
+        find "$NEM_OUTPUT/lib" -type f -name 'libjson-c.*' -exec chmod 0755 {} +
+
+test:
+  - run: |
+      set -e
+      grep -q "Version: $NEM_VERSION" "$NEM_PREFIX/lib/pkgconfig/json-c.pc"
+  # Linking alone would pass on a library the loader cannot map, so run it.
+  - run: |
+      set -e
+      printf '%s\n' '#include <json-c/json.h>' '#include <stdio.h>' \
+        'int main(void) {' \
+        '  struct json_object *o = json_tokener_parse("{\"n\":42}");' \
+        '  if (!o) return 1;' \
+        '  printf("%d\n", json_object_get_int(json_object_object_get(o, "n")));' \
+        '  return 0;' \
+        '}' > t.c
+      cc -o t t.c -I"$NEM_PREFIX/include" -L"$NEM_PREFIX/lib" -Wl,-rpath,"$NEM_PREFIX/lib" -ljson-c
+      [ "$(./t)" = 42 ]
