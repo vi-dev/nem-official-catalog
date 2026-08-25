@@ -77,3 +77,21 @@ versions:
       darwin/amd64: "796fd05e8741f6776c505eb201922864f2e32991679b639d9fcb524dbe300c0d"
       linux/arm64: "2ca2d70dc9c84feef959eb31f2a5aac33eefd8c97fe48f1548886d737bffabd4"
       linux/amd64: "502fc16d5910562461e6a6631fb6377de2322aad7304bf2bcd23500ba9dab4a7"
+
+test:
+  - run: go version | grep -q "$NEM_VERSION"
+  # GOROOT must name the tree under test; also check that go itself
+  # resolves there, not just that the export renders.
+  - run: |
+      set -e
+      test "$(go env GOROOT)" = "$NEM_PREFIX"
+      case "$(command -v go)" in
+        "$NEM_PREFIX"/*) ;;
+        *) exit 1 ;;
+      esac
+  - run: |
+      set -e
+      export GOCACHE="$PWD/.gocache"
+      printf 'package main\nimport "fmt"\nfunc main(){fmt.Print("ok")}\n' > main.go
+      go mod init probe >/dev/null
+      [ "$(go run .)" = ok ]

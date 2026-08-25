@@ -120,3 +120,15 @@ build:
         make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
         make install DESTDIR="$NEM_OUTPUT"
         rm -f "$NEM_OUTPUT/lib/"*.la
+
+test:
+  # A version banner alone doesn't prove TLS/HTTP2 are linked in; assert
+  # those features explicitly.
+  - run: |
+      set -e
+      out=$(curl -V)
+      printf '%s\n' "$out" | grep -q "$NEM_VERSION"
+      features=$(printf '%s\n' "$out" | grep '^Features:')
+      printf '%s\n' "$features" | grep -qw SSL
+      printf '%s\n' "$features" | grep -qw HTTP2
+      printf '%s\n' "$out" | grep '^Protocols:' | grep -qw https

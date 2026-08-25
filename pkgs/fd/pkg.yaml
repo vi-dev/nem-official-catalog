@@ -28,3 +28,10 @@ versions:
       darwin/arm64: "623dc0afc81b92e4d4606b380d7bc91916ba7b97814263e554d50923a39e480a"
       linux/arm64: "f32d3657473fba74e2600babc8db0b93420d51169223b7e8143b2ed55d8fd9e8"
       linux/amd64: "e3257d48e29a6be965187dbd24ce9af564e0fe67b3e73c9bdcd180f4ec11bdde"
+
+test:
+  - run: fd --version | grep -q "$NEM_VERSION"
+  - run: |
+      set -e
+      mkdir -p tree/sub && : > tree/sub/needle.txt && : > tree/other.md
+      [ "$(fd --base-directory tree needle)" = "sub/needle.txt" ]

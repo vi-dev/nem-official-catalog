@@ -55,3 +55,10 @@ build:
           --with-readline-ldflags="$(pkg-config --libs readline)"
         make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
         make install DESTDIR="$NEM_OUTPUT"
+
+test:
+  - run: sqlite3 --version | grep -q "$NEM_VERSION"
+  - run: |
+      set -e
+      [ "$(sqlite3 :memory: 'select 1 + 1')" = 2 ]
+      [ "$(sqlite3 probe.db 'create table t(a); insert into t values(7); select a from t')" = 7 ]

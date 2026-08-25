@@ -34,3 +34,13 @@ versions:
       darwin/amd64: "d4901f105731bdedb19cb70b5608f7c8db09349dd0b57017cef8c48a31819462"
       linux/arm64: "5c78a4de6aa89e86045e4c05fec5773f3c419a5c209cd7cb381fec0f5e8fa936"
       linux/amd64: "2635f17e469b8c829055151dcbf77effe1fbefe182cb7b308aee5d0e5d923aae"
+
+test:
+  - run: age --version | grep -q "$NEM_VERSION"
+  # bins is the install root, so the keygen helper beside age must resolve too.
+  - run: |
+      set -e
+      age-keygen -o key.txt 2>/dev/null
+      pub=$(grep '^# public key: ' key.txt | cut -d' ' -f4)
+      printf 'secret' | age -r "$pub" -o msg.age
+      [ "$(age -d -i key.txt msg.age)" = secret ]

@@ -38,3 +38,20 @@ versions:
       darwin/amd64: "6b85c260eea574a995eacd0b3ee23c8042aa93b23a08e6478edafca0a0333d7f"
       linux/arm64: "eba38e871b02d407897bfe017ea35352dfc1420ef6d2112425b0c67325ca509d"
       linux/amd64: "e4446ff06a276155697597cc0f1b15da004ff083f4964a35271ecee567177370"
+
+test:
+  # The build number after "_" is not part of the runtime's version string.
+  - run: java -version 2>&1 | grep -q "${NEM_VERSION%%_*}"
+  - run: |
+      set -e
+      [ -x "$JAVA_HOME/bin/java" ]
+      case "$JAVA_HOME" in "$NEM_PREFIX"*) ;; *) exit 1 ;; esac
+  - run: test -d "$NEM_PREFIX/Contents/Home/bin"
+    platforms: [darwin/arm64]
+  - run: |
+      set -e
+      cat > Probe.java <<'JEOF'
+      public class Probe { public static void main(String[] a) { System.out.print("ok"); } }
+      JEOF
+      javac Probe.java
+      [ "$(java Probe)" = ok ]

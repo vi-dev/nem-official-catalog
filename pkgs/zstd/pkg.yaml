@@ -32,3 +32,11 @@ build:
   output: out
   steps:
     - run: make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)" install PREFIX=/ DESTDIR="$NEM_OUTPUT"
+
+test:
+  - run: zstd --version | grep -q "$NEM_VERSION"
+  - run: |
+      set -e
+      printf 'nem compresses' > plain.txt
+      zstd -q plain.txt -o packed.zst
+      [ "$(zstd -dc packed.zst)" = "nem compresses" ]

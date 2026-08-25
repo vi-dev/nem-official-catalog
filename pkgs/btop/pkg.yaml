@@ -27,3 +27,6 @@ versions:
     sha256:
       linux/arm64: "6270de0ef4c84cf0eea61cb148b3ad9ae91a11e9c3309867ffc6b3751024c252"
       linux/amd64: "5099054dd6a101bd12eb6ff3702a9a6a3f57aaa27923a0da478ae5b517faf335"
+
+test:
+  - run: btop --version | grep -q "$NEM_VERSION"

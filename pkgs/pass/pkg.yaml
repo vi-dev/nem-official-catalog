@@ -53,3 +53,11 @@ build:
           sed -i.bak -e 's|^GETOPT=.*|GETOPT="getopt"|' -e 's|^BASE64=.*|BASE64="base64"|' -e 's|^SHRED=.*|SHRED="rm -f"|' "$NEM_OUTPUT/lib/password-store/platform.sh"
         fi
         rm -f "$NEM_OUTPUT/bin/pass.bak" "$NEM_OUTPUT/lib/password-store/platform.sh.bak"
+
+test:
+  - run: pass version | grep -q "$NEM_VERSION"
+  # Its run deps must reach the step's PATH, or pass cannot work at all.
+  - run: |
+      set -e
+      command -v gpg >/dev/null
+      command -v tree >/dev/null

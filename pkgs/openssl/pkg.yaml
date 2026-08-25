@@ -72,3 +72,9 @@ build:
   output: out
   steps:
     - run: ./Configure --prefix=/ --libdir=lib --openssldir=/etc/ssl shared no-docs && make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)" && make install_sw DESTDIR="$NEM_OUTPUT"
+
+test:
+  - run: openssl version | grep -q "$NEM_VERSION"
+  # Exercises libcrypto's digest implementation, not just that the binary
+  # launches.
+  - run: printf 'nem' | openssl dgst -sha256 | grep -Eq '[0-9a-f]{64}'

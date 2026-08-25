@@ -39,3 +39,45 @@ build:
         make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
         make install DESTDIR="$NEM_OUTPUT"
         rm -f "$NEM_OUTPUT/lib/"*.la
+
+# No binary to launch: the first step asserts the installed tree without a
+# toolchain, the second links against it where a compiler exists.
+test:
+  - run: |
+      set -e
+      [ -f "$NEM_PREFIX/include/jansson.h" ]
+      ls "$NEM_PREFIX"/lib/libjansson.* >/dev/null
+      # JANSSON_VERSION omits a trailing zero micro (e.g. "2.16" for
+      # 2.16.0); assert the component macros instead.
+      hdr="$NEM_PREFIX/include/jansson.h"
+      major=${NEM_VERSION%%.*}
+      rest=${NEM_VERSION#*.}
+      minor=${rest%%.*}
+      if [ "$rest" = "$minor" ]; then
+        micro=0
+      else
+        micro=${rest#*.}
+      fi
+      grep -q "define JANSSON_MAJOR_VERSION  *$major\$" "$hdr"
+      grep -q "define JANSSON_MINOR_VERSION  *$minor\$" "$hdr"
+      grep -q "define JANSSON_MICRO_VERSION  *$micro\$" "$hdr"
+  - run: |
+      set -e
+      if ! command -v cc >/dev/null 2>&1; then
+        echo "no compiler available here; skipping the linkage probe"
+        exit 0
+      fi
+      cat > probe.c <<'CEOF'
+      #include <jansson.h>
+      int main(void) {
+        json_error_t err;
+        json_t *v = json_loads("{\"a\": 42}", 0, &err);
+        if (!v) return 1;
+        json_t *a = json_object_get(v, "a");
+        if (!a || !json_is_integer(a) || json_integer_value(a) != 42) return 1;
+        json_decref(v);
+        return 0;
+      }
+      CEOF
+      cc $CPPFLAGS probe.c $LDFLAGS -ljansson -o probe
+      ./probe

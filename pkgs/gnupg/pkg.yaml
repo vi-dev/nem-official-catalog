@@ -119,3 +119,21 @@ build:
         make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
         make install DESTDIR="$NEM_OUTPUT"
         printf '.enable = ${GPGCONF_CTL_ENABLE}\nrootdir = ${GPGCONF_CTL_ROOTDIR}\n' > "$NEM_OUTPUT/bin/gpgconf.ctl"
+
+test:
+  - run: gpg --version | grep -q "$NEM_VERSION"
+  # gpg-agent needs a socket inside GNUPGHOME, and a unix socket path is
+  # capped near 104 characters — too short for the scratch directory a step
+  # runs in, so keep the home shallow. Symmetric encryption exercises
+  # libgcrypt and the rest of the closure without needing key-pair entropy.
+  - run: |
+      set -e
+      home=$(mktemp -d /tmp/nem-gpg.XXXXXX)
+      trap 'rm -rf "$home"' EXIT
+      chmod 700 "$home"
+      export GNUPGHOME="$home"
+      printf 'secret' > plain.txt
+      gpg --batch --yes --passphrase nem --pinentry-mode loopback \
+        --symmetric --cipher-algo AES256 -o cipher.gpg plain.txt
+      out=$(gpg --batch --yes --passphrase nem --pinentry-mode loopback -d cipher.gpg 2>/dev/null)
+      [ "$out" = secret ]

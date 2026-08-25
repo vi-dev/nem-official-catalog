@@ -59,6 +59,29 @@ change before opening a pull request:
 nem catalog lint .
 ```
 
+### Testing a package
+
+A manifest may declare shell commands that prove its package works. They run
+in CI after the package is installed, and inside `nem catalog build` before a
+source build is published — never on a user's machine.
+
+```yaml
+test:
+  - run: rg --version | grep -q "$NEM_VERSION"
+  - run: |
+      set -e
+      printf 'hello\n' > f.txt
+      rg -q hello f.txt
+```
+
+Each step runs via `sh -c` in a scratch directory with the package's binaries
+on `PATH`; a non-zero exit fails the package. `test:` is optional, and the
+manifests that carry one show what a step can rely on. Run one with:
+
+```sh
+nem catalog test pkgs/<name>/pkg.yaml
+```
+
 Every pull request is checked in CI on Linux (amd64, arm64) and macOS: all
 manifests are linted, source-built packages you touch are built without
 publishing, and prebuilt packages you touch are installed straight from the
