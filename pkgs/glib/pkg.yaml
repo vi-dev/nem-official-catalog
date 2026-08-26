@@ -1,0 +1,111 @@
+schema: 2
+
+name: glib
+description: GLib core application building blocks — GObject, GIO, and utilities
+homepage: https://gitlab.gnome.org/GNOME/glib
+license: LGPL-2.1-or-later
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+# compat "2" floats within 2.x; releases share the libglib-2.0.0 soname.
+deps:
+  - name: libffi
+    kind: link
+    compat: "3"
+  - name: pcre2
+    kind: link
+    compat: "10"
+  - name: zlib
+    kind: link
+    compat: "1"
+  # GIO's mount monitor and SELinux file contexts are Linux-only.
+  - name: util-linux
+    kind: link
+    compat: "2"
+    platforms: [linux/arm64, linux/amd64]
+  - name: libselinux
+    kind: link
+    compat: "3"
+    platforms: [linux/arm64, linux/amd64]
+
+bins: [bin]
+libs: [lib]
+
+# The url and discovery dir track the stable major.minor series; odd minors
+# are development releases, so bumps stay within the series.
+versionDiscovery:
+  http:
+    url: https://download.gnome.org/sources/glib/2.88/
+    filter: 'glib-(\d+\.\d+\.\d+)\.tar\.xz'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 2.88.3
+    sourceSha256: "ab24d24e698dfa1e408b7bcdb508f4aafc906185a8b8ce72fdf79bbbdc9b383b"
+
+build:
+  deps:
+    - meson
+    - ninja
+    - pkgconf
+    - python
+    - name: libffi
+      kind: link
+      compat: "3"
+    - name: pcre2
+      kind: link
+      compat: "10"
+    - name: zlib
+      kind: link
+      compat: "1"
+    - name: util-linux
+      kind: link
+      compat: "2"
+      platforms: [linux/arm64, linux/amd64]
+    - name: libselinux
+      kind: link
+      compat: "3"
+      platforms: [linux/arm64, linux/amd64]
+  source:
+    url: 'https://download.gnome.org/sources/glib/2.88/glib-{{.Version}}.tar.xz'
+  output: out
+  steps:
+    # Pinned rather than left auto so a missing dependency fails the build
+    # instead of silently shipping a reduced glib.
+    - run: |
+        set -e
+        meson setup build --prefix=/ --libdir=lib --buildtype=release \
+          -Dlibmount=enabled -Dselinux=enabled \
+          -Dintrospection=disabled -Dtests=false -Dglib_debug=disabled -Ddtrace=disabled \
+          -Dman-pages=disabled -Ddocumentation=false
+        ninja -C build
+        DESTDIR="$NEM_OUTPUT" ninja -C build install
+      platforms: [linux/arm64, linux/amd64]
+    - run: |
+        set -e
+        meson setup build --prefix=/ --libdir=lib --buildtype=release \
+          -Dlibmount=disabled -Dselinux=disabled \
+          -Dintrospection=disabled -Dtests=false -Dglib_debug=disabled -Ddtrace=disabled \
+          -Dman-pages=disabled -Ddocumentation=false
+        ninja -C build
+        DESTDIR="$NEM_OUTPUT" ninja -C build install
+      platforms: [darwin/arm64]
+
+test:
+  - run: |
+      set -e
+      [ -f "$NEM_PREFIX/include/glib-2.0/glib.h" ]
+      grep -q "Version: $NEM_VERSION" "$NEM_PREFIX/lib/pkgconfig/glib-2.0.pc"
+  - run: gio --version | grep -q "$NEM_VERSION"
+  - run: |
+      set -e
+      out=$(ldd "$NEM_PREFIX"/lib/libgio-2.0.so.0)
+      printf '%s' "$out" | grep -q libmount
+      printf '%s' "$out" | grep -q libselinux
+      ! printf '%s' "$out" | grep -q 'not found'
+    platforms: [linux/arm64, linux/amd64]
