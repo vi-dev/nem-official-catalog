@@ -1,0 +1,119 @@
+schema: 2
+
+name: podman
+description: Daemonless container engine for OCI containers and pods
+homepage: https://podman.io
+license: Apache-2.0
+
+# The local engine is Linux-only. podman-remote covers macOS and ships a
+# same-named binary on Linux, so the two are alternatives there.
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: gpgme
+    kind: link
+    compat: "1"
+    platforms: [linux/arm64, linux/amd64]
+  - name: libassuan
+    kind: link
+    compat: "3"
+    platforms: [linux/arm64, linux/amd64]
+  - name: libgpg-error
+    kind: link
+    compat: "1"
+    platforms: [linux/arm64, linux/amd64]
+  - name: libseccomp
+    kind: link
+    compat: "2"
+    platforms: [linux/arm64, linux/amd64]
+  - name: conmon
+    kind: run
+    platforms: [linux/arm64, linux/amd64]
+  - name: crun
+    kind: run
+    platforms: [linux/arm64, linux/amd64]
+  - name: netavark
+    kind: run
+    platforms: [linux/arm64, linux/amd64]
+  - name: gvproxy
+    kind: run
+    platforms: [darwin/arm64]
+  - name: vfkit
+    kind: run
+    platforms: [darwin/arm64]
+
+bins: [bin]
+
+versionDiscovery:
+  github:
+    repo: podman-container-tools/podman
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 6.1.0
+    sourceSha256: "e086183db2f852476a7fa2580d0276cef32086b4cf17ae7020948f06eb613e0d"
+
+build:
+  deps:
+    - go
+    - pkgconf
+    - name: gpgme
+      kind: link
+      compat: "1"
+      platforms: [linux/arm64, linux/amd64]
+    - name: libassuan
+      kind: link
+      compat: "3"
+      platforms: [linux/arm64, linux/amd64]
+    - name: libgpg-error
+      kind: link
+      compat: "1"
+      platforms: [linux/arm64, linux/amd64]
+    - name: libseccomp
+      kind: link
+      compat: "2"
+      platforms: [linux/arm64, linux/amd64]
+  source:
+    url: 'https://github.com/podman-container-tools/podman/archive/refs/tags/v{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: CGO_ENABLED=1 go build -trimpath -tags "seccomp exclude_graphdriver_btrfs" -ldflags "-s -w" -o "$NEM_OUTPUT/bin/podman" ./cmd/podman
+      platforms: [linux/arm64, linux/amd64]
+    # macOS has no local engine, so this is upstream's remote client build
+    # plus the helper that redirects the docker socket.
+    - run: |
+        set -e
+        CGO_ENABLED=1 go build -trimpath -tags "remote exclude_graphdriver_btrfs containers_image_openpgp" \
+          -ldflags "-s -w" -o "$NEM_OUTPUT/bin/podman" ./cmd/podman
+        CGO_ENABLED=1 go build -trimpath -ldflags "-s -w" \
+          -o "$NEM_OUTPUT/bin/podman-mac-helper" ./cmd/podman-mac-helper
+      platforms: [darwin/arm64]
+
+test:
+  - run: podman --version | grep -q "$NEM_VERSION"
+  - run: |
+      set -e
+      podman system connection ls >/dev/null
+      command -v podman-mac-helper >/dev/null
+      command -v gvproxy >/dev/null
+      command -v vfkit >/dev/null
+    platforms: [darwin/arm64]
+  # Engine subcommands need conmon and an OCI runtime, which no CI container
+  # provides, so exercise the client paths and assert every library the
+  # binary links resolves through the runtime loader path.
+  - run: |
+      set -e
+      podman system connection ls >/dev/null
+      podman info --help >/dev/null
+      out=$(ldd "$NEM_PREFIX/bin/podman")
+      printf '%s' "$out" | grep -q libgpgme
+      printf '%s' "$out" | grep -q libseccomp
+      ! printf '%s' "$out" | grep -q 'not found'
+    platforms: [linux/arm64, linux/amd64]
