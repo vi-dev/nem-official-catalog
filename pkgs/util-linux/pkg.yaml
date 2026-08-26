@@ -48,7 +48,7 @@ build:
         set -e
         find . -exec touch -t 202001010000 {} +
         ./configure --prefix=/ --libdir=/lib --disable-all-programs \
-          --enable-libmount --enable-libblkid --enable-libuuid \
+          --enable-libmount --enable-libblkid --enable-libuuid --enable-libfdisk \
           --disable-static --disable-dependency-tracking --disable-nls --disable-asciidoc \
           --with-selinux --without-python --without-systemd --without-udev
         make -j"$(nproc || echo 4)"
