@@ -1,0 +1,41 @@
+schema: 2
+
+name: vfkit
+description: Virtualization.framework command line front end, used by podman machine
+homepage: https://github.com/crc-org/vfkit
+license: Apache-2.0
+
+platforms: [darwin/arm64]
+
+bins: [bin]
+
+versionDiscovery:
+  github:
+    repo: crc-org/vfkit
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 0.6.4
+    sourceSha256: "ff496bd6ee6772ed070f286c4282a8a2e2f5231d4f8e98b2255b883ba69af42d"
+
+build:
+  deps:
+    - go
+  source:
+    url: 'https://github.com/crc-org/vfkit/archive/refs/tags/v{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        CGO_ENABLED=1 CGO_CFLAGS=-mmacosx-version-min=11.0 \
+          go build -trimpath -ldflags "-s -w" -o "$NEM_OUTPUT/bin/vfkit" ./cmd/vfkit
+
+test:
+  - run: vfkit --version | grep -q "$NEM_VERSION"

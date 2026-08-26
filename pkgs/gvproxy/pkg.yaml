@@ -1,0 +1,40 @@
+schema: 2
+
+name: gvproxy
+description: User-mode networking for podman machine, from gvisor-tap-vsock
+homepage: https://github.com/containers/gvisor-tap-vsock
+license: Apache-2.0
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+bins: [bin]
+
+versionDiscovery:
+  github:
+    repo: containers/gvisor-tap-vsock
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 0.8.9
+    sourceSha256: "6cbcb7959a5d90b59253ea6d8bdf0285e2cfbc3b301398704b41e3069293f4fb"
+
+build:
+  deps:
+    - go
+  source:
+    url: 'https://github.com/containers/gvisor-tap-vsock/archive/refs/tags/v{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        CGO_ENABLED=0 go build -trimpath -ldflags "-s -w" -o "$NEM_OUTPUT/bin/gvproxy" ./cmd/gvproxy
+
+test:
+  - run: gvproxy --help 2>&1 | grep -q listen
