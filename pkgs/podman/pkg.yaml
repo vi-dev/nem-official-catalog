@@ -35,14 +35,15 @@ deps:
   - name: netavark
     kind: run
     platforms: [linux/arm64, linux/amd64]
-  - name: gvproxy
-    kind: run
-    platforms: [darwin/arm64]
-  - name: vfkit
-    kind: run
-    platforms: [darwin/arm64]
 
 bins: [bin]
+
+# podman 6 defaults to the libkrun machine provider, which needs krunkit; the
+# catalog has vfkit instead.
+env:
+  - name: CONTAINERS_MACHINE_PROVIDER
+    value: applehv
+    platforms: [darwin/arm64]
 
 versionDiscovery:
   github:
@@ -80,6 +81,10 @@ build:
       kind: link
       compat: "2"
       platforms: [linux/arm64, linux/amd64]
+    - name: gvproxy
+      platforms: [darwin/arm64]
+    - name: vfkit
+      platforms: [darwin/arm64]
   source:
     url: 'https://github.com/podman-container-tools/podman/archive/refs/tags/v{{.Version}}.tar.gz'
   output: out
@@ -90,10 +95,17 @@ build:
     # plus the helper that redirects the docker socket.
     - run: |
         set -e
+        export MACOSX_DEPLOYMENT_TARGET=13.0
         CGO_ENABLED=1 go build -trimpath -tags "remote exclude_graphdriver_btrfs containers_image_openpgp" \
           -ldflags "-s -w" -o "$NEM_OUTPUT/bin/podman" ./cmd/podman
         CGO_ENABLED=1 go build -trimpath -ldflags "-s -w" \
           -o "$NEM_OUTPUT/bin/podman-mac-helper" ./cmd/podman-mac-helper
+        # podman resolves machine helpers through helper_binaries_dir, whose
+        # default $BINDIR/../libexec/podman is the only entry PATH cannot stand
+        # in for.
+        mkdir -p "$NEM_OUTPUT/libexec/podman"
+        cp "$NEM_DEP_GVPROXY_PREFIX/bin/gvproxy" "$NEM_DEP_VFKIT_PREFIX/bin/vfkit" \
+          "$NEM_OUTPUT/libexec/podman/"
       platforms: [darwin/arm64]
 
 test:
@@ -102,8 +114,9 @@ test:
       set -e
       podman system connection ls >/dev/null
       command -v podman-mac-helper >/dev/null
-      command -v gvproxy >/dev/null
-      command -v vfkit >/dev/null
+      "$NEM_PREFIX/libexec/podman/gvproxy" --help 2>&1 | grep -q listen
+      "$NEM_PREFIX/libexec/podman/vfkit" --version >/dev/null
+      codesign -d --entitlements - "$NEM_PREFIX/libexec/podman/vfkit" 2>&1 | grep -q com.apple.security.virtualization
     platforms: [darwin/arm64]
   # Engine subcommands need conmon and an OCI runtime, which no CI container
   # provides, so exercise the client paths and assert every library the
