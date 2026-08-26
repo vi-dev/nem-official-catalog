@@ -1,0 +1,82 @@
+schema: 2
+
+name: crun
+description: Fast OCI container runtime written in C
+homepage: https://github.com/containers/crun
+license: GPL-2.0-or-later
+
+platforms: [linux/arm64, linux/amd64]
+
+deps:
+  - name: libseccomp
+    kind: link
+    compat: "2"
+  - name: json-c
+    kind: link
+    compat: "0"
+  - name: libcap
+    kind: link
+    compat: "2"
+
+bins: [bin]
+
+versionDiscovery:
+  github:
+    repo: containers/crun
+    filter: '^\d+\.\d+(\.\d+)?$'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 1.29.1
+    sourceSha256: "b6be9fd9613efe5df414c568ddfaf09857c72ec17a00999f15c132a3d9e120fd"
+
+build:
+  deps:
+    - pkgconf
+    - python
+    - name: libseccomp
+      kind: link
+      compat: "2"
+    - name: json-c
+      kind: link
+      compat: "0"
+    - name: libcap
+      kind: link
+      compat: "2"
+  source:
+    url: 'https://github.com/containers/crun/releases/download/{{.Version}}/crun-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --disable-systemd --disable-criu
+        make -j"$(nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+    # crun re-execs itself through /proc/self/exe, where $ORIGIN resolves to
+    # /proc/self and its libraries fall off the search path; the wrapper
+    # restates that path so the second image inherits it.
+    - run: |
+        set -e
+        mkdir -p "$NEM_OUTPUT/libexec"
+        mv "$NEM_OUTPUT/bin/crun" "$NEM_OUTPUT/libexec/crun"
+        rp=$(readelf -d "$NEM_OUTPUT/libexec/crun" | sed -n 's/.*R\(UN\)\?PATH.*\[\(.*\)\]/\2/p')
+        [ -n "$rp" ]
+        printf '#!/bin/sh\nd=$(cd "$(dirname "$0")" && pwd)\nLD_LIBRARY_PATH="%s${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"\nexport LD_LIBRARY_PATH\nexec "$d/../libexec/crun" "$@"\n' \
+          "$(printf %s "$rp" | sed 's|[$]ORIGIN|$d|g')" > "$NEM_OUTPUT/bin/crun"
+        chmod 0755 "$NEM_OUTPUT/bin/crun"
+
+test:
+  - run: crun --version | grep -q "$NEM_VERSION"
+  # podman spawns the runtime with a sanitized environment.
+  - run: env -i "$NEM_PREFIX/bin/crun" --version | grep -q "$NEM_VERSION"
+  - run: |
+      set -e
+      crun spec
+      grep -q '"ociVersion"' config.json
+      crun features | grep -q '"seccomp"'

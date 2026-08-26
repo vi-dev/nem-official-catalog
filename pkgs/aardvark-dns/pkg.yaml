@@ -1,0 +1,44 @@
+schema: 2
+
+name: aardvark-dns
+description: Authoritative DNS server for container networks, used by netavark
+homepage: https://github.com/containers/aardvark-dns
+license: Apache-2.0
+
+platforms: [linux/arm64, linux/amd64]
+
+bins: [bin]
+
+versionDiscovery:
+  github:
+    repo: containers/aardvark-dns
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 2.1.0
+    sourceSha256: "daf871488603e659b0501224cf0731ac317809b1d1701fc061cb4f6ae39a894f"
+
+build:
+  deps:
+    - rust
+  source:
+    url: 'https://github.com/containers/aardvark-dns/archive/refs/tags/v{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        export CARGO_HOME="$PWD/.cargo"
+        cargo build --release --locked
+        mkdir -p "$NEM_OUTPUT/bin"
+        cp target/release/aardvark-dns "$NEM_OUTPUT/bin/aardvark-dns"
+
+test:
+  - run: aardvark-dns --version | grep -q "$NEM_VERSION"
+  - run: aardvark-dns --help | grep -q run

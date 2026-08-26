@@ -1,0 +1,67 @@
+schema: 2
+
+name: conmon
+description: OCI container monitor, the per-container supervisor podman spawns
+homepage: https://github.com/containers/conmon
+license: Apache-2.0
+
+platforms: [linux/arm64, linux/amd64]
+
+deps:
+  - name: glib
+    kind: link
+    compat: "2"
+  - name: libseccomp
+    kind: link
+    compat: "2"
+  - name: systemd
+    kind: link
+    compat: "261"
+
+bins: [bin]
+
+versionDiscovery:
+  github:
+    repo: containers/conmon
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 2.2.1
+    sourceSha256: "814fb5979a3a4b8576b1f901e606b482bebb41cb7e57926e6d5765ee786b96d3"
+
+build:
+  deps:
+    - pkgconf
+    - name: glib
+      kind: link
+      compat: "2"
+    - name: libseccomp
+      kind: link
+      compat: "2"
+    - name: systemd
+      kind: link
+      compat: "261"
+  source:
+    url: 'https://github.com/containers/conmon/archive/refs/tags/v{{.Version}}.tar.gz'
+  output: out
+  steps:
+    # install.bin skips the docs target, which needs go-md2man.
+    - run: |
+        set -e
+        make -j"$(nproc || echo 4)" bin/conmon
+        make install.bin DESTDIR="$NEM_OUTPUT" PREFIX=/
+
+test:
+  - run: conmon --version | grep -q "$NEM_VERSION"
+  - run: |
+      set -e
+      out=$(ldd "$NEM_PREFIX/bin/conmon")
+      printf '%s' "$out" | grep -q libglib-2.0
+      ! printf '%s' "$out" | grep -q 'not found'
