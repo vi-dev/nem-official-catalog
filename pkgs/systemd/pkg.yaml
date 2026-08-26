@@ -1,0 +1,132 @@
+schema: 2
+
+name: systemd
+description: systemd system and service manager, including libsystemd and libudev
+homepage: https://systemd.io
+license: LGPL-2.1-or-later
+
+platforms: [linux/arm64, linux/amd64]
+
+deps:
+  - name: libcap
+    kind: link
+    compat: "2"
+  - name: util-linux
+    kind: link
+    compat: "2"
+  - name: libselinux
+    kind: link
+    compat: "3"
+  - name: openssl
+    kind: link
+    compat: "4"
+  - name: zstd
+    kind: link
+    compat: "1"
+  - name: lz4
+    kind: link
+    compat: "1"
+  - name: xz
+    kind: link
+    compat: "5"
+  - name: libseccomp
+    kind: link
+    compat: "2"
+  - name: zlib
+    kind: link
+    compat: "1"
+
+bins: [bin]
+libs: [lib]
+
+versionDiscovery:
+  github:
+    repo: systemd/systemd
+    filter: '^v\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 261.2
+    sourceSha256: "ed1059ff964f5df35b6056434cc17cc83f86dc913f10489948a0b19b6081c5ec"
+
+build:
+  deps:
+    - meson
+    - ninja
+    - pkgconf
+    - python
+    - name: libcap
+      kind: link
+      compat: "2"
+    - name: util-linux
+      kind: link
+      compat: "2"
+    - name: libselinux
+      kind: link
+      compat: "3"
+    - name: openssl
+      kind: link
+      compat: "4"
+    - name: zstd
+      kind: link
+      compat: "1"
+    - name: lz4
+      kind: link
+      compat: "1"
+    - name: xz
+      kind: link
+      compat: "5"
+    - name: libseccomp
+      kind: link
+      compat: "2"
+    - name: zlib
+      kind: link
+      compat: "1"
+  source:
+    url: 'https://github.com/systemd/systemd/archive/refs/tags/v{{.Version}}.tar.gz'
+  output: out
+  steps:
+    # The binaries load libsystemd-shared from lib/systemd; both rpaths keep
+    # that reachable from bin/ and from within lib/systemd itself.
+    # Components needing libraries the catalog lacks are pinned off, and the
+    # manuals need an XML toolchain the builders do not carry.
+    - run: |
+        set -e
+        python3 -m pip install --quiet --target "$PWD/.pydeps" jinja2
+        export PYTHONPATH="$PWD/.pydeps"
+        export LDFLAGS="$LDFLAGS -Wl,-rpath,\$ORIGIN -Wl,-rpath,\$ORIGIN/../lib/systemd"
+        meson setup build --prefix=/ --libdir=lib --buildtype=release \
+          -Dmode=release -Dman=disabled -Dhtml=disabled -Dtests=false -Dhwdb=false \
+          -Dlz4=enabled -Dzstd=enabled -Dxz=enabled -Dzlib=enabled -Dopenssl=enabled \
+          -Dselinux=enabled -Dseccomp=enabled \
+          -Dacl=disabled -Dgcrypt=disabled -Dgnutls=disabled -Dlibcurl=disabled \
+          -Dmicrohttpd=disabled -Dp11kit=disabled -Dpam=disabled \
+          -Dqrencode=disabled -Dlibfido2=disabled -Dtpm2=disabled -Dbzip2=disabled \
+          -Dkmod=disabled -Dlibidn2=disabled \
+          -Dlibcryptsetup=disabled -Dpwquality=disabled -Dpolkit=disabled \
+          -Dbpf-framework=disabled -Dpasswdqc=disabled -Dvmspawn=false -Dukify=disabled
+        ninja -C build
+        DESTDIR="$NEM_OUTPUT" meson install -C build
+
+test:
+  - run: |
+      set -e
+      # The .pc carries the major only, while the binaries print both.
+      grep -q "Version: ${NEM_VERSION%%.*}" "$NEM_PREFIX/lib/pkgconfig/libsystemd.pc"
+      [ -f "$NEM_PREFIX/include/systemd/sd-journal.h" ]
+  # systemd-analyze prints the feature set it was compiled with, so the
+  # catalog libraries it should have picked up are visible.
+  - run: |
+      set -e
+      out=$(systemd-analyze --version)
+      printf '%s' "$out" | grep -q "($NEM_VERSION)"
+      for f in +SELINUX +OPENSSL +SECCOMP +BLKID +LIBFDISK +LZ4 +XZ +ZSTD +ZLIB; do
+        printf '%s' "$out" | grep -q -- "$f"
+      done
+      ! ldd "$NEM_PREFIX"/lib/libsystemd.so.0 | grep -q 'not found'
