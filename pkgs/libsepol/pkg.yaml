@@ -1,0 +1,43 @@
+schema: 2
+
+name: libsepol
+description: SELinux binary policy manipulation library
+homepage: https://github.com/SELinuxProject/selinux
+license: LGPL-2.1-or-later
+
+platforms: [linux/arm64, linux/amd64]
+
+# compat "3" floats within 3.x; releases share the libsepol.so.2 soname.
+libs: [lib]
+
+versionDiscovery:
+  github:
+    repo: SELinuxProject/selinux
+    filter: '^\d+\.\d+$'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 3.11
+    sourceSha256: "79f3d2c88f44b7eb5cf54d9792e03232297e17f97a179163f2750099a00f164d"
+
+build:
+  source:
+    url: 'https://github.com/SELinuxProject/selinux/releases/download/{{.Version}}/libsepol-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        make -j"$(nproc || echo 4)" PREFIX=/ LIBDIR=/lib SHLIBDIR=/lib
+        make install PREFIX=/ LIBDIR=/lib SHLIBDIR=/lib DESTDIR="$NEM_OUTPUT"
+
+test:
+  - run: |
+      set -e
+      grep -q "Version: $NEM_VERSION" "$NEM_PREFIX/lib/pkgconfig/libsepol.pc"
+      so=$(ls "$NEM_PREFIX"/lib/libsepol.so.[0-9]* 2>/dev/null | head -1)
+      [ -n "$so" ] && [ -x "$so" ]
