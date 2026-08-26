@@ -1,0 +1,71 @@
+schema: 2
+
+name: libselinux
+description: SELinux runtime library for security contexts and file labeling
+homepage: https://github.com/SELinuxProject/selinux
+license: LGPL-2.1-or-later
+
+platforms: [linux/arm64, linux/amd64]
+
+# compat "3" floats within 3.x; releases share the libselinux.so.1 soname.
+deps:
+  - name: libsepol
+    kind: link
+    compat: "3"
+  - name: pcre2
+    kind: link
+    compat: "10"
+
+bins: [sbin]
+libs: [lib]
+
+versionDiscovery:
+  github:
+    repo: SELinuxProject/selinux
+    filter: '^\d+\.\d+$'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 3.11
+    sourceSha256: "73d419c6e20e874adaa4019372cbd097eecf4d276e13f27ec5e67d35c0bd203c"
+
+build:
+  deps:
+    - pkgconf
+    - python
+    - name: libsepol
+      kind: link
+      compat: "3"
+    - name: pcre2
+      kind: link
+      compat: "10"
+  source:
+    url: 'https://github.com/SELinuxProject/selinux/releases/download/{{.Version}}/libselinux-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # The Makefile names these variables but never defines them.
+        # PCRE_MODULE becomes the generated .pc's Requires: the catalog
+        # pcre2 ships libpcre2-8.pc, not pcre2.pc.
+        cf="-DUSE_PCRE2 -DPCRE2_CODE_UNIT_WIDTH=8 $(pkg-config --cflags libpcre2-8)"
+        lf="$(pkg-config --libs libpcre2-8)"
+        make -j"$(nproc || echo 4)" PREFIX=/ LIBDIR=/lib SHLIBDIR=/lib \
+          PCRE_MODULE=libpcre2-8 PCRE_CFLAGS="$cf" PCRE_LDLIBS="$lf"
+        make install PREFIX=/ LIBDIR=/lib SHLIBDIR=/lib \
+          PCRE_MODULE=libpcre2-8 PCRE_CFLAGS="$cf" PCRE_LDLIBS="$lf" DESTDIR="$NEM_OUTPUT"
+
+test:
+  - run: |
+      set -e
+      grep -q "Version: $NEM_VERSION" "$NEM_PREFIX/lib/pkgconfig/libselinux.pc"
+      if command -v pkg-config >/dev/null; then
+        PKG_CONFIG_PATH="$NEM_PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH" pkg-config --cflags libselinux >/dev/null
+      fi
+      so=$(ls "$NEM_PREFIX"/lib/libselinux.so.[0-9]* 2>/dev/null | head -1)
+      [ -n "$so" ] && [ -x "$so" ]
