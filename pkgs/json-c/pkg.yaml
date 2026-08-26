@@ -39,7 +39,7 @@ build:
         set -e
         cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/ \
           -DCMAKE_INSTALL_LIBDIR=/lib -DCMAKE_INSTALL_INCLUDEDIR=/include \
-          -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=OFF -DBUILD_TESTING=OFF -DDISABLE_WERROR=ON
+          -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=OFF -DBUILD_TESTING=OFF -DBUILD_APPS=OFF -DDISABLE_WERROR=ON
         cmake --build build -j"$(nproc 2>/dev/null || sysctl -n hw.ncpu || echo 4)"
         DESTDIR="$NEM_OUTPUT" cmake --install build
         # json-c installs its shared library 0644; the loader needs it
@@ -50,8 +50,6 @@ test:
   - run: |
       set -e
       grep -q "Version: $NEM_VERSION" "$NEM_PREFIX/lib/pkgconfig/json-c.pc"
-      # json-c installs the library 0644 by default, which the loader cannot
-      # map; assert the bit here since runtime images have no compiler.
       lib=$(ls "$NEM_PREFIX"/lib/libjson-c.so.[0-9]* "$NEM_PREFIX"/lib/libjson-c.[0-9]*.dylib 2>/dev/null | head -1)
       [ -n "$lib" ]
       [ -x "$lib" ]
