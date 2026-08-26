@@ -32,9 +32,6 @@ deps:
   - name: crun
     kind: run
     platforms: [linux/arm64, linux/amd64]
-  - name: netavark
-    kind: run
-    platforms: [linux/arm64, linux/amd64]
 
 bins: [bin]
 
@@ -85,11 +82,25 @@ build:
       platforms: [darwin/arm64]
     - name: vfkit
       platforms: [darwin/arm64]
+    - name: netavark
+      platforms: [linux/arm64, linux/amd64]
+    - name: aardvark-dns
+      platforms: [linux/arm64, linux/amd64]
   source:
     url: 'https://github.com/podman-container-tools/podman/archive/refs/tags/v{{.Version}}.tar.gz'
   output: out
   steps:
-    - run: CGO_ENABLED=1 go build -trimpath -tags "seccomp exclude_graphdriver_btrfs" -ldflags "-s -w" -o "$NEM_OUTPUT/bin/podman" ./cmd/podman
+    # Every default helper_binaries_dir entry on linux is an absolute system
+    # path, so bake in the one form that follows the package: $BINDIR expands
+    # to the podman binary's own directory when the lookup runs.
+    - run: |
+        set -e
+        CGO_ENABLED=1 go build -trimpath -tags "seccomp exclude_graphdriver_btrfs" \
+          -ldflags '-s -w -X go.podman.io/common/pkg/config.additionalHelperBinariesDir=$BINDIR/../libexec/podman' \
+          -o "$NEM_OUTPUT/bin/podman" ./cmd/podman
+        mkdir -p "$NEM_OUTPUT/libexec/podman"
+        cp "$NEM_DEP_NETAVARK_PREFIX/bin/netavark" \
+          "$NEM_DEP_AARDVARK_DNS_PREFIX/bin/aardvark-dns" "$NEM_OUTPUT/libexec/podman/"
       platforms: [linux/arm64, linux/amd64]
     # macOS has no local engine, so this is upstream's remote client build
     # plus the helper that redirects the docker socket.
@@ -125,6 +136,15 @@ test:
       set -e
       podman system connection ls >/dev/null
       podman info --help >/dev/null
+      [ -x "$NEM_PREFIX/libexec/podman/netavark" ]
+      [ -x "$NEM_PREFIX/libexec/podman/aardvark-dns" ]
+      # info needs a rootless namespace the smoke image cannot set up, so the
+      # resolved-path check only runs where podman itself does.
+      if path=$(podman info --format '{{.Host.NetworkBackendInfo.Path}}' 2>/dev/null); then
+        [ "$path" = "$NEM_PREFIX/libexec/podman/netavark" ]
+      else
+        echo "skipped netavark resolution check: podman info unavailable here"
+      fi
       out=$(ldd "$NEM_PREFIX/bin/podman")
       printf '%s' "$out" | grep -q libgpgme
       printf '%s' "$out" | grep -q libseccomp
