@@ -1,0 +1,75 @@
+schema: 2
+
+name: util-linux
+description: util-linux libraries — libmount, libblkid, and libuuid
+homepage: https://github.com/util-linux/util-linux
+license: LGPL-2.1-or-later
+
+platforms: [linux/arm64, linux/amd64]
+
+# compat "2" floats within 2.x; libmount.so.1, libblkid.so.1 and
+# libuuid.so.1 sonames are stable across the series.
+deps:
+  - name: libselinux
+    kind: link
+    compat: "3"
+
+libs: [lib]
+
+# The url's major directory must track version bumps.
+versionDiscovery:
+  http:
+    url: https://www.kernel.org/pub/linux/utils/util-linux/v2.42/
+    filter: 'util-linux-(\d+\.\d+(?:\.\d+)?)\.tar\.gz'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 2.42.2
+    sourceSha256: "e73fe91d9b536c6e3548132c1e327843b0bac3c94be9f158ce112eb989d25fc7"
+
+build:
+  deps:
+    - pkgconf
+    - name: libselinux
+      kind: link
+      compat: "3"
+  source:
+    url: 'https://www.kernel.org/pub/linux/utils/util-linux/v2.42/util-linux-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    # Libraries only; the programs would need setuid, which nem's relative
+    # rpaths cannot survive, and several would shadow system commands.
+    - run: |
+        set -e
+        find . -exec touch -t 202001010000 {} +
+        ./configure --prefix=/ --libdir=/lib --disable-all-programs \
+          --enable-libmount --enable-libblkid --enable-libuuid \
+          --disable-static --disable-dependency-tracking --disable-nls --disable-asciidoc \
+          --with-selinux --without-python --without-systemd --without-udev
+        make -j"$(nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+        rm -f "$NEM_OUTPUT/lib/"*.la
+        # make install writes the .so symlinks with absolute targets, which
+        # archive extraction rejects.
+        cd "$NEM_OUTPUT/lib"
+        for l in *.so; do
+          [ -L "$l" ] && ln -sf "$(basename "$(readlink "$l")")" "$l" || true
+        done
+
+test:
+  - run: |
+      set -e
+      grep -q "Version: $NEM_VERSION" "$NEM_PREFIX/lib/pkgconfig/mount.pc"
+      [ -f "$NEM_PREFIX/include/libmount/libmount.h" ]
+      for l in libmount libblkid libuuid; do
+        so=$(ls "$NEM_PREFIX"/lib/$l.so.[0-9]* 2>/dev/null | head -1)
+        [ -n "$so" ] && [ -x "$so" ]
+      done
+      out=$(ldd "$NEM_PREFIX"/lib/libmount.so.1)
+      printf '%s' "$out" | grep -q libselinux
+      ! printf '%s' "$out" | grep -q 'not found'
