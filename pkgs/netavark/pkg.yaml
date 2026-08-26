@@ -1,0 +1,50 @@
+schema: 2
+
+name: netavark
+description: Container network stack for podman, configuring bridges and firewalls
+homepage: https://github.com/containers/netavark
+license: Apache-2.0
+
+platforms: [linux/arm64, linux/amd64]
+
+deps:
+  - name: aardvark-dns
+    kind: run
+
+bins: [bin]
+
+versionDiscovery:
+  github:
+    repo: containers/netavark
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 2.1.0
+    sourceSha256: "96677048168ddd1abe313e4c2e17f1cace72b60ee1bac8ca12a4bd7dfcadfbbb"
+
+build:
+  deps:
+    - rust
+    # build.rs compiles the dhcp-proxy protos.
+    - protoc
+  source:
+    url: 'https://github.com/containers/netavark/archive/refs/tags/v{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        export CARGO_HOME="$PWD/.cargo"
+        cargo build --release --locked
+        mkdir -p "$NEM_OUTPUT/bin"
+        cp target/release/netavark "$NEM_OUTPUT/bin/netavark"
+
+test:
+  - run: netavark --version | grep -q "$NEM_VERSION"
+  - run: netavark --help | grep -q setup
