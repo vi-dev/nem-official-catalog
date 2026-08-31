@@ -20,6 +20,24 @@ install:
 bins: ["bin"]
 
 versions:
+  - version: 2.16.0
+    sha256:
+      darwin/arm64: "cafde07c3f07a2b64a863d4905a292b27490ec74498f773e24a87b2921e2767c"
+      darwin/amd64: "13d00f7fde1ec09e26bae17003287dec4ae4d76647e8d35833b22820a32f4860"
+      linux/arm64: "b5f63d82dad03891ea8406093e7ede5144617f14bf2e99635e72c41c6996d3a2"
+      linux/amd64: "5b7fd6332371f1b169294659d29930edf2b2d97d79e631c1d7bd495b07842070"
+  - version: 2.15.4
+    sha256:
+      darwin/arm64: "ece683dd74dffb5ae32c8f652eeeaf7d5b8481c65b0fbb50e88825eff6d74e0e"
+      darwin/amd64: "1dd3198a09dc7e7fa3ec1be372e5c729d8620cb8afa513847f5ab7412ed5e190"
+      linux/arm64: "942b6878f0d1995cea5f178a6effbb0b06e11b1cf850f3a7d17073e966aebcb9"
+      linux/amd64: "ce99ff82722d4f270509d40c29d411b35efdc10ad79388b56cb99567353f4c5f"
+  - version: 2.15.3
+    sha256:
+      darwin/arm64: "a3fb3853bec535a3b2adf24e80120fe6058813c23c280396fb48eb8aa0c3fc3e"
+      darwin/amd64: "644fa00780bb0f98f0bde7cba35ba7a95fde0144c670d811e18a8e32c76f1cce"
+      linux/arm64: "2584e34fd515de13e15a1b2be8de5fcba57d465a984cdac6347418606a5fd40e"
+      linux/amd64: "ec294a6f59120a221c9965f6e8c8b07be712a7612f053cad9872ef0481c71abb"
   - version: 2.15.2
     sha256:
       darwin/arm64: "de7db933deb4b3681300f6afd622d971f8aa86fe3d208967762986b695792fee"
