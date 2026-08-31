@@ -39,12 +39,18 @@ build:
     url: 'https://github.com/valkey-io/valkey/archive/refs/tags/{{.Version}}.tar.gz'
   output: out
   steps:
-    # Inherited CFLAGS/LDFLAGS skew the deps settings hash and a nested make
-    # re-cleans the bundled libraries mid-build. GTEST_LIBS placates a
-    # parse-time error in the unit-test Makefile; tests are not built.
+    # Env CFLAGS/LDFLAGS make the bundled deps re-clean mid-build and break
+    # jemalloc's configure, so unset them; the rpaths return via
+    # SERVER_LDFLAGS, which reaches only the final link. GTEST_LIBS placates
+    # a parse-time error in the unit-test Makefile; tests are not built.
     - run: |
         set -e
         openssl_prefix=$(pkg-config --variable=prefix openssl)
+        rpath_ldflags=$LDFLAGS
         unset CFLAGS CPPFLAGS LDFLAGS
-        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)" BUILD_TLS=yes OPENSSL_PREFIX="$openssl_prefix" GTEST_LIBS=unused
-        make install PREFIX="$NEM_OUTPUT" BUILD_TLS=yes OPENSSL_PREFIX="$openssl_prefix" GTEST_LIBS=unused
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)" BUILD_TLS=yes OPENSSL_PREFIX="$openssl_prefix" SERVER_LDFLAGS="$rpath_ldflags" GTEST_LIBS=unused
+        make install PREFIX="$NEM_OUTPUT" BUILD_TLS=yes OPENSSL_PREFIX="$openssl_prefix" SERVER_LDFLAGS="$rpath_ldflags" GTEST_LIBS=unused
+
+test:
+  - run: valkey-cli --version | grep -q "$NEM_VERSION"
+  - run: valkey-server --version | grep -q "$NEM_VERSION"
