@@ -1,0 +1,87 @@
+schema: 2
+
+name: ruby
+description: The Ruby programming language
+homepage: https://www.ruby-lang.org
+license: Ruby OR BSD-2-Clause
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: openssl
+    kind: link
+    # The bundled openssl gem (3.3.x) pokes ASN1_STRING internals that
+    # OpenSSL 4 made opaque; stay on the 3.x line it targets.
+    compat: "3"
+  - name: libyaml
+    kind: link
+    compat: "0"
+  - name: zlib
+    kind: link
+    compat: "1"
+  - name: libffi
+    kind: link
+    compat: "3"
+
+bins: [bin]
+
+versionDiscovery:
+  http:
+    url: https://cache.ruby-lang.org/pub/ruby/index.txt
+    filter: 'ruby-(\d+\.\d+\.\d+)\.tar\.gz'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 3.4.9
+    sourceSha256: "7bb4d4f5e807cc27251d14d9d6086d182c5b25875191e44ab15b709cd7a7dd9c"
+
+build:
+  deps:
+    - pkgconf
+    - name: openssl
+      kind: link
+      compat: "3"
+    - name: libyaml
+      kind: link
+      compat: "0"
+    - name: zlib
+      kind: link
+      compat: "1"
+    - name: libffi
+      kind: link
+      compat: "3"
+  # The directory pins the minor series; bumping to a new series 404s at
+  # hash time until it is updated.
+  source:
+    url: 'https://cache.ruby-lang.org/pub/ruby/3.4/ruby-{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # Extraction skews mtimes; a uniform stamp stops make regenerating
+        # pregenerated files (parse.c etc.), which would need a baseruby.
+        find . -exec touch -t 202001010000 {} +
+        # Builders stamp the host macOS as the minimum OS; pin the floor.
+        export MACOSX_DEPLOYMENT_TARGET=13.0
+        opt="$(pkg-config --variable=prefix openssl):$(pkg-config --variable=prefix yaml-0.1):$(pkg-config --variable=prefix zlib):$(pkg-config --variable=prefix libffi)"
+        # --enable-load-relative computes the prefix from the executable's
+        # location and gives bin scripts (gem, bundle) a self-locating
+        # prologue, so the install relocates. --disable-rpath: on ELF,
+        # mkmf otherwise bakes the staged opt-dir paths into every
+        # extension's RUNPATH; sonames resolve via nem env at runtime.
+        ./configure --prefix=/ --enable-load-relative --disable-install-doc --disable-rpath --with-opt-dir="$opt"
+        make -j"$(sysctl -n hw.ncpu 2>/dev/null || nproc || echo 4)"
+        make install DESTDIR="$NEM_OUTPUT"
+
+test:
+  - run: ruby --version | grep -q "$NEM_VERSION"
+  # mkmf silently drops an extension whose dep probe failed; the requires
+  # catch that.
+  - run: ruby -ropenssl -rpsych -rzlib -rfiddle -rjson -e 'print OpenSSL::OPENSSL_LIBRARY_VERSION' | grep -qi openssl
+  # gem/bundle exercise the load-relative script prologue after install.
+  - run: gem --version >/dev/null && bundle --version >/dev/null

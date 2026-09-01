@@ -1,0 +1,53 @@
+schema: 2
+
+name: mkdocs
+description: Project documentation with Markdown
+homepage: https://www.mkdocs.org
+license: BSD-2-Clause
+
+platforms: [darwin/arm64, linux/arm64, linux/amd64]
+
+deps:
+  - name: python
+    kind: run
+
+bins: [bin]
+
+versionDiscovery:
+  github:
+    repo: mkdocs/mkdocs
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  oci: ":{{.Version}}"
+
+install:
+  - extract: {strip: 0}
+
+versions:
+  - version: 1.6.1
+    sourceSha256: "10b78edfc02bf37646d0c5b6fc7b2ee5f96b7e060207654ee187149c71b84644"
+
+build:
+  deps:
+    - python
+  source:
+    url: 'https://github.com/mkdocs/mkdocs/archive/refs/tags/{{.Version}}.tar.gz'
+  output: out
+  steps:
+    - run: |
+        set -e
+        # --no-compile: .pyc files would bake the builder's absolute paths.
+        python3 -m pip install --quiet --no-compile --target "$NEM_OUTPUT/libexec/mkdocs" .
+        mkdir -p "$NEM_OUTPUT/bin"
+        printf '#!/bin/sh\nPYTHONPATH="$(cd "$(dirname "$0")/../libexec/mkdocs" && pwd)${PYTHONPATH:+:$PYTHONPATH}" export PYTHONPATH\nexec python3 -m mkdocs "$@"\n' > "$NEM_OUTPUT/bin/mkdocs"
+        chmod 0755 "$NEM_OUTPUT/bin/mkdocs"
+
+test:
+  - run: mkdocs --version | grep -q "$NEM_VERSION"
+  - run: |
+      set -e
+      mkdocs new site
+      cd site
+      mkdocs build --strict
+      grep -q "MkDocs" site/index.html
