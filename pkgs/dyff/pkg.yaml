@@ -1,0 +1,28 @@
+schema: 2
+name: dyff
+description: Diff tool for YAML files, and sometimes JSON
+homepage: https://github.com/homeport/dyff
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: homeport/dyff
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/homeport/dyff/releases/download/v{{.Version}}/dyff_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "dyff", dst: "bin/dyff", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.12.0
+    sha256:
+      darwin/arm64: "3c1bbefb44ec92675c9fc1349a102a41d2568f294fd1fd4e468dc0804944040f"
+      darwin/amd64: "f791c83f055cc651c8a2f70894b51461594bc6f41f2876168cc72d4bb81abc91"
+      linux/arm64: "c9710f57940306abc1e34e2bf1a1ba94e6a92c543cde4e5dfaea169ded06e832"
+      linux/amd64: "50b43017a7474c2216694d0b5387439488a1d3c2b5eefe1674cd0e5c18bc0316"

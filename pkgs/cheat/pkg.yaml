@@ -1,0 +1,27 @@
+schema: 2
+name: cheat
+description: Create and view interactive cheatsheets on the command line
+homepage: https://github.com/cheat/cheat
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: cheat/cheat
+    filter: '^\d+\.\d+\.\d+$'
+
+artifact:
+  url: "https://github.com/cheat/cheat/releases/download/{{.Version}}/cheat-{{.OS}}-{{.Arch}}.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "cheat-{{.OS}}-{{.Arch}}", dst: "bin/cheat", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 5.1.0
+    sha256:
+      darwin/arm64: "4fcc9ef5b2b3ae31d3f9c77dc6492a4336592c34c60d8a20814fb6155642b37c"
+      darwin/amd64: "d99884c698d10f0b191deac969190c2b5311a8202f4f8c394130969f9adb8309"
+      linux/arm64: "78fd70fedd7c2cd297af827c29c495c8f6d2b9a880739450ac13e18eefa2f17b"
+      linux/amd64: "8c8405574d51d63ee89594bfed241f478d507d96af78e5c370dcbe65633d7b34"

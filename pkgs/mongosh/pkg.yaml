@@ -1,0 +1,27 @@
+schema: 2
+name: mongosh
+description: MongoDB Shell
+homepage: https://www.mongodb.com/docs/mongodb-shell/
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: mongodb-js/mongosh
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/mongodb-js/mongosh/releases/download/v{{.Version}}/mongosh-{{.Version}}-{{.OS}}-{{replace .Arch \"amd64\" \"x64\"}}.{{if eq .OS \"darwin\"}}zip{{else}}tgz{{end}}"
+
+install:
+  - extract: {strip: 1}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.10.0
+    sha256:
+      darwin/arm64: "cc2ba0059b462f6b3ef8d8080b84801450c8f37cf6a8549bbb6a9bec87cb557e"
+      darwin/amd64: "8080bf32dc01a141f3286558435901a2d4b3df9dff61aa09ece53a3739195fce"
+      linux/arm64: "585da7587d862a2fc54f38e4db1d5bc17823cf29a51d3d73e5838b86778cb98a"
+      linux/amd64: "42034ba0fc9a48fd65ddcc5150b2e9d8a777965019220744baee42ee9669d543"
