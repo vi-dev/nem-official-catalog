@@ -1,0 +1,27 @@
+schema: 2
+name: glab
+description: GitLab command-line tool
+homepage: https://gitlab.com/gitlab-org/cli
+license: MIT
+
+versionDiscovery:
+  gitlab:
+    repo: gitlab-org/cli
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://gitlab.com/gitlab-org/cli/-/releases/v{{.Version}}/downloads/glab_{{.Version}}_{{.OS}}_{{.Arch}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+
+bins: ["bin"]
+
+versions:
+  - version: 1.116.0
+    sha256:
+      darwin/arm64: "74d26ed28dc79cc242154fd8dc7434e446bfe8eec98f627118b17aa89e6212ff"
+      darwin/amd64: "f4175ee73125b80c308619ca6c94142a2be5ca3d467d9cb0121e6f5e4fe5877f"
+      linux/arm64: "3e59a0c5db5b281c552543cc1018873ecdd551b07737cfdb932c6543aa39d88c"
+      linux/amd64: "173cc61ea94c562f2ccd831f320d25b73982192e82810064552282482e3713ea"
