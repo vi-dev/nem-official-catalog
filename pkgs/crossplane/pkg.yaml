@@ -1,0 +1,27 @@
+schema: 2
+name: crossplane
+description: Crossplane command-line tool
+homepage: https://www.crossplane.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: crossplane/cli
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://cli.crossplane.io/stable/v{{.Version}}/bin/{{.OS}}_{{.Arch}}/crossplane"
+
+install:
+  - copy: {src: "{{.Artifact}}", dst: "bin/crossplane", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.5.0
+    sha256:
+      darwin/arm64: "6e0e00370fce82299b931fabee8559eed8a79446172ceb2c24c6d1d76f76fb8c"
+      darwin/amd64: "b7d5749caff9c467ec03376b03772aaee2135aaf55f970a8a8fcbc341daf1a42"
+      linux/arm64: "2ae3bfe43206e47454c2634dace1427bd35794f616619e8f34ce23ce5b811dfd"
+      linux/amd64: "065dd6b40c9ea5fc71e49900d5c924cc0bec7f58375922ddbde6b402f292347e"

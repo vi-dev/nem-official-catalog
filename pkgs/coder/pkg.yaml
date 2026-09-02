@@ -1,0 +1,34 @@
+schema: 2
+name: coder
+description: Self-hosted cloud development environments
+homepage: https://coder.com
+license: AGPL-3.0
+
+versionDiscovery:
+  github:
+    repo: coder/coder
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/coder/coder/releases/download/v{{.Version}}/coder_{{.Version}}_{{.OS}}_{{.Arch}}.{{if eq .OS \"darwin\"}}zip{{else}}tar.gz{{end}}"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "coder", dst: "bin/coder", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 2.37.0
+    sha256:
+      darwin/arm64: "4a10c50b9f2a953d2b9f68ff7f4e7288ba03182fc6d952be07dd73073d46a88a"
+      darwin/amd64: "03607e6cfa51aae2c820bb713e68175b8ec7da2ef64da515af406d0b153e3042"
+      linux/arm64: "04f8531c941e1083663f0a0e489c4cc8a899a2f0e7f4bb3f5deeefcceb486a67"
+      linux/amd64: "fe516ef3ad8976146652a9adaf8abbdd4fc080b0b911884f171bf8bc6ff5cb3a"
+  - version: 2.36.4
+    sha256:
+      darwin/arm64: "5b7bfd3ad4af63199eb65c3a0cc94bf475ee196bc925af4dbf0e0c658dc79bdf"
+      darwin/amd64: "42065d387c8a7ebcc8e0d0b6f269db580d3a9b8fe3d59a4e4e38d86d19fba92e"
+      linux/arm64: "cebf62195f61a66f7bedc203c70b0c5bb99f49f26ff6fa1b1a26ab78aeaff4cd"
+      linux/amd64: "19c9bb8b81495bc983137a1ae16f447420fb571a9ab0dc5d8fb490118b9073ee"

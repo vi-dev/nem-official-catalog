@@ -1,0 +1,28 @@
+schema: 2
+name: kubectl-gadget
+description: kubectl plugin for the Inspektor Gadget eBPF debugging tools
+homepage: https://inspektor-gadget.io
+license: Apache-2.0
+
+versionDiscovery:
+  github:
+    repo: inspektor-gadget/inspektor-gadget
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/inspektor-gadget/inspektor-gadget/releases/download/v{{.Version}}/kubectl-gadget-{{.OS}}-{{.Arch}}-v{{.Version}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+  - copy: {src: "kubectl-gadget", dst: "bin/kubectl-gadget", mode: 0o755}
+
+bins: ["bin"]
+
+versions:
+  - version: 0.55.1
+    sha256:
+      darwin/arm64: "3768c4eea1910f615a223043bc4c037cfbc5724ea8c6e9762bfd19e6b31f12c5"
+      darwin/amd64: "e411230c45b9befcb832fc64d77d6a3610bd31a04142eb17e5721d43f2dd2970"
+      linux/arm64: "efc88bd12d02f193d1ff4ddf9e5cd88811872a19c1122a8d8c8292ff74abaf2d"
+      linux/amd64: "bbf4ba83ed307cfdd1aaf3aa7bdc3bb748a9584cd1cb12c1a293c8a34be33ef3"

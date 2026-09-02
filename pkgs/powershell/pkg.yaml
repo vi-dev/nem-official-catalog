@@ -1,0 +1,29 @@
+schema: 2
+name: powershell
+description: Cross-platform automation shell and scripting language
+homepage: https://github.com/PowerShell/PowerShell
+license: MIT
+
+versionDiscovery:
+  github:
+    repo: PowerShell/PowerShell
+    filter: '^v\d+\.\d+\.\d+$'
+    prefix: "v"
+
+artifact:
+  url: "https://github.com/PowerShell/PowerShell/releases/download/v{{.Version}}/powershell-{{.Version}}-{{replace .OS \"darwin\" \"osx\"}}-{{replace .Arch \"amd64\" \"x64\"}}.tar.gz"
+
+install:
+  - extract: {strip: 0}
+
+# pwsh resolves its .NET runtime and bundled modules next to the executable,
+# so the whole tree stays at the package root instead of moving into bin/.
+bins: ["."]
+
+versions:
+  - version: 7.6.5
+    sha256:
+      darwin/arm64: "8196d4b4e7c21b7f6df9d45687bb4e42dc8335f330b580d9eb15f3ef5042a8c3"
+      darwin/amd64: "3db1d177ab39511c1b6b73b05a1630a5db4e8dce22857ca76f14c5d98f2733fd"
+      linux/arm64: "ed4084f215d8bce2edd23aa7cb1f1e7b0818e41363a635a22065d2701b6141df"
+      linux/amd64: "b34ab3b19acac1d3d4d0d3cfdb02acf62f457b0b6a962ff008132033f7566844"
